@@ -1,0 +1,11 @@
+.topo { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; padding: .75rem 1.5rem; background: #fff; border-bottom: 1px solid var(--cor-borda); }
+.topo nav { display: flex; gap: 1rem; flex: 1; }
+.topo nav a { text-decoration: none; color: var(--cor-suave); padding: .25rem 0; }
+.topo nav a.active { color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); }
+.usuario { display: flex; align-items: center; gap: .75rem; font-size: .9rem; color: var(--cor-suave); }
+
+.conteudo { max-width: 1000px; margin: 1.5rem auto; padding: 0 1rem; }
+.cartao { background: #fff; border: 1px solid var(--cor-borda); border-radius: 8px; padding: 1.5rem; margin: 1.5rem auto; max-width: 900px; }
+.cartao.estreito { max-width: 420px; }
+.cabecalho { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.cabecalho h1 { margin: 0; }

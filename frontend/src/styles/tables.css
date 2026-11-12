@@ -1,0 +1,8 @@
+table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--cor-borda); border-radius: 8px; overflow: hidden; }
+th, td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--cor-borda); font-size: .9rem; }
+th { background: #f9fafb; }
+.acoes { display: flex; gap: .75rem; white-space: nowrap; }
+
+.detalhes { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1rem; }
+.detalhes dt { color: var(--cor-suave); }
+.detalhes dd { margin: 0; }

@@ -1,0 +1,6 @@
+/* Ponto de entrada dos estilos: cada arquivo cuida de uma parte da interface. */
+@import './base.css';
+@import './layout.css';
+@import './forms.css';
+@import './tables.css';
+@import './components.css';
