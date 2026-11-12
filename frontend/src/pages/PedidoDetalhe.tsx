@@ -5,8 +5,49 @@ import { api, paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
 import Erro from '../components/Erro'
 import StatusBadge from '../components/StatusBadge'
-import type { Pedido, TipoProprietario } from '../types'
+import type { Pedido, StatusPedido, TipoProprietario } from '../types'
 import { dataBR, moeda } from '../utils/format'
+import CarroIlustracao from '../components/CarroIlustracao'
+import Placa from '../components/Placa'
+
+// O pedido percorre três etapas em sequência; reprovação e cancelamento interrompem o caminho.
+const ETAPAS = ['Pedido enviado', 'Análise financeira', 'Contrato executado']
+
+function etapaAtual(status: StatusPedido): number {
+  switch (status) {
+    case 'EM_ANALISE':
+    case 'REPROVADO':
+      return 1
+    case 'APROVADO_FINANCEIRAMENTE':
+      return 2
+    case 'CONTRATO_EXECUTADO':
+      return 3
+    case 'CANCELADO':
+      return -1
+  }
+}
+
+function LinhaDoTempo({ status }: { status: StatusPedido }) {
+  if (status === 'CANCELADO') {
+    return <p className="aviso">Este pedido foi cancelado pelo cliente.</p>
+  }
+  const atual = etapaAtual(status)
+  return (
+    <ol className="etapas">
+      {ETAPAS.map((nome, i) => {
+        let estado = i < atual ? 'feita' : i === atual ? 'atual' : 'futura'
+        if (status === 'REPROVADO' && i === 1) estado = 'falhou'
+        if (status === 'CONTRATO_EXECUTADO') estado = 'feita'
+        return (
+          <li key={nome} className={`etapa ${estado}`}>
+            <span className="etapa-numero">{i + 1}</span>
+            <span>{status === 'REPROVADO' && i === 1 ? 'Reprovado na análise' : nome}</span>
+          </li>
+        )
+      })}
+    </ol>
+  )
+}
 
 const PROPRIEDADES: Record<TipoProprietario, string> = {
   CLIENTE: 'Cliente',
@@ -31,22 +72,32 @@ export default function PedidoDetalhe() {
   if (!pedido) return <p>Carregando…</p>
 
   return (
-    <section className="cartao">
+    <section className="painel">
       <div className="cabecalho">
         <h1>Pedido #{pedido.id}</h1>
         <StatusBadge status={pedido.status} />
+      </div>
+
+      <LinhaDoTempo status={pedido.status} />
+
+      <div className="pedido-carro">
+        <CarroIlustracao chave={pedido.automovel.marca + pedido.automovel.modelo} />
+        <div>
+          <p className="carro-marca">{pedido.automovel.marca}</p>
+          <p className="carro-modelo">{pedido.automovel.modelo}</p>
+          <Placa codigo={pedido.automovel.placa} />
+        </div>
       </div>
 
       <dl className="detalhes">
         <dt>Cliente</dt>
         <dd>
           {pedido.clienteNome}
-          {ehAgente && <> · rendimento total {moeda(pedido.clienteRendimentoTotal)}</>}
+          {ehAgente && <>, rendimento total de {moeda(pedido.clienteRendimentoTotal)}</>}
         </dd>
-        <dt>Automóvel</dt>
+        <dt>Ano e matrícula</dt>
         <dd>
-          {pedido.automovel.marca} {pedido.automovel.modelo} {pedido.automovel.ano} · placa{' '}
-          {pedido.automovel.placa} · matrícula {pedido.automovel.matricula}
+          {pedido.automovel.ano}, matrícula {pedido.automovel.matricula}
         </dd>
         <dt>Período</dt>
         <dd>
@@ -87,7 +138,7 @@ export default function PedidoDetalhe() {
       )}
 
       <p>
-        <Link to="/">← Voltar aos pedidos</Link>
+        <Link to="/pedidos">Voltar aos pedidos</Link>
       </p>
     </section>
   )

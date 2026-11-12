@@ -4,8 +4,8 @@ import type { Perfil } from '../types'
 
 const ROTULO_PERFIL: Record<Perfil, string> = {
   CLIENTE: 'Cliente',
-  AGENTE_EMPRESA: 'Agente (empresa)',
-  AGENTE_BANCO: 'Agente (banco)',
+  AGENTE_EMPRESA: 'Agente empresa',
+  AGENTE_BANCO: 'Agente banco',
 }
 
 export default function Layout() {
@@ -22,19 +22,26 @@ export default function Layout() {
   return (
     <div className="app">
       <header className="topo">
-        <strong className="marca">🚗 Aluguel de Carros</strong>
+        <NavLink to="/" className="marca">
+          Aluguel de Carros
+        </NavLink>
         <nav>
-          <NavLink to="/" end>Pedidos</NavLink>
-          {ehCliente && <NavLink to="/pedidos/novo">Novo pedido</NavLink>}
-          <NavLink to="/automoveis">Automóveis</NavLink>
+          {ehCliente && (
+            <NavLink to="/" end>
+              Carros
+            </NavLink>
+          )}
+          <NavLink to="/pedidos">{ehCliente ? 'Meus pedidos' : 'Pedidos'}</NavLink>
           {ehCliente && <NavLink to="/meus-dados">Meus dados</NavLink>}
+          {ehAgente && <NavLink to="/automoveis">Automóveis</NavLink>}
           {ehAgente && <NavLink to="/clientes">Clientes</NavLink>}
         </nav>
         <div className="usuario">
-          <span>
-            {usuario.username} · {ROTULO_PERFIL[usuario.perfil]}
-          </span>
-          <button className="btn secundario" onClick={sair}>Sair</button>
+          <span className="usuario-nome">{usuario.username}</span>
+          <span className="usuario-perfil">{ROTULO_PERFIL[usuario.perfil]}</span>
+          <button className="btn fantasma" onClick={sair}>
+            Sair
+          </button>
         </div>
       </header>
       <main className="conteudo">

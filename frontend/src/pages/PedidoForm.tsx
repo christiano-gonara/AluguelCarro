@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { api, paraErro } from '../api'
+import CarroCard from '../components/CarroCard'
 import Erro from '../components/Erro'
 import type { Automovel } from '../types'
 import { moeda } from '../utils/format'
@@ -17,10 +18,15 @@ const hoje = () => new Date().toISOString().slice(0, 10)
 /** Serve para criar (cliente) e para modificar (cliente ou agente) um pedido. */
 export default function PedidoForm() {
   const { id } = useParams()
+  const [busca] = useSearchParams()
   const editando = id !== undefined
   const navigate = useNavigate()
   const [automoveis, setAutomoveis] = useState<Automovel[]>([])
-  const [form, setForm] = useState<PedidoFormState>({ automovelId: '', dataInicio: hoje(), dataFim: hoje() })
+  const [form, setForm] = useState<PedidoFormState>({
+    automovelId: busca.get('automovel') ?? '',
+    dataInicio: hoje(),
+    dataFim: hoje(),
+  })
   const [erro, setErro] = useState<Error | null>(null)
   const [enviando, setEnviando] = useState(false)
 
@@ -58,57 +64,64 @@ export default function PedidoForm() {
   }
 
   return (
-    <div className="cartao">
-      <h1>{editando ? `Modificar pedido #${id}` : 'Novo pedido de aluguel'}</h1>
-      <form onSubmit={enviar}>
-        <label>
-          Automóvel
-          <select
-            value={form.automovelId}
-            onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm({ ...form, automovelId: e.target.value })}
-            required
-          >
-            <option value="">Selecione…</option>
-            {automoveis.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.marca} {a.modelo} {a.ano} · {a.placa} · {moeda(a.valorDiaria)}/dia
-              </option>
-            ))}
-          </select>
-        </label>
-        <div className="grade">
+    <section>
+      <header className="pagina-topo">
+        <h1>{editando ? `Modificar pedido #${id}` : 'Novo pedido de aluguel'}</h1>
+      </header>
+      <div className="pedido-layout">
+        <form className="painel" onSubmit={enviar}>
           <label>
-            Início
-            <input
-              type="date"
-              value={form.dataInicio}
-              min={editando ? undefined : hoje()}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, dataInicio: e.target.value })}
+            Carro
+            <select
+              value={form.automovelId}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm({ ...form, automovelId: e.target.value })}
               required
-            />
+            >
+              <option value="">Selecione um carro</option>
+              {automoveis.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.marca} {a.modelo} {a.ano}, {moeda(a.valorDiaria)} por dia
+                </option>
+              ))}
+            </select>
           </label>
-          <label>
-            Fim
-            <input
-              type="date"
-              value={form.dataFim}
-              min={form.dataInicio}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, dataFim: e.target.value })}
-              required
-            />
-          </label>
-        </div>
-        {carro && dias > 0 && (
-          <p className="suave">
-            Valor estimado: <strong>{moeda(carro.valorDiaria * dias)}</strong> ({dias} dia
-            {dias > 1 ? 's' : ''})
-          </p>
-        )}
-        <Erro erro={erro} />
-        <button className="btn" disabled={enviando}>
-          {enviando ? 'Salvando…' : editando ? 'Salvar alterações' : 'Enviar pedido'}
-        </button>
-      </form>
-    </div>
+          <div className="grade">
+            <label>
+              Retirada
+              <input
+                type="date"
+                value={form.dataInicio}
+                min={editando ? undefined : hoje()}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, dataInicio: e.target.value })}
+                required
+              />
+            </label>
+            <label>
+              Devolução
+              <input
+                type="date"
+                value={form.dataFim}
+                min={form.dataInicio}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, dataFim: e.target.value })}
+                required
+              />
+            </label>
+          </div>
+          {carro && dias > 0 && (
+            <div className="total">
+              <span>
+                {dias} {dias > 1 ? 'diárias' : 'diária'} de {moeda(carro.valorDiaria)}
+              </span>
+              <strong>{moeda(carro.valorDiaria * dias)}</strong>
+            </div>
+          )}
+          <Erro erro={erro} />
+          <button className="btn" disabled={enviando}>
+            {enviando ? 'Enviando…' : editando ? 'Salvar alterações' : 'Enviar pedido para análise'}
+          </button>
+        </form>
+        {carro && <CarroCard carro={carro} />}
+      </div>
+    </section>
   )
 }

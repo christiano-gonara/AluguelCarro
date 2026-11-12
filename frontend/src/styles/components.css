@@ -1,11 +1,84 @@
-.erro { background: #fef2f2; color: var(--cor-perigo); border: 1px solid #fecaca; border-radius: 6px; padding: .6rem .8rem; }
+.erro { background: #fef2f2; color: var(--perigo); border: 1px solid #fecaca; border-radius: 6px; padding: .6rem .8rem; }
 .erro ul { margin: .25rem 0 0; padding-left: 1.2rem; }
+.aviso { background: #fff7e0; border: 1px solid #f1d27a; border-radius: 6px; padding: .6rem .8rem; }
 
-.badge { display: inline-block; padding: .15rem .6rem; border-radius: 999px; font-size: .8rem; background: #e5e7eb; }
-.badge.EM_ANALISE { background: #fef3c7; color: #92400e; }
-.badge.APROVADO_FINANCEIRAMENTE { background: #dbeafe; color: #1e40af; }
-.badge.CONTRATO_EXECUTADO { background: #dcfce7; color: #166534; }
-.badge.REPROVADO, .badge.CANCELADO { background: #fee2e2; color: #991b1b; }
+.badge { display: inline-block; padding: .2rem .7rem; border-radius: 999px; font-size: .85rem; font-weight: 600; background: #e5e7eb; white-space: nowrap; }
+.badge.EM_ANALISE { background: #fff1c2; color: #7a5300; }
+.badge.APROVADO_FINANCEIRAMENTE { background: #dbe6fb; color: var(--placa-escura); }
+.badge.CONTRATO_EXECUTADO { background: #d8f0e2; color: #155c37; }
+.badge.REPROVADO, .badge.CANCELADO { background: #fde3e1; color: #8f1c13; }
 
-.demo { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--cor-borda); }
-.demo p { margin: 0 0 .5rem; font-size: .9rem; }
+/* Placa Mercosul: o elemento de identidade do sistema. */
+.placa {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 6.5rem;
+  background: #fff;
+  border: 2px solid var(--texto);
+  border-radius: 5px;
+  overflow: hidden;
+  line-height: 1;
+}
+.placa-faixa {
+  background: var(--placa);
+  color: #fff;
+  font-size: .5rem;
+  font-weight: 600;
+  letter-spacing: .3em;
+  text-align: center;
+  padding: 2px 0 2px .3em;
+}
+.placa-codigo {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: .08em;
+  text-align: center;
+  padding: 3px .5rem 4px;
+  color: var(--texto);
+}
+.placa-grande { min-width: 15rem; border-width: 3px; border-radius: 8px; }
+.placa-grande .placa-faixa { font-size: .8rem; padding: 4px 0 4px .3em; }
+.placa-grande .placa-codigo { font-size: 3rem; padding: 6px 1rem 8px; }
+
+/* Linha do tempo do pedido: as etapas são de fato sequenciais, por isso numeradas. */
+.etapas { list-style: none; display: flex; gap: 0; padding: 0; margin: 0 0 1.5rem; }
+.etapa {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--suave);
+  font-weight: 500;
+}
+/* Conector tracejado entre uma etapa e a seguinte. */
+.etapa + .etapa::before {
+  content: '';
+  flex: 0 0 2rem;
+  border-top: 2px dashed var(--borda);
+  margin-right: .25rem;
+}
+.etapa.feita + .etapa::before { border-top-color: var(--ok); }
+.etapa-numero {
+  display: inline-grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  border: 2px solid var(--borda);
+  background: #fff;
+  font-weight: 700;
+  flex: none;
+}
+.etapa.feita { color: var(--ok); }
+.etapa.feita .etapa-numero { background: var(--ok); border-color: var(--ok); color: #fff; }
+.etapa.atual { color: var(--texto); font-weight: 600; }
+.etapa.atual .etapa-numero { border-color: var(--placa); color: var(--placa); }
+.etapa.falhou { color: var(--perigo); }
+.etapa.falhou .etapa-numero { background: var(--perigo); border-color: var(--perigo); color: #fff; }
+
+@media (max-width: 640px) {
+  .etapas { flex-direction: column; gap: .6rem; }
+  .etapa + .etapa::before { display: none; }
+}

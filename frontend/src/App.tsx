@@ -4,6 +4,7 @@ import { useAuth } from './auth/AuthContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
+import Catalogo from './pages/Catalogo'
 import Pedidos from './pages/Pedidos'
 import PedidoForm from './pages/PedidoForm'
 import PedidoDetalhe from './pages/PedidoDetalhe'
@@ -26,6 +27,12 @@ function Protegida({ children, perfil }: ProtegidaProps) {
   return children
 }
 
+/** Cliente começa pelo catálogo de carros; agente começa pela fila de pedidos. */
+function Inicio() {
+  const { ehCliente } = useAuth()
+  return ehCliente ? <Catalogo /> : <Navigate to="/pedidos" replace />
+}
+
 export default function App() {
   return (
     <Routes>
@@ -38,7 +45,8 @@ export default function App() {
           </Protegida>
         }
       >
-        <Route index element={<Pedidos />} />
+        <Route index element={<Inicio />} />
+        <Route path="pedidos" element={<Pedidos />} />
         <Route
           path="pedidos/novo"
           element={
@@ -57,7 +65,14 @@ export default function App() {
             </Protegida>
           }
         />
-        <Route path="automoveis" element={<Automoveis />} />
+        <Route
+          path="automoveis"
+          element={
+            <Protegida perfil="agente">
+              <Automoveis />
+            </Protegida>
+          }
+        />
         <Route
           path="clientes"
           element={

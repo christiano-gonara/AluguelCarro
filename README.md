@@ -35,6 +35,7 @@ Protótipo funcional em desenvolvimento acadêmico.
 ## 🔗 Links Úteis
 
 - Modelagem UML (Mermaid, renderizada pelo GitHub): [`docs/modelagem`](docs/modelagem)
+- API da Tabela FIPE: [deividfortuna.github.io/fipe](https://deividfortuna.github.io/fipe/)
 - Esquema do banco de dados: [`docs/banco-de-dados.sql`](docs/banco-de-dados.sql)
 
 ## 📝 Sobre o Projeto
@@ -51,7 +52,9 @@ O sistema só pode ser usado após **cadastro prévio e login** (usuário e senh
 - **CRUD de cliente**: cadastro, consulta, atualização e exclusão dos próprios dados, incluindo até 3 empregadores com rendimento.
 - **Pedidos de aluguel (cliente)**: introduzir, modificar (enquanto em análise), consultar o status e cancelar.
 - **Análise e contratos (agentes)**: avaliar pedidos com parecer financeiro, modificar pedidos, executar o contrato definindo o proprietário do automóvel e, para bancos, associar contrato de crédito.
-- **Catálogo de automóveis**: matrícula, ano, marca, modelo, placa e diária; gerido pelos agentes.
+- **Catálogo de automóveis**: tela inicial do cliente, com matrícula, ano, marca, modelo, placa (padrão Mercosul) e diária; gerido pelos agentes.
+- **Integração com a Tabela FIPE**: no cadastro de automóvel, o agente escolhe marca, modelo e ano pela [API pública da FIPE](https://deividfortuna.github.io/fipe/) e o sistema preenche os campos e sugere a diária (0,3% do valor de tabela).
+- **Contas de exemplo**: com o seed habilitado, a tela de login oferece entrada com um clique como cliente, empresa ou banco.
 - **Perfis e autorização**: cliente, agente (empresa) e agente (banco), com regras de acesso aplicadas no back-end.
 
 ## 🛠 Tecnologias Utilizadas
@@ -59,7 +62,8 @@ O sistema só pode ser usado após **cadastro prévio e login** (usuário e senh
 ### 💻 Front-end
 - React 19 + Vite 8 (TypeScript)
 - React Router 7
-- CSS puro, organizado em `src/styles`
+- CSS puro, organizado em `src/styles`; tipografia Barlow (Google Fonts)
+- API pública da Tabela FIPE (marcas, modelos, anos e valores)
 
 ### 🖥️ Back-end
 - Java (JDK 25)
@@ -132,8 +136,8 @@ Diagramas (UML em Mermaid):
 | `DB_USER` | Usuário do banco | `postgres` |
 | `DB_PASSWORD` | Senha do banco | definida no Supabase |
 | `PORT` | Porta do servidor (opcional) | `8080` |
-| `SEED_ENABLED` | Cria agentes e carros de exemplo (opcional) | `true` |
-| `SEED_AGENT_PASSWORD` | Senha dos agentes criados pelo seed | escolha uma senha |
+| `SEED_ENABLED` | Cria contas e carros de exemplo (opcional) | `true` |
+| `SEED_AGENT_PASSWORD` | Senha das contas de exemplo (`agente.empresa`, `agente.banco` e `cliente.demo`) | escolha uma senha |
 
 Há um modelo em [`backend/.env.example`](backend/.env.example). O Spring não lê `.env` sozinho: exporte as variáveis no terminal. **Nunca faça commit de senhas.**
 
@@ -142,7 +146,7 @@ Há um modelo em [`backend/.env.example`](backend/.env.example). O Spring não l
 | Variável | Descrição | Exemplo |
 |---|---|---|
 | `VITE_API_PROXY_TARGET` | Back-end para o proxy do Vite (opcional) | `http://localhost:8080` |
-| `VITE_DEMO_PASSWORD` | Mostra "contas de exemplo" no login (opcional, só demonstração); use o valor de `SEED_AGENT_PASSWORD` | `uma-senha-de-dev` |
+| `VITE_DEMO_PASSWORD` | Mostra os botões de contas de exemplo no login (opcional, só demonstração); use o mesmo valor de `SEED_AGENT_PASSWORD`. Coloque em `frontend/.env.local` | `uma-senha-de-dev` |
 
 ### 📦 Instalação de Dependências
 
@@ -185,7 +189,9 @@ cd frontend
 npm run dev
 ```
 
-Acesse `http://localhost:5173`. Com o seed habilitado, os agentes `agente.empresa` e `agente.banco` usam a senha definida em `SEED_AGENT_PASSWORD`. Clientes se cadastram pela própria tela.
+Acesse `http://localhost:5173`. Com o seed habilitado, as contas `agente.empresa`, `agente.banco` e `cliente.demo` usam a senha definida em `SEED_AGENT_PASSWORD`. Outros clientes se cadastram pela própria tela.
+
+Em desenvolvimento, o Vite encaminha `/api` ao Spring Boot e `/fipe` à API da Tabela FIPE (veja `frontend/vite.config.ts`).
 
 ## 🚀 Deploy
 
@@ -226,7 +232,7 @@ AluguelCarro/
 │       ├── components/           # Layout, formulários e peças comuns
 │       ├── pages/                # Telas
 │       ├── styles/               # CSS separado dos componentes
-│       ├── utils/                # Formatadores
+│       ├── utils/                # Formatadores e cliente da Tabela FIPE
 │       ├── api.ts                # Cliente HTTP tipado
 │       └── types.ts              # Tipos que espelham os DTOs da API
 └── docs/

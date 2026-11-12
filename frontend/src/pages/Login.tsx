@@ -4,14 +4,16 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
 import Erro from '../components/Erro'
+import Placa from '../components/Placa'
 
-// Atalho para demonstração: só aparece se VITE_DEMO_PASSWORD estiver definida (veja frontend/.env.example).
-// A senha não fica no código-fonte; ela é a mesma SEED_AGENT_PASSWORD usada no back-end.
+// Contas de exemplo: só aparecem se VITE_DEMO_PASSWORD estiver definida (frontend/.env.local).
+// É a mesma senha de SEED_AGENT_PASSWORD no back-end; ela não fica no código-fonte.
 const SENHA_DEMO = import.meta.env.VITE_DEMO_PASSWORD as string | undefined
 
 const CONTAS_DEMO = [
-  { rotulo: 'Agente (empresa)', username: 'agente.empresa' },
-  { rotulo: 'Agente (banco)', username: 'agente.banco' },
+  { rotulo: 'Cliente', username: 'cliente.demo' },
+  { rotulo: 'Empresa', username: 'agente.empresa' },
+  { rotulo: 'Banco', username: 'agente.banco' },
 ]
 
 export default function Login() {
@@ -20,78 +22,88 @@ export default function Login() {
   const [username, setUsername] = useState('')
   const [senha, setSenha] = useState('')
   const [erro, setErro] = useState<Error | null>(null)
-  const [enviando, setEnviando] = useState(false)
+  const [enviando, setEnviando] = useState<string | null>(null)
 
   if (usuario) return <Navigate to="/" replace />
 
-  async function enviar(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  async function entrar(u: string, s: string) {
     setErro(null)
-    setEnviando(true)
+    setEnviando(u)
     try {
-      await login(username, senha)
+      await login(u, s)
       navigate('/')
     } catch (err) {
       setErro(paraErro(err))
     } finally {
-      setEnviando(false)
+      setEnviando(null)
     }
   }
 
-  return (
-    <div className="cartao estreito">
-      <h1>Entrar</h1>
-      <p className="suave">O acesso ao sistema exige cadastro e login.</p>
-      <form onSubmit={enviar}>
-        <label>
-          Usuário
-          <input
-            value={username}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
-            required
-            autoFocus
-          />
-        </label>
-        <label>
-          Senha
-          <input
-            type="password"
-            value={senha}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setSenha(e.target.value)}
-            required
-          />
-        </label>
-        <Erro erro={erro} />
-        <button className="btn" disabled={enviando}>
-          {enviando ? 'Entrando…' : 'Entrar'}
-        </button>
-      </form>
-      <p>
-        Ainda não tem cadastro? <Link to="/registro">Cadastre-se como cliente</Link>
-      </p>
+  function enviar(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    void entrar(username, senha)
+  }
 
-      {SENHA_DEMO && (
-        <div className="demo">
-          <p className="suave">
-            <span aria-hidden="true">🧪</span> Contas de exemplo (clique para preencher)
-          </p>
-          <div className="linha">
-            {CONTAS_DEMO.map((conta) => (
-              <button
-                type="button"
-                key={conta.username}
-                className="btn secundario"
-                onClick={() => {
-                  setUsername(conta.username)
-                  setSenha(SENHA_DEMO)
-                }}
-              >
-                {conta.rotulo}
-              </button>
-            ))}
+  return (
+    <div className="login">
+      <aside className="login-estrada">
+        <Placa codigo="ALU2C26" grande />
+        <h1>Alugue um carro sem sair de casa.</h1>
+        <p>Faça o pedido, acompanhe a análise financeira e feche o contrato pelo navegador.</p>
+        <div className="faixa" aria-hidden="true" />
+      </aside>
+
+      <main className="login-form">
+        <h2>Entrar</h2>
+        <form onSubmit={enviar}>
+          <label>
+            Usuário
+            <input
+              value={username}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+              autoComplete="username"
+              required
+              autoFocus
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value={senha}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setSenha(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+          </label>
+          <Erro erro={erro} />
+          <button className="btn" disabled={enviando !== null}>
+            {enviando === username ? 'Entrando…' : 'Entrar'}
+          </button>
+        </form>
+        <p>
+          Ainda não tem conta? <Link to="/registro">Cadastre-se como cliente</Link>
+        </p>
+
+        {SENHA_DEMO && (
+          <div className="demo">
+            <p className="suave">Entrar com uma conta de exemplo</p>
+            <div className="demo-contas">
+              {CONTAS_DEMO.map((conta) => (
+                <button
+                  type="button"
+                  key={conta.username}
+                  className="btn secundario"
+                  disabled={enviando !== null}
+                  onClick={() => void entrar(conta.username, SENHA_DEMO)}
+                >
+                  {enviando === conta.username ? 'Entrando…' : conta.rotulo}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </main>
     </div>
   )
 }

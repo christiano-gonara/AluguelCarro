@@ -31,17 +31,27 @@ export default function Pedidos() {
 
   return (
     <section>
-      <div className="cabecalho">
-        <h1>{ehCliente ? 'Meus pedidos de aluguel' : 'Pedidos de aluguel'}</h1>
-        {ehCliente && (
-          <Link className="btn" to="/pedidos/novo">
-            Novo pedido
-          </Link>
-        )}
-      </div>
+      <header className="pagina-topo">
+        <h1>{ehCliente ? 'Meus pedidos' : 'Pedidos de aluguel'}</h1>
+        <p className="suave">
+          {ehCliente
+            ? 'Acompanhe aqui a análise e o contrato de cada pedido.'
+            : 'Pedidos em análise aguardam o seu parecer financeiro.'}
+        </p>
+      </header>
       <Erro erro={erro} />
       {pedidos === null && !erro && <p>Carregando…</p>}
-      {pedidos?.length === 0 && <p className="suave">Nenhum pedido ainda.</p>}
+      {pedidos?.length === 0 && (
+        <div className="vazio">
+          {ehCliente ? (
+            <p>
+              Você ainda não fez nenhum pedido. <Link to="/">Escolha um carro no catálogo</Link> para começar.
+            </p>
+          ) : (
+            <p>Nenhum pedido para analisar no momento.</p>
+          )}
+        </div>
+      )}
       {pedidos && pedidos.length > 0 && (
         <table>
           <thead>
