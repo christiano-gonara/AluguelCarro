@@ -16,10 +16,34 @@
 
 .carro-vitrine {
   background: var(--vitrine);
-  padding: 1.5rem 1.25rem .75rem;
   border-bottom: 4px solid var(--asfalto);
 }
 .carro-ilustracao { display: block; width: 100%; height: auto; }
+
+/* Foto real (Wikipédia) com proporção fixa; sem foto, a ilustração ocupa o mesmo espaço. */
+.foto-carro {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--vitrine);
+}
+.foto-carro img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.foto-carro.ilustrada { display: grid; place-items: center; padding: 1.25rem; }
+.foto-carro figcaption {
+  position: absolute;
+  right: .5rem;
+  bottom: .4rem;
+  font-size: .75rem;
+}
+.foto-carro figcaption a {
+  color: #fff;
+  background: rgba(31, 41, 51, .72);
+  padding: .1rem .45rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.foto-carro figcaption a:hover { text-decoration: underline; }
 
 .carro-info { display: flex; flex-direction: column; gap: .5rem; padding: 1rem 1.25rem 1.25rem; flex: 1; }
 .carro-info > .btn,
@@ -52,7 +76,7 @@
 /* Detalhe do pedido: carro em linha, ao lado de marca, modelo e placa. */
 .pedido-carro {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 240px 1fr;
   gap: 1.5rem;
   align-items: center;
   padding: 1rem 1.25rem;
@@ -60,9 +84,10 @@
   border-radius: 8px;
 }
 .pedido-carro .carro-modelo { margin-bottom: .5rem; }
+.pedido-carro .foto-carro { border-radius: 6px; }
 
 @media (max-width: 760px) {
   .pedido-layout { grid-template-columns: 1fr; }
   .pedido-carro { grid-template-columns: 1fr; }
-  .pedido-carro .carro-ilustracao { max-width: 240px; }
+  .pedido-carro .foto-carro { max-width: 320px; }
 }

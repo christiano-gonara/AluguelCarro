@@ -7,7 +7,7 @@ import Erro from '../components/Erro'
 import StatusBadge from '../components/StatusBadge'
 import type { Pedido, StatusPedido, TipoProprietario } from '../types'
 import { dataBR, moeda } from '../utils/format'
-import CarroIlustracao from '../components/CarroIlustracao'
+import FotoCarro from '../components/FotoCarro'
 import Placa from '../components/Placa'
 
 // O pedido percorre três etapas em sequência; reprovação e cancelamento interrompem o caminho.
@@ -81,7 +81,7 @@ export default function PedidoDetalhe() {
       <LinhaDoTempo status={pedido.status} />
 
       <div className="pedido-carro">
-        <CarroIlustracao chave={pedido.automovel.marca + pedido.automovel.modelo} />
+        <FotoCarro marca={pedido.automovel.marca} modelo={pedido.automovel.modelo} />
         <div>
           <p className="carro-marca">{pedido.automovel.marca}</p>
           <p className="carro-modelo">{pedido.automovel.modelo}</p>

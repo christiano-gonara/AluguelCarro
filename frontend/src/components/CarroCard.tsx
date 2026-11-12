@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react'
 import type { Automovel } from '../types'
 import { moeda } from '../utils/format'
-import CarroIlustracao from './CarroIlustracao'
+import FotoCarro from './FotoCarro'
 import Placa from './Placa'
 
 export default function CarroCard({ carro, children }: { carro: Automovel; children?: ReactNode }) {
   return (
     <article className="carro-card">
       <div className="carro-vitrine">
-        <CarroIlustracao chave={carro.marca + carro.modelo} />
+        <FotoCarro marca={carro.marca} modelo={carro.modelo} />
       </div>
       <div className="carro-info">
         <p className="carro-marca">{carro.marca}</p>
