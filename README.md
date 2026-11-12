@@ -182,14 +182,14 @@ export SEED_AGENT_PASSWORD='uma-senha-de-desenvolvimento'
 mvn spring-boot:run
 ```
 
-**Terminal 2: Front-end (porta 5173)**
+**Terminal 2: Front-end (porta 5174)**
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-Acesse `http://localhost:5173`. Com o seed habilitado, as contas `agente.empresa`, `agente.banco` e `cliente.demo` usam a senha definida em `SEED_AGENT_PASSWORD`. Outros clientes se cadastram pela própria tela.
+Acesse `http://localhost:5174`. Com o seed habilitado, as contas `agente.empresa`, `agente.banco` e `cliente.demo` usam a senha definida em `SEED_AGENT_PASSWORD`. Outros clientes se cadastram pela própria tela.
 
 Em desenvolvimento, o Vite encaminha `/api` ao Spring Boot e `/fipe` à API da Tabela FIPE (veja `frontend/vite.config.ts`).
 
