@@ -1,0 +1,68 @@
+/* Catálogo: cada carro numa vaga de vitrine, com placa e diária em destaque. */
+.vitrine-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.carro-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.carro-vitrine {
+  background: var(--vitrine);
+  padding: 1.5rem 1.25rem .75rem;
+  border-bottom: 4px solid var(--asfalto);
+}
+.carro-ilustracao { display: block; width: 100%; height: auto; }
+
+.carro-info { display: flex; flex-direction: column; gap: .5rem; padding: 1rem 1.25rem 1.25rem; flex: 1; }
+.carro-info > .btn,
+.carro-info > .linha { margin-top: auto; }
+.carro-marca { margin: 0; color: var(--suave); font-weight: 500; }
+.carro-modelo { font-family: var(--fonte-titulo); font-size: 1.5rem; font-weight: 600; margin: 0; line-height: 1.1; }
+.carro-linha { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.carro-preco {
+  font-family: var(--fonte-titulo);
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin: .25rem 0 .5rem;
+}
+.carro-preco span { font-family: var(--fonte); font-size: .95rem; font-weight: 400; color: var(--suave); margin-left: .25rem; }
+
+/* Novo pedido: formulário ao lado do carro escolhido. */
+.pedido-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; align-items: start; }
+.pedido-layout .painel { margin: 0; }
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: .9rem 1rem;
+  background: var(--fundo);
+  border-radius: 8px;
+}
+.total strong { font-family: var(--fonte-titulo); font-size: 1.75rem; }
+
+/* Detalhe do pedido: carro em linha, ao lado de marca, modelo e placa. */
+.pedido-carro {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: var(--vitrine);
+  border-radius: 8px;
+}
+.pedido-carro .carro-modelo { margin-bottom: .5rem; }
+
+@media (max-width: 760px) {
+  .pedido-layout { grid-template-columns: 1fr; }
+  .pedido-carro { grid-template-columns: 1fr; }
+  .pedido-carro .carro-ilustracao { max-width: 240px; }
+}

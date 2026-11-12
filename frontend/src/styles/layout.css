@@ -1,0 +1,75 @@
+/* Barra superior em asfalto; o item ativo ganha a faixa amarela embaixo. */
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 0 1.5rem;
+  min-height: 64px;
+  background: var(--asfalto);
+  color: #fff;
+}
+.topo .marca {
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+.topo nav { display: flex; gap: 1.5rem; flex: 1; align-self: stretch; }
+.topo nav a {
+  display: flex;
+  align-items: center;
+  color: #b9c3cc;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  padding-top: 3px;
+}
+.topo nav a:hover { color: #fff; }
+.topo nav a.active { color: #fff; border-bottom-color: var(--faixa); }
+
+.usuario { display: flex; align-items: center; gap: .75rem; }
+.usuario-nome { font-weight: 600; }
+.usuario-perfil { color: #b9c3cc; font-size: .875rem; }
+
+.conteudo { max-width: 1120px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.pagina-topo { margin-bottom: 1.5rem; }
+.pagina-topo p { margin: 0; }
+
+/* Superfícies: painel para formulários e detalhes; cartao mantido para as telas de cadastro. */
+.painel,
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.cartao { max-width: 880px; margin: 2rem auto; }
+.cartao.estreito { max-width: 420px; }
+
+.cabecalho { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.cabecalho h1 { margin: 0; }
+
+.vazio {
+  border: 2px dashed var(--borda);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  color: var(--suave);
+}
+.vazio p { margin: 0; }
+
+@media (max-width: 720px) {
+  .topo { gap: .75rem; padding: .75rem 1rem; }
+  .topo nav { order: 3; width: 100%; flex: none; gap: 1rem; overflow-x: auto; }
+  .topo nav a { padding: .5rem 0; }
+  .usuario { margin-left: auto; }
+  .usuario-perfil { display: none; }
+}
+@media (max-width: 440px) {
+  .usuario-nome { display: none; }
+  .conteudo { padding: 1.5rem 1rem 3rem; }
+  h1 { font-size: 1.85rem; }
+}

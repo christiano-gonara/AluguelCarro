@@ -1,0 +1,59 @@
+/*
+ * Identidade: a estrada e a placa.
+ * Asfalto para as superfícies escuras, azul da placa Mercosul para ações,
+ * amarelo de faixa de rua para foco e marcações. Barlow nasceu de placas de trânsito.
+ */
+:root {
+  --asfalto: #1f2933;
+  --asfalto-claro: #2b3742;
+  --placa: #0b3c8c;
+  --placa-escura: #082d6b;
+  --faixa: #f5b700;
+  --fundo: #edf0f3;
+  --superficie: #ffffff;
+  --vitrine: #e2e7ec;
+  --texto: #1a2027;
+  --suave: #5b6670;
+  --borda: #d3d9df;
+  --perigo: #b42318;
+  --ok: #1e7b4a;
+
+  --fonte: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fonte-titulo: 'Barlow Condensed', 'Barlow', system-ui, sans-serif;
+
+  font-family: var(--fonte);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--texto);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fundo); }
+
+h1, h2, h3 {
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: .005em;
+}
+h1 { font-size: 2.25rem; margin: 0 0 .25rem; }
+h2 { font-size: 1.5rem; margin: 0 0 1rem; }
+h3 { font-size: 1.35rem; margin: 0; }
+p { margin: 0 0 .75rem; }
+
+a { color: var(--placa); text-underline-offset: 3px; }
+a:hover { color: var(--placa-escura); }
+
+:focus-visible {
+  outline: 3px solid var(--faixa);
+  outline-offset: 2px;
+}
+
+.suave { color: var(--suave); }
+.pequeno { font-size: .875rem; }
+.centro { text-align: center; margin-top: 3rem; }
+.ok { color: var(--ok); margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}
