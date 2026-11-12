@@ -5,6 +5,15 @@ import { paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
 import Erro from '../components/Erro'
 
+// Atalho para demonstração: só aparece se VITE_DEMO_PASSWORD estiver definida (veja frontend/.env.example).
+// A senha não fica no código-fonte; ela é a mesma SEED_AGENT_PASSWORD usada no back-end.
+const SENHA_DEMO = import.meta.env.VITE_DEMO_PASSWORD as string | undefined
+
+const CONTAS_DEMO = [
+  { rotulo: 'Agente (empresa)', username: 'agente.empresa' },
+  { rotulo: 'Agente (banco)', username: 'agente.banco' },
+]
+
 export default function Login() {
   const { usuario, login } = useAuth()
   const navigate = useNavigate()
@@ -60,6 +69,29 @@ export default function Login() {
       <p>
         Ainda não tem cadastro? <Link to="/registro">Cadastre-se como cliente</Link>
       </p>
+
+      {SENHA_DEMO && (
+        <div className="demo">
+          <p className="suave">
+            <span aria-hidden="true">🧪</span> Contas de exemplo (clique para preencher)
+          </p>
+          <div className="linha">
+            {CONTAS_DEMO.map((conta) => (
+              <button
+                type="button"
+                key={conta.username}
+                className="btn secundario"
+                onClick={() => {
+                  setUsername(conta.username)
+                  setSenha(SENHA_DEMO)
+                }}
+              >
+                {conta.rotulo}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

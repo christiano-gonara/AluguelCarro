@@ -6,3 +6,6 @@
 .badge.APROVADO_FINANCEIRAMENTE { background: #dbeafe; color: #1e40af; }
 .badge.CONTRATO_EXECUTADO { background: #dcfce7; color: #166534; }
 .badge.REPROVADO, .badge.CANCELADO { background: #fee2e2; color: #991b1b; }
+
+.demo { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--cor-borda); }
+.demo p { margin: 0 0 .5rem; font-size: .9rem; }

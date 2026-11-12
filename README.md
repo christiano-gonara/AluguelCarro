@@ -142,6 +142,7 @@ Há um modelo em [`backend/.env.example`](backend/.env.example). O Spring não l
 | Variável | Descrição | Exemplo |
 |---|---|---|
 | `VITE_API_PROXY_TARGET` | Back-end para o proxy do Vite (opcional) | `http://localhost:8080` |
+| `VITE_DEMO_PASSWORD` | Mostra "contas de exemplo" no login (opcional, só demonstração); use o valor de `SEED_AGENT_PASSWORD` | `uma-senha-de-dev` |
 
 ### 📦 Instalação de Dependências
 
