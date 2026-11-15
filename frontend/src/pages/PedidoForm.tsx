@@ -107,6 +107,9 @@ export default function PedidoForm() {
               />
             </label>
           </div>
+          {form.dataFim < form.dataInicio && (
+            <p className="erro-campo">A devolução tem que ser depois da retirada.</p>
+          )}
           {carro && dias > 0 && (
             <div className="total">
               <span>

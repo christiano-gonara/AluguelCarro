@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
+import Vazio from '../components/Vazio'
 import Erro from '../components/Erro'
 import StatusBadge from '../components/StatusBadge'
 import type { Pedido } from '../types'
@@ -42,15 +43,29 @@ export default function Pedidos() {
       <Erro erro={erro} />
       {pedidos === null && !erro && <p>Carregando…</p>}
       {pedidos?.length === 0 && (
-        <div className="vazio">
+        <>
           {ehCliente ? (
-            <p>
-              Você ainda não fez nenhum pedido. <Link to="/">Escolha um carro</Link> pra começar.
-            </p>
+            <Vazio
+              icone="sacola"
+              titulo="Você ainda não fez nenhum pedido"
+              texto="Escolha um carro, diga os dias e mande o pedido. Ele aparece aqui pra você acompanhar."
+            >
+              <Link className="btn" to="/">
+                Escolher um carro
+              </Link>
+            </Vazio>
           ) : (
-            <p>Nenhum pedido esperando sua resposta agora.</p>
+            <Vazio
+              icone="relogio"
+              titulo="Nenhum pedido esperando sua resposta"
+              texto="Quando um cliente mandar um pedido pra um carro seu, ele chega aqui."
+            >
+              <Link className="btn secundario" to="/automoveis">
+                Ver seus carros
+              </Link>
+            </Vazio>
           )}
-        </div>
+        </>
       )}
       {pedidos && pedidos.length > 0 && (
         <table>

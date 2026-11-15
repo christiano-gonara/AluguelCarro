@@ -28,9 +28,7 @@ function etapaAtual(status: StatusPedido): number {
 }
 
 function LinhaDoTempo({ status }: { status: StatusPedido }) {
-  if (status === 'CANCELADO') {
-    return <p className="aviso">Este pedido foi cancelado.</p>
-  }
+  if (status === 'CANCELADO') return null
   const atual = etapaAtual(status)
   return (
     <ol className="etapas">
@@ -135,6 +133,45 @@ export default function PedidoDetalhe() {
       )}
       {ehAgente && pedido.status === 'APROVADO_FINANCEIRAMENTE' && (
         <Execucao pedidoId={pedido.id} ehBanco={ehBanco} aoConcluir={carregar} aoErro={setErro} />
+      )}
+      {pedido.status === 'REPROVADO' && (
+        <div className="estado-final">
+          <strong>{ehCliente ? 'A empresa ou o banco recusou este pedido.' : 'Você recusou este pedido.'}</strong>
+          {ehCliente ? (
+            <>
+              <p className="suave">
+                Isso acontece quando o valor do aluguel pesa demais na renda informada. Dá pra tentar um carro com
+                diária menor ou atualizar sua renda.
+              </p>
+              <div className="linha">
+                <Link className="btn" to="/">
+                  Escolher outro carro
+                </Link>
+                <Link className="btn secundario" to="/meus-dados">
+                  Atualizar minha renda
+                </Link>
+              </div>
+            </>
+          ) : (
+            <p className="suave">O cliente vê o motivo que você escreveu e pode tentar outro carro.</p>
+          )}
+        </div>
+      )}
+      {pedido.status === 'CANCELADO' && (
+        <div className="estado-final">
+          <strong>{ehCliente ? 'Você cancelou este pedido.' : 'O cliente cancelou este pedido.'}</strong>
+          <p className="suave">Ele saiu da fila de aprovação e não pode ser reaberto.</p>
+          {ehCliente && (
+            <div className="linha">
+              <Link className="btn" to={`/pedidos/novo?automovel=${pedido.automovel.id}`}>
+                Pedir este carro de novo
+              </Link>
+              <Link className="btn secundario" to="/pedidos">
+                Voltar pros pedidos
+              </Link>
+            </div>
+          )}
+        </div>
       )}
       {ehCliente && pedido.status === 'EM_ANALISE' && !pedido.parecer && (
         <p className="aviso">Ainda esperando a resposta da empresa ou do banco. Ela aparece aqui assim que chegar.</p>

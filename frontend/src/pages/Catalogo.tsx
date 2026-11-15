@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, paraErro } from '../api'
 import CarroCard from '../components/CarroCard'
+import Vazio from '../components/Vazio'
 import Erro from '../components/Erro'
 import type { Automovel } from '../types'
 
@@ -23,9 +24,15 @@ export default function Catalogo() {
       <Erro erro={erro} />
       {carros === null && !erro && <p>Carregando carros…</p>}
       {carros?.length === 0 && (
-        <div className="vazio">
-          <p>Ainda não tem carro disponível. Assim que uma empresa ou banco cadastrar, ele aparece aqui.</p>
-        </div>
+        <Vazio
+          icone="carro"
+          titulo="Ainda não tem carro disponível"
+          texto="Assim que uma empresa ou banco parceiro cadastrar um carro, ele aparece aqui."
+        >
+          <Link className="btn secundario" to="/pedidos">
+            Ver meus pedidos
+          </Link>
+        </Vazio>
       )}
       {carros && carros.length > 0 && (
         <div className="vitrine-grade">

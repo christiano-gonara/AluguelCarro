@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api, paraErro } from '../api'
+import Vazio from '../components/Vazio'
 import Erro from '../components/Erro'
 import type { Cliente } from '../types'
 import { moeda } from '../utils/format'
@@ -38,9 +39,7 @@ export default function Clientes() {
       <Erro erro={erro} />
       {clientes === null && !erro && <p>Carregando…</p>}
       {clientes?.length === 0 && (
-        <div className="vazio">
-          <p>Nenhum cliente cadastrado ainda.</p>
-        </div>
+        <Vazio icone="usuario" titulo="Nenhum cliente ainda" texto="Quando alguém criar uma conta pra alugar, aparece aqui." />
       )}
       {clientes && clientes.length > 0 && (
         <table>

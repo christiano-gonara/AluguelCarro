@@ -173,3 +173,29 @@
 .direita { text-align: right; }
 .nota { display: flex; gap: .6rem; margin-top: 1.5rem; font-size: .9rem; color: var(--suave); }
 .meus-dados { display: flex; flex-direction: column; gap: 1.5rem; max-width: 880px; }
+
+/* Erro: ícone + frase simples. Erro de campo: logo abaixo do campo. */
+.erro { display: flex; gap: .75rem; align-items: flex-start; }
+.erro strong { font-weight: 600; }
+.erro-campo { margin: -.25rem 0 0; font-size: .85rem; color: #f4c7c2; }
+
+/* Pedido que terminou sem contrato (recusado ou cancelado): diz o que houve e oferece o próximo passo. */
+.estado-final {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--raio-medio);
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(0, 0, 0, .25);
+}
+.estado-final strong { font-size: 1.1rem; }
+.estado-final p { margin: 0; }
+
+/* Tela vazia com ícone, título e ação. */
+.vazio { display: flex; flex-direction: column; align-items: center; gap: .75rem; padding: 3rem 2rem; border-radius: var(--raio); }
+.vazio h2 { margin: .5rem 0 0; font-size: 1.35rem; color: var(--texto); }
+.vazio p { max-width: 34ch; color: var(--suave); }
+.vazio-acoes { justify-content: center; margin-top: .5rem; }
+.icone-redondo.grande { width: 4rem; height: 4rem; }
