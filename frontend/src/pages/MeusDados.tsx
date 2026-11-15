@@ -14,6 +14,7 @@ export default function MeusDados() {
   const [cliente, setCliente] = useState<ClienteFormState | null>(null)
   const [erro, setErro] = useState<Error | null>(null)
   const [salvo, setSalvo] = useState(false)
+  const [confirmandoExclusao, setConfirmandoExclusao] = useState(false)
 
   useEffect(() => {
     api
@@ -45,12 +46,11 @@ export default function MeusDados() {
   }
 
   async function excluir() {
-    if (!window.confirm('Excluir seu cadastro e todos os seus pedidos? Esta ação não pode ser desfeita.')) return
     setErro(null)
     try {
       await api.excluirCadastro()
       await logout()
-      navigate('/login')
+      navigate('/sobre')
     } catch (err) {
       setErro(paraErro(err))
     }
@@ -59,9 +59,12 @@ export default function MeusDados() {
   if (!cliente) return erro ? <Erro erro={erro} /> : <p>Carregando…</p>
 
   return (
-    <div className="cartao">
-      <h1>Meus dados</h1>
-      <form onSubmit={salvar}>
+    <section className="meus-dados">
+      <header className="pagina-topo">
+        <h1>Meus dados</h1>
+        <p>É com esses dados que a empresa ou o banco aprova seus pedidos. Mantenha sempre atualizado.</p>
+      </header>
+      <form className="painel" onSubmit={salvar}>
         <ClienteForm
           valor={cliente}
           onChange={(c) => {
@@ -70,14 +73,35 @@ export default function MeusDados() {
           }}
         />
         <Erro erro={erro} />
-        {salvo && <p className="ok">Dados atualizados.</p>}
         <div className="linha">
-          <button className="btn">Salvar</button>
-          <button type="button" className="btn perigo" onClick={excluir}>
-            Excluir meu cadastro
-          </button>
+          <button className="btn">Salvar alterações</button>
+          {salvo && <p className="ok">Tudo salvo.</p>}
         </div>
       </form>
-    </div>
+
+      <section className="zona-cuidado">
+        <div>
+          <h2>Excluir minha conta</h2>
+          <p className="suave">Apaga seus dados e todos os seus pedidos. Não dá pra desfazer.</p>
+        </div>
+        {!confirmandoExclusao ? (
+          <button type="button" className="btn perigo" onClick={() => setConfirmandoExclusao(true)}>
+            Excluir conta
+          </button>
+        ) : (
+          <div className="confirmacao" role="alertdialog" aria-labelledby="confirmar-exclusao">
+            <h3 id="confirmar-exclusao">Tem certeza que quer excluir sua conta?</h3>
+            <div className="linha">
+              <button type="button" className="btn" onClick={() => void excluir()}>
+                Sim, excluir
+              </button>
+              <button type="button" className="btn secundario" onClick={() => setConfirmandoExclusao(false)}>
+                Não, manter conta
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+    </section>
   )
 }

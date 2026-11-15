@@ -137,10 +137,10 @@ Visual escuro com cartões de vidro, inspirado num layout de referência do Figm
 | `/` | Catálogo de carros | cliente |
 | `/pedidos/novo` | Novo pedido | cliente |
 | `/pedidos` | Meus pedidos / Pedidos pra analisar | cliente e agente |
-| `/pedidos/:id` | Detalhe do pedido, resposta e fechamento do contrato | cliente e agente |
-| `/meus-dados` | Dados pessoais e renda | cliente |
+| `/pedidos/:id` | Detalhe do pedido: resposta, fechamento do contrato e, pro cliente, mudar ou cancelar (com confirmação) | cliente e agente |
+| `/meus-dados` | Dados pessoais e renda, e excluir a conta (com confirmação) | cliente |
 | `/automoveis` | Seus carros, com busca na tabela FIPE | agente |
-| `/clientes` | Lista de clientes | agente |
+| `/clientes` | Lista de clientes, com parte do CPF escondida | agente |
 
 > [!NOTE]
 > Quem não está logado e tenta abrir uma tela protegida é levado para a página de apresentação (`/sobre`).

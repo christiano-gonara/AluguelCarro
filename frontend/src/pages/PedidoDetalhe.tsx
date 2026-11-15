@@ -57,7 +57,7 @@ const PROPRIEDADES: Record<TipoProprietario, string> = {
 
 export default function PedidoDetalhe() {
   const { id } = useParams()
-  const { ehAgente, ehBanco } = useAuth()
+  const { ehAgente, ehBanco, ehCliente } = useAuth()
   const [pedido, setPedido] = useState<Pedido | null>(null)
   const [erro, setErro] = useState<Error | null>(null)
 
@@ -135,6 +135,17 @@ export default function PedidoDetalhe() {
       )}
       {ehAgente && pedido.status === 'APROVADO_FINANCEIRAMENTE' && (
         <Execucao pedidoId={pedido.id} ehBanco={ehBanco} aoConcluir={carregar} aoErro={setErro} />
+      )}
+      {ehCliente && pedido.status === 'EM_ANALISE' && !pedido.parecer && (
+        <p className="aviso">Ainda esperando a resposta da empresa ou do banco. Ela aparece aqui assim que chegar.</p>
+      )}
+      {ehCliente && pedido.status !== 'CANCELADO' && pedido.status !== 'CONTRATO_EXECUTADO' && (
+        <MudouDeIdeia
+          pedidoId={pedido.id}
+          podeMudar={pedido.status === 'EM_ANALISE'}
+          aoConcluir={carregar}
+          aoErro={setErro}
+        />
       )}
 
       <p>
@@ -281,5 +292,63 @@ function Execucao({ pedidoId, ehBanco, aoConcluir, aoErro }: AcaoProps & { ehBan
         <button className="btn">Executar contrato</button>
       </fieldset>
     </form>
+  )
+}
+
+/** Cliente: mudar (só em análise) ou cancelar (até o contrato ser fechado), com confirmação. */
+function MudouDeIdeia({ pedidoId, podeMudar, aoConcluir, aoErro }: AcaoProps & { podeMudar: boolean }) {
+  const [confirmando, setConfirmando] = useState(false)
+  const [cancelando, setCancelando] = useState(false)
+
+  async function cancelar() {
+    aoErro(null)
+    setCancelando(true)
+    try {
+      await api.cancelarPedido(pedidoId)
+      setConfirmando(false)
+      aoConcluir()
+    } catch (err) {
+      aoErro(paraErro(err))
+    } finally {
+      setCancelando(false)
+    }
+  }
+
+  return (
+    <fieldset>
+      <legend>Mudou de ideia?</legend>
+      <p className="suave">
+        Mudar o carro ou as datas dá enquanto o pedido está em análise. Cancelar dá até o contrato ser fechado.
+      </p>
+      <div className="linha">
+        {podeMudar && (
+          <Link className="btn secundario" to={`/pedidos/${pedidoId}/editar`}>
+            Mudar carro ou datas
+          </Link>
+        )}
+        {!confirmando && (
+          <button type="button" className="link" onClick={() => setConfirmando(true)}>
+            Cancelar pedido
+          </button>
+        )}
+      </div>
+      {confirmando && (
+        <div className="confirmacao" role="alertdialog" aria-labelledby="confirmar-cancelamento">
+          <h3 id="confirmar-cancelamento">Cancelar o pedido #{pedidoId}?</h3>
+          <p className="suave">
+            O pedido sai da fila da empresa ou do banco e não dá pra desfazer. Se quiser o carro de novo, é só fazer
+            outro pedido.
+          </p>
+          <div className="linha">
+            <button type="button" className="btn" disabled={cancelando} onClick={() => void cancelar()}>
+              {cancelando ? 'Cancelando…' : 'Sim, cancelar'}
+            </button>
+            <button type="button" className="btn secundario" onClick={() => setConfirmando(false)}>
+              Não, manter pedido
+            </button>
+          </div>
+        </div>
+      )}
+    </fieldset>
   )
 }
