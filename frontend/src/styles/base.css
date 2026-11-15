@@ -1,59 +1,64 @@
 /*
- * Identidade: a estrada e a placa.
- * Asfalto para as superfícies escuras, azul da placa Mercosul para ações,
- * amarelo de faixa de rua para foco e marcações. Barlow nasceu de placas de trânsito.
+ * Identidade: fundo verde-escuro, cartões de vidro e uma única cor de destaque (verde-oliva).
+ * A cor fica nas fotos dos carros; a interface é neutra para não disputar atenção.
  */
 :root {
-  --asfalto: #1f2933;
-  --asfalto-claro: #2b3742;
-  --placa: #0b3c8c;
-  --placa-escura: #082d6b;
-  --faixa: #f5b700;
-  --fundo: #edf0f3;
-  --superficie: #ffffff;
-  --vitrine: #e2e7ec;
-  --texto: #1a2027;
-  --suave: #5b6670;
-  --borda: #d3d9df;
-  --perigo: #b42318;
-  --ok: #1e7b4a;
+  --fundo: #1e241b;
+  --fundo-claro: #252b21;
+  --vidro: linear-gradient(135deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .03));
+  --vidro-borda: rgba(255, 255, 255, .18);
+  --vidro-sombra: 0 30px 60px rgba(0, 0, 0, .3);
+  --campo: rgba(0, 0, 0, .28);
+  --campo-borda: rgba(255, 255, 255, .22);
+  --linha: rgba(255, 255, 255, .12);
 
-  --fonte: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --fonte-titulo: 'Barlow Condensed', 'Barlow', system-ui, sans-serif;
+  --texto: #ffffff;
+  --texto-titulo: #d4d9d0;
+  --texto-claro: #e4e9e0;
+  --suave: #c9cfc4;
+  --apagado: #aeb6a9;
+
+  --oliva: #8fa36a;
+  --oliva-claro: #b5c98a;
+  --oliva-texto: #c7d6a6;
+  --placa: #0b3c8c;
+
+  --raio: 40px;
+  --raio-medio: 24px;
+  --raio-botao: 8px;
+
+  --fonte: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   font-family: var(--fonte);
   font-size: 16px;
   line-height: 1.5;
   color: var(--texto);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--fundo); }
 
-h1, h2, h3 {
-  font-family: var(--fonte-titulo);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: .005em;
-}
-h1 { font-size: 2.25rem; margin: 0 0 .25rem; }
+h1, h2, h3 { font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+h1 { font-size: clamp(2.2rem, 4vw, 3rem); margin: 0 0 .5rem; color: var(--texto-titulo); }
 h2 { font-size: 1.5rem; margin: 0 0 1rem; }
-h3 { font-size: 1.35rem; margin: 0; }
+h3 { font-size: 1.25rem; margin: 0; }
 p { margin: 0 0 .75rem; }
 
-a { color: var(--placa); text-underline-offset: 3px; }
-a:hover { color: var(--placa-escura); }
+a { color: var(--texto); text-underline-offset: 3px; }
+a:hover { color: var(--texto-claro); }
 
 :focus-visible {
-  outline: 3px solid var(--faixa);
+  outline: 3px solid var(--oliva-claro);
   outline-offset: 2px;
 }
 
 .suave { color: var(--suave); }
 .pequeno { font-size: .875rem; }
 .centro { text-align: center; margin-top: 3rem; }
-.ok { color: var(--ok); margin: 0; }
+.centro-texto { text-align: center; }
+.ok { color: var(--oliva-claro); margin: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  * { scroll-behavior: auto !important; transition: none !important; }
+  * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }

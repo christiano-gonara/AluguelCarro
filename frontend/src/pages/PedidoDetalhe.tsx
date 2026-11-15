@@ -11,7 +11,7 @@ import FotoCarro from '../components/FotoCarro'
 import Placa from '../components/Placa'
 
 // O pedido percorre três etapas em sequência; reprovação e cancelamento interrompem o caminho.
-const ETAPAS = ['Pedido enviado', 'Análise financeira', 'Contrato executado']
+const ETAPAS = ['Pedido enviado', 'Aprovação', 'Contrato fechado']
 
 function etapaAtual(status: StatusPedido): number {
   switch (status) {
@@ -29,7 +29,7 @@ function etapaAtual(status: StatusPedido): number {
 
 function LinhaDoTempo({ status }: { status: StatusPedido }) {
   if (status === 'CANCELADO') {
-    return <p className="aviso">Este pedido foi cancelado pelo cliente.</p>
+    return <p className="aviso">Este pedido foi cancelado.</p>
   }
   const atual = etapaAtual(status)
   return (
@@ -41,7 +41,7 @@ function LinhaDoTempo({ status }: { status: StatusPedido }) {
         return (
           <li key={nome} className={`etapa ${estado}`}>
             <span className="etapa-numero">{i + 1}</span>
-            <span>{status === 'REPROVADO' && i === 1 ? 'Reprovado na análise' : nome}</span>
+            <span>{status === 'REPROVADO' && i === 1 ? 'Pedido recusado' : nome}</span>
           </li>
         )
       })}
@@ -93,33 +93,33 @@ export default function PedidoDetalhe() {
         <dt>Cliente</dt>
         <dd>
           {pedido.clienteNome}
-          {ehAgente && <>, rendimento total de {moeda(pedido.clienteRendimentoTotal)}</>}
+          {ehAgente && <>, renda de {moeda(pedido.clienteRendimentoTotal)}</>}
         </dd>
         <dt>Ano e matrícula</dt>
         <dd>
           {pedido.automovel.ano}, matrícula {pedido.automovel.matricula}
         </dd>
-        <dt>Período</dt>
+        <dt>Quando</dt>
         <dd>
           {dataBR(pedido.dataInicio)} a {dataBR(pedido.dataFim)}
         </dd>
-        <dt>Valor estimado</dt>
+        <dt>Total</dt>
         <dd>{moeda(pedido.valorTotalEstimado)}</dd>
         {pedido.parecer && (
           <>
-            <dt>Parecer financeiro</dt>
+            <dt>Resposta da empresa ou do banco</dt>
             <dd>{pedido.parecer}</dd>
           </>
         )}
         {pedido.propriedadeRegistrada && (
           <>
-            <dt>Automóvel registrado em nome de</dt>
+            <dt>O carro fica no nome de</dt>
             <dd>{PROPRIEDADES[pedido.propriedadeRegistrada]}</dd>
           </>
         )}
         {pedido.credito && (
           <>
-            <dt>Contrato de crédito</dt>
+            <dt>Parcelamento</dt>
             <dd>
               {pedido.credito.banco}: {moeda(pedido.credito.valor)} em {pedido.credito.parcelas}x, juros de{' '}
               {pedido.credito.taxaJurosMensal}% a.m.
@@ -138,7 +138,7 @@ export default function PedidoDetalhe() {
       )}
 
       <p>
-        <Link to="/pedidos">Voltar aos pedidos</Link>
+        <Link to="/pedidos">Voltar pros pedidos</Link>
       </p>
     </section>
   )
@@ -165,9 +165,9 @@ function Avaliacao({ pedidoId, aoConcluir, aoErro }: AcaoProps) {
 
   return (
     <fieldset>
-      <legend>Análise financeira</legend>
+      <legend>Sua resposta</legend>
       <label>
-        Parecer
+        Motivo (a cliente vê o que você escrever)
         <textarea
           value={parecer}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setParecer(e.target.value)}
@@ -180,7 +180,7 @@ function Avaliacao({ pedidoId, aoConcluir, aoErro }: AcaoProps) {
           Aprovar
         </button>
         <button className="btn perigo" disabled={!parecer.trim()} onClick={() => avaliar(false)}>
-          Reprovar
+          Recusar
         </button>
       </div>
     </fieldset>
@@ -224,9 +224,9 @@ function Execucao({ pedidoId, ehBanco, aoConcluir, aoErro }: AcaoProps & { ehBan
   return (
     <form onSubmit={executar}>
       <fieldset>
-        <legend>Execução do contrato</legend>
+        <legend>Fechar contrato</legend>
         <label>
-          Automóvel registrado como propriedade de
+          O carro fica no nome de
           <select
             value={propriedade}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setPropriedade(e.target.value as TipoProprietario)}
@@ -245,7 +245,7 @@ function Execucao({ pedidoId, ehBanco, aoConcluir, aoErro }: AcaoProps & { ehBan
               checked={comCredito}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setComCredito(e.target.checked)}
             />
-            Associar contrato de crédito deste banco
+            Oferecer parcelamento do banco
           </label>
         )}
         {comCredito && (
@@ -255,7 +255,7 @@ function Execucao({ pedidoId, ehBanco, aoConcluir, aoErro }: AcaoProps & { ehBan
               <input type="number" min="0.01" step="0.01" required value={credito.valor} onChange={campo('valor')} />
             </label>
             <label>
-              Juros (% a.m.)
+              Juros por mês (%)
               <input
                 type="number"
                 min="0"

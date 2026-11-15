@@ -1,25 +1,49 @@
+/* Tabelas como lista de linhas de vidro: colunas alinhadas, cabeçalho único no topo. */
 table {
   width: 100%;
-  border-collapse: collapse;
-  background: var(--superficie);
-  border: 1px solid var(--borda);
-  border-radius: 10px;
-  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0 .75rem;
 }
-th, td { text-align: left; padding: .75rem 1rem; border-bottom: 1px solid var(--borda); font-size: .95rem; }
-th { background: #f6f8fa; font-weight: 600; color: var(--suave); font-size: .875rem; }
-tr:last-child td { border-bottom: 0; }
-.acoes { display: flex; gap: 1rem; white-space: nowrap; }
+th {
+  text-align: left;
+  padding: 0 1rem;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--apagado);
+}
+td {
+  text-align: left;
+  padding: 1.1rem 1rem;
+  font-size: .95rem;
+  background: rgba(255, 255, 255, .05);
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  border-bottom: 1px solid rgba(255, 255, 255, .14);
+}
+td:first-child { border-left: 1px solid rgba(255, 255, 255, .14); border-radius: 22px 0 0 22px; padding-left: 1.4rem; }
+td:last-child { border-right: 1px solid rgba(255, 255, 255, .14); border-radius: 0 22px 22px 0; padding-right: 1.4rem; }
+.acoes { display: flex; gap: 1rem; align-items: center; white-space: nowrap; }
+.acoes a { font-weight: 600; text-decoration: none; }
 
-@media (max-width: 720px) {
+@media (max-width: 860px) {
   table { display: block; overflow-x: auto; }
 }
 
-.detalhes { display: grid; grid-template-columns: max-content 1fr; gap: .6rem 1.5rem; margin: 1.5rem 0; }
-.detalhes dt { color: var(--suave); }
-.detalhes dd { margin: 0; }
+.detalhes {
+  display: grid;
+  grid-template-columns: minmax(170px, max-content) 1fr;
+  margin: 1.5rem 0;
+  border-radius: var(--raio-medio);
+  background: rgba(0, 0, 0, .2);
+  overflow: hidden;
+}
+.detalhes dt, .detalhes dd { padding: .85rem 1.25rem; border-bottom: 1px solid var(--linha); }
+.detalhes dt { color: var(--apagado); font-size: .9rem; }
+.detalhes dd { margin: 0; font-weight: 600; }
+.detalhes dt:last-of-type, .detalhes dd:last-of-type { border-bottom: 0; }
 
 @media (max-width: 520px) {
-  .detalhes { grid-template-columns: 1fr; gap: .15rem; }
-  .detalhes dd { margin-bottom: .6rem; }
+  .detalhes { grid-template-columns: 1fr; }
+  .detalhes dt { border-bottom: 0; padding-bottom: 0; }
 }

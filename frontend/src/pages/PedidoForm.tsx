@@ -66,7 +66,7 @@ export default function PedidoForm() {
   return (
     <section>
       <header className="pagina-topo">
-        <h1>{editando ? `Modificar pedido #${id}` : 'Novo pedido de aluguel'}</h1>
+        <h1>{editando ? `Mudar pedido #${id}` : 'Novo pedido'}</h1>
       </header>
       <div className="pedido-layout">
         <form className="painel" onSubmit={enviar}>
@@ -87,7 +87,7 @@ export default function PedidoForm() {
           </label>
           <div className="grade">
             <label>
-              Retirada
+              Quando você pega
               <input
                 type="date"
                 value={form.dataInicio}
@@ -97,7 +97,7 @@ export default function PedidoForm() {
               />
             </label>
             <label>
-              Devolução
+              Quando você devolve
               <input
                 type="date"
                 value={form.dataFim}
@@ -110,14 +110,14 @@ export default function PedidoForm() {
           {carro && dias > 0 && (
             <div className="total">
               <span>
-                {dias} {dias > 1 ? 'diárias' : 'diária'} de {moeda(carro.valorDiaria)}
+                {dias} {dias > 1 ? 'dias' : 'dia'} × {moeda(carro.valorDiaria)}
               </span>
               <strong>{moeda(carro.valorDiaria * dias)}</strong>
             </div>
           )}
           <Erro erro={erro} />
           <button className="btn" disabled={enviando}>
-            {enviando ? 'Enviando…' : editando ? 'Salvar alterações' : 'Enviar pedido para análise'}
+            {enviando ? 'Enviando…' : editando ? 'Salvar alterações' : 'Enviar pedido'}
           </button>
         </form>
         {carro && <CarroCard carro={carro} />}

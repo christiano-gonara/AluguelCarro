@@ -74,18 +74,18 @@ export default function ClienteForm({ valor, onChange }: Props) {
 
       <fieldset>
         <legend>
-          Entidades empregadoras ({valor.empregadores.length}/{MAX_EMPREGADORES})
+          Quanto você ganha ({valor.empregadores.length} de {MAX_EMPREGADORES})
         </legend>
         {valor.empregadores.map((emp, i) => (
           <div className="linha" key={i}>
             <input
-              placeholder="Empregador"
+              placeholder="Onde você trabalha"
               value={emp.entidade}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setEmpregador(i, 'entidade', e.target.value)}
               required
             />
             <input
-              placeholder="Rendimento mensal (R$)"
+              placeholder="Quanto ganha por mês (R$)"
               type="number"
               min="0"
               step="0.01"
@@ -100,7 +100,7 @@ export default function ClienteForm({ valor, onChange }: Props) {
         ))}
         {valor.empregadores.length < MAX_EMPREGADORES && (
           <button type="button" className="btn secundario" onClick={adicionar}>
-            + Adicionar empregador
+            + Adicionar outro trabalho
           </button>
         )}
       </fieldset>

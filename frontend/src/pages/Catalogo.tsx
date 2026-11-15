@@ -18,13 +18,13 @@ export default function Catalogo() {
     <section>
       <header className="pagina-topo">
         <h1>Escolha seu carro</h1>
-        <p className="suave">O pedido passa por uma análise financeira antes do contrato.</p>
+        <p className="suave">Escolha o carro, faça o pedido e acompanhe tudo por aqui até o contrato ficar pronto.</p>
       </header>
       <Erro erro={erro} />
       {carros === null && !erro && <p>Carregando carros…</p>}
       {carros?.length === 0 && (
         <div className="vazio">
-          <p>Nenhum carro cadastrado ainda. Um agente precisa cadastrar os carros na aba Automóveis.</p>
+          <p>Ainda não tem carro disponível. Assim que uma empresa ou banco cadastrar, ele aparece aqui.</p>
         </div>
       )}
       {carros && carros.length > 0 && (
@@ -32,7 +32,7 @@ export default function Catalogo() {
           {carros.map((c) => (
             <CarroCard key={c.id} carro={c}>
               <Link className="btn" to={`/pedidos/novo?automovel=${c.id}`}>
-                Alugar este carro
+                Alugar
               </Link>
             </CarroCard>
           ))}

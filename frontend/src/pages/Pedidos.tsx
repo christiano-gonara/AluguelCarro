@@ -32,11 +32,11 @@ export default function Pedidos() {
   return (
     <section>
       <header className="pagina-topo">
-        <h1>{ehCliente ? 'Meus pedidos' : 'Pedidos de aluguel'}</h1>
+        <h1>{ehCliente ? 'Meus pedidos' : 'Pedidos pra analisar'}</h1>
         <p className="suave">
           {ehCliente
-            ? 'Acompanhe aqui a análise e o contrato de cada pedido.'
-            : 'Pedidos em análise aguardam o seu parecer financeiro.'}
+            ? 'Veja em que pé está cada pedido.'
+            : 'Aqui chegam os pedidos dos clientes. Confira a renda de cada um, responda e, se aprovar, feche o contrato.'}
         </p>
       </header>
       <Erro erro={erro} />
@@ -45,10 +45,10 @@ export default function Pedidos() {
         <div className="vazio">
           {ehCliente ? (
             <p>
-              Você ainda não fez nenhum pedido. <Link to="/">Escolha um carro no catálogo</Link> para começar.
+              Você ainda não fez nenhum pedido. <Link to="/">Escolha um carro</Link> pra começar.
             </p>
           ) : (
-            <p>Nenhum pedido para analisar no momento.</p>
+            <p>Nenhum pedido esperando sua resposta agora.</p>
           )}
         </div>
       )}
@@ -58,10 +58,10 @@ export default function Pedidos() {
             <tr>
               <th>#</th>
               {!ehCliente && <th>Cliente</th>}
-              <th>Automóvel</th>
-              <th>Período</th>
-              <th>Valor estimado</th>
-              <th>Status</th>
+              <th>Carro</th>
+              <th>Quando</th>
+              <th>Total</th>
+              <th>Situação</th>
               <th />
             </tr>
           </thead>

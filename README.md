@@ -1,6 +1,9 @@
-# 🚗 Aluguel de Carros 👨‍💻
+# 🚗 Aluga. · Aluguel de Carros 👨‍💻
 
 Sistema web para gestão de aluguéis de automóveis: clientes fazem, modificam, consultam e cancelam pedidos pela Internet, e agentes (empresas e bancos) avaliam financeiramente os pedidos e executam os contratos.
+
+> [!TIP]
+> **Em uma frase:** o cliente escolhe o carro e manda o pedido; uma empresa ou um banco parceiro confere a renda, aprova e fecha o contrato. Tudo pelo navegador.
 
 Projeto do **Laboratório 02** da disciplina **DIAW** (Desenvolvimento e Integração de Aplicações Web), Engenharia de Software, PUC Minas. Professor: João Paulo Carneiro Aramuni.
 
@@ -20,6 +23,8 @@ Protótipo funcional em desenvolvimento acadêmico.
 
 - [Links Úteis](#-links-úteis)
 - [Sobre o Projeto](#-sobre-o-projeto)
+- [Fluxos do Sistema](#-fluxos-do-sistema)
+- [Interface](#-interface)
 - [Funcionalidades Principais](#-funcionalidades-principais)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Arquitetura](#-arquitetura)
@@ -46,8 +51,103 @@ Sobre os contratantes, o sistema guarda RG, CPF, nome, endereço, profissão e a
 
 O sistema só pode ser usado após **cadastro prévio e login** (usuário e senha).
 
+## 🔀 Fluxos do Sistema
+
+São **dois caminhos**: o de quem aluga (cliente) e o de quem aprova (empresa ou banco). O banco segue o mesmo caminho da empresa, com um passo a mais: pode oferecer parcelamento (contrato de crédito).
+
+### 🙋 Jornada do cliente
+
+```mermaid
+flowchart LR
+    A([Página de apresentação<br/>/sobre]) --> B[Cria a conta<br/>/registro]
+    A --> C[Entra<br/>/login]
+    B --> D
+    C --> D[Escolhe o carro<br/>catálogo]
+    D --> E[Escolhe as datas<br/>e envia o pedido]
+    E --> F{{Em análise}}
+    F -- pode mudar ou cancelar --> E
+    F -- empresa ou banco aprova --> G{{Aprovado}}
+    F -- empresa ou banco recusa --> H{{Recusado}}
+    G --> I([Contrato fechado])
+```
+
+### 🏢 Fluxo do parceiro (empresa ou banco)
+
+```mermaid
+flowchart LR
+    A[Entra<br/>/login] --> B[Pedidos pra analisar<br/>/pedidos]
+    A --> C[Seus carros<br/>/automoveis]
+    C --> C1[Busca marca, modelo e ano<br/>na tabela FIPE]
+    C1 --> C2[Diária sugerida:<br/>0,3% do valor FIPE]
+    B --> D[Abre o pedido<br/>e confere a renda]
+    D --> E{Aprova?}
+    E -- não --> F([Pedido recusado])
+    E -- sim --> G[Fecha o contrato:<br/>define em nome de quem fica o carro]
+    G --> H{É banco?}
+    H -- sim --> I[Pode associar parcelamento:<br/>valor, juros e parcelas]
+    H -- não --> J([Contrato fechado])
+    I --> J
+```
+
+### 🚦 Situações do pedido
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> EM_ANALISE: cliente envia
+    EM_ANALISE --> APROVADO_FINANCEIRAMENTE: parecer positivo
+    EM_ANALISE --> REPROVADO: parecer negativo
+    APROVADO_FINANCEIRAMENTE --> CONTRATO_EXECUTADO: agente fecha o contrato
+    EM_ANALISE --> CANCELADO: cliente cancela
+    APROVADO_FINANCEIRAMENTE --> CANCELADO: cliente cancela
+    REPROVADO --> CANCELADO: cliente cancela
+    CONTRATO_EXECUTADO --> [*]
+    CANCELADO --> [*]
+```
+
+| Status no back-end | Como aparece na tela | Quem pode mexer |
+|---|---|---|
+| `EM_ANALISE` | Em análise | cliente muda ou cancela; agente aprova ou recusa |
+| `APROVADO_FINANCEIRAMENTE` | Aprovado | agente fecha o contrato; cliente pode cancelar |
+| `REPROVADO` | Recusado | cliente pode cancelar |
+| `CONTRATO_EXECUTADO` | Contrato fechado | ninguém (final) |
+| `CANCELADO` | Cancelado | ninguém (final) |
+
+## 🎨 Interface
+
+Visual escuro com cartões de vidro, inspirado num layout de referência do Figma Community. A ideia é que **a cor fique nas fotos dos carros**: a interface é neutra e usa uma única cor de destaque (verde-oliva) só no que pede atenção, como o status *Em análise*.
+
+| Elemento | Escolha |
+|---|---|
+| Fundo | verde bem escuro `#1E241B` |
+| Destaque | verde-oliva `#8FA36A` (único) |
+| Superfícies | vidro: degradê branco translúcido, borda fina e sombra |
+| Tipografia | [Inter](https://fonts.google.com/specimen/Inter) |
+| Ícones | traço branco com miolo verde-oliva translúcido (estilo duocolor), em `components/Icone.tsx` |
+| Fotos | recortes sem fundo em `frontend/public/carros`, com cores neutralizadas |
+| Textos | linguagem simples, sem jargão ("Contrato fechado" em vez de "Contrato executado") |
+
+### Telas
+
+| Rota | Tela | Quem vê |
+|---|---|---|
+| `/sobre` | Página de apresentação (o que é, para quem, como funciona, preços, dúvidas) | todos |
+| `/login` | Entrar, com contas de exemplo | todos |
+| `/registro` | Criar conta de cliente | todos |
+| `/` | Catálogo de carros | cliente |
+| `/pedidos/novo` | Novo pedido | cliente |
+| `/pedidos` | Meus pedidos / Pedidos pra analisar | cliente e agente |
+| `/pedidos/:id` | Detalhe do pedido, resposta e fechamento do contrato | cliente e agente |
+| `/meus-dados` | Dados pessoais e renda | cliente |
+| `/automoveis` | Seus carros, com busca na tabela FIPE | agente |
+| `/clientes` | Lista de clientes | agente |
+
+> [!NOTE]
+> Quem não está logado e tenta abrir uma tela protegida é levado para a página de apresentação (`/sobre`).
+
 ## ✨ Funcionalidades Principais
 
+- **Página de apresentação**: explica o sistema para quem ainda não tem conta, com comparação de diárias e perguntas frequentes.
 - **Autenticação**: cadastro de clientes, login obrigatório com usuário e senha, sessão HTTP e logout.
 - **CRUD de cliente**: cadastro, consulta, atualização e exclusão dos próprios dados, incluindo até 3 empregadores com rendimento.
 - **Pedidos de aluguel (cliente)**: introduzir, modificar (enquanto em análise), consultar o status e cancelar.
@@ -62,7 +162,7 @@ O sistema só pode ser usado após **cadastro prévio e login** (usuário e senh
 ### 💻 Front-end
 - React 19 + Vite 8 (TypeScript)
 - React Router 7
-- CSS puro, organizado em `src/styles`; tipografia Barlow (Google Fonts)
+- CSS puro, organizado em `src/styles` (separado dos componentes); tipografia Inter (Google Fonts)
 - API pública da Tabela FIPE (marcas, modelos, anos e valores)
 
 ### 🖥️ Back-end
@@ -225,6 +325,7 @@ AluguelCarro/
 │       ├── main/resources/application.properties
 │       └── test/                 # Testes
 ├── frontend/                     # React + Vite + TypeScript
+│   ├── public/carros/            # Fotos recortadas dos carros (sem fundo)
 │   ├── tsconfig.json
 │   ├── vite.config.ts
 │   └── src/
@@ -283,6 +384,21 @@ Os testes atuais cobrem regras do modelo (valor estimado do pedido, limite de 3 
 | Nome | GitHub |
 |---|---|
 | Christiano Gonçalves Araujo | [@christiano-gonara](https://github.com/christiano-gonara) |
+
+## 📸 Créditos das fotos
+
+As fotos dos carros vêm do [Wikimedia Commons](https://commons.wikimedia.org), com fundo removido, cores neutralizadas e algumas espelhadas:
+
+| Carro | Autor | Licença |
+|---|---|---|
+| Toyota Corolla | Dinkun Chen | CC BY-SA 4.0 |
+| Fiat Argo | JasonVogel | CC BY-SA 4.0 |
+| Chevrolet Onix | Just a Man | CC BY 4.0 |
+| Hyundai HB20 | Just a Man | CC BY 4.0 |
+| Volkswagen T-Cross | M 93 | CC BY-SA 3.0 DE |
+| Jeep Compass | Kevauto | CC BY-SA 4.0 |
+
+Carros fora dessa lista usam a foto do artigo da Wikipédia, buscada na hora pelo navegador.
 
 ## 🙏 Agradecimentos
 

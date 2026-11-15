@@ -1,21 +1,67 @@
-.erro { background: #fef2f2; color: var(--perigo); border: 1px solid #fecaca; border-radius: 6px; padding: .6rem .8rem; }
+.erro { background: rgba(242, 161, 155, .08); color: #f4c7c2; border: 1px solid rgba(242, 161, 155, .4); border-radius: 12px; padding: .7rem .9rem; }
 .erro ul { margin: .25rem 0 0; padding-left: 1.2rem; }
-.aviso { background: #fff7e0; border: 1px solid #f1d27a; border-radius: 6px; padding: .6rem .8rem; }
+.aviso { background: rgba(255, 255, 255, .06); border: 1px solid var(--vidro-borda); border-radius: 12px; padding: .7rem .9rem; color: var(--texto-claro); }
 
-.badge { display: inline-block; padding: .2rem .7rem; border-radius: 999px; font-size: .85rem; font-weight: 600; background: #e5e7eb; white-space: nowrap; }
-.badge.EM_ANALISE { background: #fff1c2; color: #7a5300; }
-.badge.APROVADO_FINANCEIRAMENTE { background: #dbe6fb; color: var(--placa-escura); }
-.badge.CONTRATO_EXECUTADO { background: #d8f0e2; color: #155c37; }
-.badge.REPROVADO, .badge.CANCELADO { background: #fde3e1; color: #8f1c13; }
+.icone { flex: none; }
+.icone-redondo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .22);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .35);
+  color: var(--texto);
+}
+.icone-redondo.pequeno { width: 2.1rem; height: 2.1rem; box-shadow: none; }
 
-/* Placa Mercosul: o elemento de identidade do sistema. */
+/* Selos de situação: neutros; o que pede ação (em análise) ganha o verde-oliva e um brilho. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .45rem .95rem;
+  border-radius: 999px;
+  font-size: .875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .2);
+  color: var(--texto-claro);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
+}
+.badge::before { content: ''; width: .55rem; height: .55rem; border-radius: 999px; background: #8e968a; }
+.badge.EM_ANALISE { background: rgba(143, 163, 106, .2); border-color: rgba(143, 163, 106, .6); color: #fff; }
+.badge.EM_ANALISE::before { background: var(--oliva-claro); box-shadow: 0 0 8px rgba(181, 201, 138, .8); }
+.badge.APROVADO_FINANCEIRAMENTE { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .35); color: #fff; }
+.badge.APROVADO_FINANCEIRAMENTE::before { background: #fff; box-shadow: 0 0 8px rgba(255, 255, 255, .5); }
+.badge.CONTRATO_EXECUTADO::before { background: var(--texto-claro); }
+.badge.REPROVADO, .badge.CANCELADO { color: #d5dacf; }
+
+.selo {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem 1rem .5rem .75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .06);
+  font-size: .85rem;
+  font-weight: 500;
+}
+.sobretitulo { font-size: .78rem; font-weight: 600; letter-spacing: .1em; color: var(--oliva-texto); }
+
+/* Placa Mercosul, em tamanho discreto. */
 .placa {
   display: inline-flex;
   flex-direction: column;
   align-items: stretch;
-  min-width: 6.5rem;
+  min-width: 5.5rem;
   background: #fff;
-  border: 2px solid var(--texto);
+  border: 1.5px solid #e4e9e0;
   border-radius: 5px;
   overflow: hidden;
   line-height: 1;
@@ -23,60 +69,55 @@
 .placa-faixa {
   background: var(--placa);
   color: #fff;
-  font-size: .5rem;
+  font-size: .45rem;
   font-weight: 600;
   letter-spacing: .3em;
   text-align: center;
   padding: 2px 0 2px .3em;
 }
 .placa-codigo {
-  font-family: var(--fonte-titulo);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: .95rem;
   letter-spacing: .08em;
   text-align: center;
   padding: 3px .5rem 4px;
-  color: var(--texto);
+  color: #1a2027;
 }
-.placa-grande { min-width: 15rem; border-width: 3px; border-radius: 8px; }
-.placa-grande .placa-faixa { font-size: .8rem; padding: 4px 0 4px .3em; }
-.placa-grande .placa-codigo { font-size: 3rem; padding: 6px 1rem 8px; }
+.placa-grande { min-width: 13rem; border-width: 2px; border-radius: 8px; }
+.placa-grande .placa-faixa { font-size: .7rem; padding: 3px 0 3px .3em; }
+.placa-grande .placa-codigo { font-size: 2.4rem; padding: 5px 1rem 7px; }
 
-/* Linha do tempo do pedido: as etapas são de fato sequenciais, por isso numeradas. */
-.etapas { list-style: none; display: flex; gap: 0; padding: 0; margin: 0 0 1.5rem; }
-.etapa {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  color: var(--suave);
-  font-weight: 500;
-}
-/* Conector tracejado entre uma etapa e a seguinte. */
+/* Linha do tempo do pedido: etapas em sequência, ligadas por um traço. */
+.etapas { list-style: none; display: flex; gap: 0; padding: 1.1rem 1.5rem; margin: 0 0 1.5rem; border-radius: var(--raio-medio); background: rgba(0, 0, 0, .2); }
+.etapa { flex: 1; display: flex; align-items: center; gap: .55rem; color: var(--apagado); font-weight: 500; font-size: .95rem; }
 .etapa + .etapa::before {
   content: '';
-  flex: 0 0 2rem;
-  border-top: 2px dashed var(--borda);
+  flex: 1 1 2rem;
+  max-width: 6rem;
+  border-top: 2px solid rgba(255, 255, 255, .2);
   margin-right: .25rem;
 }
-.etapa.feita + .etapa::before { border-top-color: var(--ok); }
+.etapa.feita + .etapa::before { border-top-color: var(--oliva); }
 .etapa-numero {
   display: inline-grid;
   place-items: center;
   width: 1.9rem;
   height: 1.9rem;
   border-radius: 50%;
-  border: 2px solid var(--borda);
-  background: #fff;
+  border: 2px solid rgba(255, 255, 255, .35);
+  font-size: .85rem;
   font-weight: 700;
   flex: none;
 }
-.etapa.feita { color: var(--ok); }
-.etapa.feita .etapa-numero { background: var(--ok); border-color: var(--ok); color: #fff; }
+.etapa.feita { color: var(--texto); }
+.etapa.feita .etapa-numero { background: var(--oliva); border-color: var(--oliva); color: #1a2027; }
 .etapa.atual { color: var(--texto); font-weight: 600; }
-.etapa.atual .etapa-numero { border-color: var(--placa); color: var(--placa); }
-.etapa.falhou { color: var(--perigo); }
-.etapa.falhou .etapa-numero { background: var(--perigo); border-color: var(--perigo); color: #fff; }
+.etapa.atual .etapa-numero { border-color: var(--oliva-claro); color: var(--oliva-claro); box-shadow: 0 0 10px rgba(181, 201, 138, .5); }
+.etapa.falhou { color: var(--texto-claro); }
+.etapa.falhou .etapa-numero { border-color: #8e968a; background: rgba(255, 255, 255, .08); }
+
+.etapas.compactas { flex-direction: column; gap: .6rem; padding: 0; background: none; }
+.etapas.compactas .etapa + .etapa::before { display: none; }
 
 @media (max-width: 640px) {
   .etapas { flex-direction: column; gap: .6rem; }

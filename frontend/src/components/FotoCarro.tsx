@@ -1,10 +1,26 @@
 import { useEffect, useState } from 'react'
 import { buscarFotoCarro } from '../utils/fotoCarro'
+import { fotoRecortada } from '../utils/fotoLocal'
 import type { FotoCarro as Foto } from '../utils/fotoCarro'
 import CarroIlustracao from './CarroIlustracao'
 
-/** Foto real do modelo (Wikipédia); enquanto carrega, ou se não houver foto, mostra a ilustração. */
+/**
+ * Foto do carro. Os modelos mais comuns usam um recorte sem fundo (public/carros);
+ * os outros buscam a foto na Wikipédia e, enquanto carrega ou se não houver foto, mostram a ilustração.
+ */
 export default function FotoCarro({ marca, modelo }: { marca: string; modelo: string }) {
+  const recorte = fotoRecortada(modelo)
+  if (recorte) {
+    return (
+      <figure className="foto-carro recorte">
+        <img src={recorte} alt={`${marca} ${modelo}`} loading="lazy" />
+      </figure>
+    )
+  }
+  return <FotoWikipedia marca={marca} modelo={modelo} />
+}
+
+function FotoWikipedia({ marca, modelo }: { marca: string; modelo: string }) {
   const [foto, setFoto] = useState<Foto | null>(null)
   const [falhou, setFalhou] = useState(false)
 

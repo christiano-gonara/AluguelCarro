@@ -105,12 +105,12 @@ export default function Automoveis() {
   return (
     <section>
       <header className="pagina-topo">
-        <h1>Automóveis</h1>
-        <p className="suave">Os clientes veem estes carros no catálogo.</p>
+        <h1>Seus carros</h1>
+        <p className="suave">Os clientes veem estes carros no catálogo. Pra cadastrar um novo, busque na tabela FIPE que a gente preenche o resto.</p>
       </header>
 
       <form className="painel" onSubmit={salvar}>
-        <h2>{editandoId !== null ? 'Editar automóvel' : 'Cadastrar automóvel'}</h2>
+        <h2>{editandoId !== null ? 'Editar carro' : 'Cadastrar carro'}</h2>
         {editandoId === null && <BuscaFipe aoEscolher={aplicarFipe} />}
         <div className="grade">
           <label>Marca<input value={form.marca} onChange={set('marca')} required /></label>
@@ -142,7 +142,7 @@ export default function Automoveis() {
           </label>
         </div>
         <div className="linha">
-          <button className="btn">{editandoId !== null ? 'Salvar alterações' : 'Cadastrar automóvel'}</button>
+          <button className="btn">{editandoId !== null ? 'Salvar alterações' : 'Cadastrar carro'}</button>
           {editandoId !== null && (
             <button
               type="button"
@@ -162,7 +162,7 @@ export default function Automoveis() {
       {lista === null && !erro && <p>Carregando…</p>}
       {lista?.length === 0 && (
         <div className="vazio">
-          <p>Nenhum automóvel cadastrado. Use o formulário acima para cadastrar o primeiro.</p>
+          <p>Nenhum carro cadastrado ainda. Use o formulário acima pra cadastrar o primeiro.</p>
         </div>
       )}
       {lista && lista.length > 0 && (
@@ -249,7 +249,7 @@ function BuscaFipe({ aoEscolher }: { aoEscolher: (v: FipeValor) => void }) {
 
   return (
     <fieldset className="fipe">
-      <legend>Buscar na Tabela FIPE</legend>
+      <legend>Passo 1: encontre o carro na tabela FIPE</legend>
       <div className="grade">
         <label>
           Marca
@@ -293,12 +293,12 @@ function BuscaFipe({ aoEscolher }: { aoEscolher: (v: FipeValor) => void }) {
           </select>
         </label>
       </div>
-      {carregando && <p className="suave pequeno">Consultando a Tabela FIPE…</p>}
+      {carregando && <p className="suave pequeno">Buscando na tabela FIPE…</p>}
       {erro && <p className="suave pequeno">{erro}</p>}
       {valor && (
         <p className="fipe-resultado">
-          Valor FIPE de {valor.MesReferencia}: <strong>{valor.Valor}</strong>. Diária sugerida de{' '}
-          {moeda(diariaSugerida(valorFipeEmNumero(valor.Valor)))}, que você pode ajustar abaixo.
+          Preço na FIPE ({valor.MesReferencia}): <strong>{valor.Valor}</strong>. Diária sugerida:{' '}
+          <strong>{moeda(diariaSugerida(valorFipeEmNumero(valor.Valor)))}</strong>. Dá pra ajustar abaixo.
         </p>
       )}
     </fieldset>

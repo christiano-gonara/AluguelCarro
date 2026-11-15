@@ -11,17 +11,18 @@ import PedidoDetalhe from './pages/PedidoDetalhe'
 import MeusDados from './pages/MeusDados'
 import Automoveis from './pages/Automoveis'
 import Clientes from './pages/Clientes'
+import Landing from './pages/Landing'
 
 interface ProtegidaProps {
   children: ReactElement
   perfil?: 'cliente' | 'agente'
 }
 
-/** Todas as telas, exceto login e cadastro, exigem usuário autenticado. */
+/** Todas as telas, exceto a página de apresentação, o login e o cadastro, exigem usuário autenticado. */
 function Protegida({ children, perfil }: ProtegidaProps) {
   const { usuario, carregando, ehCliente, ehAgente } = useAuth()
   if (carregando) return <p className="centro">Carregando…</p>
-  if (!usuario) return <Navigate to="/login" replace />
+  if (!usuario) return <Navigate to="/sobre" replace />
   if (perfil === 'cliente' && !ehCliente) return <Navigate to="/" replace />
   if (perfil === 'agente' && !ehAgente) return <Navigate to="/" replace />
   return children
@@ -36,6 +37,7 @@ function Inicio() {
 export default function App() {
   return (
     <Routes>
+      <Route path="/sobre" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
       <Route

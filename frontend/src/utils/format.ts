@@ -11,8 +11,8 @@ export function dataBR(iso: string | null | undefined): string {
 
 export const STATUS_ROTULO: Record<StatusPedido, string> = {
   EM_ANALISE: 'Em análise',
-  APROVADO_FINANCEIRAMENTE: 'Aprovado financeiramente',
-  REPROVADO: 'Reprovado',
-  CONTRATO_EXECUTADO: 'Contrato executado',
+  APROVADO_FINANCEIRAMENTE: 'Aprovado',
+  REPROVADO: 'Recusado',
+  CONTRATO_EXECUTADO: 'Contrato fechado',
   CANCELADO: 'Cancelado',
 }

@@ -1,93 +1,77 @@
-/* Catálogo: cada carro numa vaga de vitrine, com placa e diária em destaque. */
+/* Catálogo: o carro (recorte sem fundo) "sai" de cima do cartão de vidro, como no layout de referência. */
 .vitrine-grade {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 6rem 1.75rem;
+  padding-top: 4.5rem;
 }
 
 .carro-card {
   display: flex;
   flex-direction: column;
-  background: var(--superficie);
-  border: 1px solid var(--borda);
-  border-radius: 10px;
-  overflow: hidden;
+  background: var(--vidro);
+  border: 1px solid var(--vidro-borda);
+  border-radius: var(--raio);
+  box-shadow: var(--vidro-sombra);
 }
+.carro-vitrine { padding: 0 1rem; }
 
-.carro-vitrine {
-  background: var(--vitrine);
-  border-bottom: 4px solid var(--asfalto);
-}
-.carro-ilustracao { display: block; width: 100%; height: auto; }
+.carro-recorte { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 18px rgba(0, 0, 0, .55)); }
 
-/* Foto real (Wikipédia) com proporção fixa; sem foto, a ilustração ocupa o mesmo espaço. */
-.foto-carro {
-  position: relative;
-  margin: 0;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  background: var(--vitrine);
-}
-.foto-carro img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Recorte local: imagem sem fundo, puxada para cima do cartão. */
+.foto-carro { position: relative; margin: 0; }
+.foto-carro.recorte { margin-top: -4.5rem; height: 11rem; }
+.foto-carro.recorte img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 22px 18px rgba(0, 0, 0, .55)); }
+
+/* Foto da Wikipédia (com fundo): fica dentro do cartão, arredondada. */
+.foto-carro:not(.recorte):not(.ilustrada) { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 28px; margin-top: 1rem; }
+.foto-carro:not(.recorte) img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .foto-carro.ilustrada { display: grid; place-items: center; padding: 1.25rem; }
-.foto-carro figcaption {
-  position: absolute;
-  right: .5rem;
-  bottom: .4rem;
-  font-size: .75rem;
-}
-.foto-carro figcaption a {
-  color: #fff;
-  background: rgba(31, 41, 51, .72);
-  padding: .1rem .45rem;
-  border-radius: 4px;
-  text-decoration: none;
-}
+.carro-ilustracao { display: block; width: 100%; height: auto; }
+.foto-carro figcaption { position: absolute; right: .6rem; bottom: .5rem; font-size: .72rem; }
+.foto-carro figcaption a { color: #fff; background: rgba(0, 0, 0, .6); padding: .1rem .5rem; border-radius: 6px; text-decoration: none; }
 .foto-carro figcaption a:hover { text-decoration: underline; }
 
-.carro-info { display: flex; flex-direction: column; gap: .5rem; padding: 1rem 1.25rem 1.25rem; flex: 1; }
+.carro-info { display: flex; flex-direction: column; gap: .5rem; padding: 1rem 1.6rem 1.6rem; flex: 1; }
 .carro-info > .btn,
 .carro-info > .linha { margin-top: auto; }
-.carro-marca { margin: 0; color: var(--suave); font-weight: 500; }
-.carro-modelo { font-family: var(--fonte-titulo); font-size: 1.5rem; font-weight: 600; margin: 0; line-height: 1.1; }
-.carro-linha { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
-.carro-preco {
-  font-family: var(--fonte-titulo);
-  font-size: 1.9rem;
-  font-weight: 700;
-  margin: .25rem 0 .5rem;
-}
-.carro-preco span { font-family: var(--fonte); font-size: .95rem; font-weight: 400; color: var(--suave); margin-left: .25rem; }
+.carro-marca { margin: 0; color: var(--apagado); font-size: .85rem; }
+.carro-modelo { font-size: 1.35rem; font-weight: 400; margin: 0; line-height: 1.15; letter-spacing: -.01em; }
+.carro-linha { display: flex; align-items: center; justify-content: space-between; gap: .75rem; color: var(--suave); }
+.carro-preco { font-size: 1.6rem; font-weight: 600; margin: .5rem 0 .75rem; letter-spacing: -.02em; }
+.carro-preco span { font-size: .9rem; font-weight: 400; color: var(--suave); margin-left: .25rem; }
 
 /* Novo pedido: formulário ao lado do carro escolhido. */
-.pedido-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; align-items: start; }
+.pedido-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; }
 .pedido-layout .painel { margin: 0; }
+.pedido-layout .carro-card { margin-top: 4.5rem; }
 .total {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  padding: .9rem 1rem;
-  background: var(--fundo);
-  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  border: 1px dashed rgba(255, 255, 255, .22);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, .22);
+  color: var(--suave);
 }
-.total strong { font-family: var(--fonte-titulo); font-size: 1.75rem; }
+.total strong { font-size: 1.9rem; color: var(--texto); letter-spacing: -.02em; }
 
 /* Detalhe do pedido: carro em linha, ao lado de marca, modelo e placa. */
 .pedido-carro {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 260px 1fr;
   gap: 1.5rem;
   align-items: center;
-  padding: 1rem 1.25rem;
-  background: var(--vitrine);
-  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  border-radius: var(--raio-medio);
+  background: rgba(0, 0, 0, .2);
 }
+.pedido-carro .foto-carro.recorte { margin-top: 0; height: 9rem; }
 .pedido-carro .carro-modelo { margin-bottom: .5rem; }
-.pedido-carro .foto-carro { border-radius: 6px; }
 
 @media (max-width: 760px) {
   .pedido-layout { grid-template-columns: 1fr; }
   .pedido-carro { grid-template-columns: 1fr; }
-  .pedido-carro .foto-carro { max-width: 320px; }
 }

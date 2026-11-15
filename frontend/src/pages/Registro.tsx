@@ -33,10 +33,11 @@ export default function Registro() {
 
   return (
     <div className="cartao">
-      <h1>Cadastro de cliente</h1>
+      <h1>Criar sua conta</h1>
+      <p className="suave">Leva uns 3 minutos. Seus dados só são vistos pela empresa ou banco que for aprovar seu pedido.</p>
       <form onSubmit={enviar}>
         <fieldset>
-          <legend>Acesso</legend>
+          <legend>Como você vai entrar</legend>
           <div className="grade">
             <label>
               Usuário
@@ -64,7 +65,7 @@ export default function Registro() {
         <ClienteForm valor={cliente} onChange={setCliente} />
         <Erro erro={erro} />
         <button className="btn" disabled={enviando}>
-          {enviando ? 'Cadastrando…' : 'Cadastrar'}
+          {enviando ? 'Criando sua conta…' : 'Criar minha conta'}
         </button>
       </form>
       <p>

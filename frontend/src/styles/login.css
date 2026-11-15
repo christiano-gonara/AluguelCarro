@@ -1,65 +1,73 @@
-/* Login em duas metades: a estrada (identidade) e o formulário. */
+/* Login: foto escura de fundo, texto de boas-vindas à esquerda e o cartão de vidro à direita. */
 .login {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  min-height: 100vh;
-  background: var(--superficie);
-}
-
-.login-estrada {
   position: relative;
+  min-height: 100vh;
+  background:
+    linear-gradient(90deg, rgba(30, 36, 27, .2) 0%, rgba(30, 36, 27, .6) 60%, rgba(30, 36, 27, .9) 100%),
+    url('/hero.jpg') center 40% / cover no-repeat,
+    var(--fundo);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 3rem clamp(2rem, 6vw, 5rem) 6rem;
-  background: var(--asfalto);
-  color: #fff;
-  overflow: hidden;
 }
-.login-estrada .placa { align-self: flex-start; }
-.login-estrada h1 {
-  font-size: clamp(2.5rem, 4.6vw, 4rem);
-  font-weight: 700;
-  max-width: 13ch;
-  margin: 0;
-}
-.login-estrada p { color: #c3ccd4; font-size: 1.15rem; max-width: 38ch; margin: 0; }
-
-/* Faixa central da pista, tracejada em amarelo. */
-.faixa {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 2.5rem;
-  height: 8px;
-  background: repeating-linear-gradient(90deg, var(--faixa) 0 56px, transparent 56px 96px);
-  opacity: .9;
-}
-
-.login-form {
+.login-topo {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1280px;
   width: 100%;
-  max-width: 440px;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+  padding: 1.5rem 3rem;
 }
-.login-form h2 { font-size: 2rem; }
-.login-form > p { margin-top: 1rem; }
+.login-corpo {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3rem;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem 3rem 3rem;
+}
 
-.demo { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--borda); }
-.demo p { margin: 0 0 .6rem; font-size: .95rem; }
-.demo-contas { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.login-estrada { flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+.login-estrada h1 { font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1; letter-spacing: -.025em; margin: 0; max-width: 9ch; }
+.login-estrada p { color: var(--texto-claro); font-size: 1.1rem; max-width: 34ch; margin: 0; }
+.login-estrada .carro-recorte { max-width: 540px; margin-top: 1rem; }
+.selos { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+.login-form { flex: 0 1 460px; min-width: 300px; display: flex; flex-direction: column; gap: 1.25rem; padding: 2.5rem; }
+.login-form h2 { font-size: 1.9rem; margin: 0; }
+.login-form .card-cabecalho p { margin: .15rem 0 0; }
+.login-form > p { margin: 0; }
+.card-cabecalho { display: flex; align-items: center; gap: 1rem; }
+
+.demo { padding-top: 1.25rem; border-top: 1px solid var(--linha); }
+.demo > p { margin: 0 0 .75rem; font-size: .85rem; text-align: center; }
+.demo-contas { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+.demo-conta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  padding: .9rem .5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(255, 255, 255, .04);
+  color: var(--texto);
+  font: inherit;
+  cursor: pointer;
+}
+.demo-conta:hover { background: rgba(255, 255, 255, .09); }
+.demo-conta:disabled { opacity: .55; cursor: not-allowed; }
+.demo-conta strong { font-size: .9rem; }
+.demo-conta span { font-size: .72rem; color: var(--suave); }
 
 @media (max-width: 860px) {
-  .login { grid-template-columns: 1fr; }
-  .login-estrada { padding: 2.5rem 1.5rem 4.5rem; gap: 1rem; }
-  .login-estrada .placa-grande { min-width: 11rem; }
-  .login-estrada .placa-grande .placa-codigo { font-size: 2.1rem; }
-  .faixa { bottom: 1.75rem; }
-  .login-form { padding: 2rem 1rem 3rem; }
+  .login-topo, .login-corpo { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .login-estrada .carro-recorte { display: none; }
+  .login-form { padding: 1.75rem; }
 }
 @media (max-width: 380px) {
   .demo-contas { grid-template-columns: 1fr; }
