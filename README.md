@@ -306,12 +306,12 @@ Dá pra ver o visual funcionando sem instalar nada: **https://christiano-gonara.
 - Publicada sozinha a cada push na `main` pelo GitHub Actions ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
 - Os cenários pra testar cada fluxo estão em [`docs/fluxos/07-cenarios.md`](docs/fluxos/07-cenarios.md).
 
-Pra gerar a demonstração localmente:
+Pra abrir a demonstração no seu computador (não precisa do back-end):
 
 ```bash
 cd frontend
-VITE_MODO_DEMO=true VITE_BASE=/AluguelCarro/ npm run build
-npx vite preview --base /AluguelCarro/
+npm install
+npm run demo        # abre em http://localhost:5174
 ```
 
 ## 🚀 Deploy
