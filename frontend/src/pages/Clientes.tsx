@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { api, paraErro } from '../api'
 import Vazio from '../components/Vazio'
+import { BarraTabela, ColunaOrdenavel, PaginasTabela } from '../components/Tabela'
+import { useTabela } from '../utils/tabela'
 import Erro from '../components/Erro'
 import type { Cliente } from '../types'
 import { moeda } from '../utils/format'
@@ -41,19 +43,54 @@ export default function Clientes() {
       {clientes?.length === 0 && (
         <Vazio icone="usuario" titulo="Nenhum cliente ainda" texto="Quando alguém criar uma conta pra alugar, aparece aqui." />
       )}
-      {clientes && clientes.length > 0 && (
+      {clientes && clientes.length > 0 && <TabelaClientes clientes={clientes} />}
+      <p className="nota">Parte do CPF fica escondida na lista, pra proteger os dados de cada pessoa.</p>
+    </section>
+  )
+}
+
+type CampoCliente = 'nome' | 'renda'
+
+function TabelaClientes({ clientes }: { clientes: Cliente[] }) {
+  const t = useTabela<Cliente, CampoCliente>(
+    clientes,
+    (c) => `${c.nome} ${c.cpf} ${c.profissao}`,
+    (c, campo) => (campo === 'nome' ? c.nome : c.rendimentoTotal),
+    { campo: 'nome', crescente: true },
+  )
+  return (
+    <section className="tabela-vidro">
+      <BarraTabela
+        titulo="Todos os clientes"
+        busca={t.busca}
+        aoBuscar={t.buscar}
+        rotuloBusca="Buscar por nome ou CPF"
+        porPagina={t.porPagina}
+        aoMudarPorPagina={t.mudarPorPagina}
+      />
+      <div className="tabela-rolagem">
         <table>
           <thead>
             <tr>
-              <th>Cliente</th>
-              <th>CPF</th>
-              <th>RG</th>
-              <th>Onde trabalha</th>
-              <th className="direita">Renda por mês</th>
+              <ColunaOrdenavel
+                rotulo="Cliente"
+                ativa={t.ordem.campo === 'nome'}
+                crescente={t.ordem.crescente}
+                aoOrdenar={() => t.ordenarPor('nome')}
+              />
+              <th scope="col">CPF</th>
+              <th scope="col">RG</th>
+              <th scope="col">Onde trabalha</th>
+              <ColunaOrdenavel
+                rotulo="Renda por mês"
+                ativa={t.ordem.campo === 'renda'}
+                crescente={t.ordem.crescente}
+                aoOrdenar={() => t.ordenarPor('renda')}
+              />
             </tr>
           </thead>
           <tbody>
-            {clientes.map((c) => (
+            {t.visiveis.map((c) => (
               <tr key={c.id}>
                 <td>
                   <span className="pessoa">
@@ -79,15 +116,28 @@ export default function Clientes() {
                     '—'
                   )}
                 </td>
-                <td className="direita">
+                <td>
                   <strong>{moeda(c.rendimentoTotal)}</strong>
                 </td>
               </tr>
             ))}
+            {t.visiveis.length === 0 && (
+              <tr>
+                <td colSpan={5} className="suave">
+                  Nenhum cliente encontrado com essa busca.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
-      )}
-      <p className="nota">Parte do CPF fica escondida na lista, pra proteger os dados de cada pessoa.</p>
+      </div>
+      <PaginasTabela
+        total={t.total}
+        nome={t.total === 1 ? 'cliente' : 'clientes'}
+        pagina={t.pagina}
+        totalPaginas={t.totalPaginas}
+        irPara={t.irPara}
+      />
     </section>
   )
 }

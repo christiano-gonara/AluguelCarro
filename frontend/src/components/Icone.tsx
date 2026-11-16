@@ -1,7 +1,7 @@
 // Ícones do coolicons (estilo duocolor, de Kryston Schwarze, licença MIT): https://coolicons.cool
 // O traço principal segue a cor do texto (currentColor); o secundário fica no verde-oliva de destaque.
 
-export type NomeIcone = 'busca' | 'sacola' | 'usuario' | 'documento' | 'escudo' | 'chave' | 'cadeado' | 'email' | 'empresa' | 'banco' | 'calendario' | 'carro' | 'relogio' | 'cartao' | 'info' | 'seta' | 'setaCima' | 'mais' | 'sair' | 'github'
+export type NomeIcone = 'busca' | 'sacola' | 'usuario' | 'documento' | 'escudo' | 'chave' | 'cadeado' | 'email' | 'empresa' | 'banco' | 'calendario' | 'carro' | 'relogio' | 'cartao' | 'info' | 'seta' | 'setaCima' | 'mais' | 'sair' | 'github' | 'ordenar' | 'olho' | 'lapis' | 'fechar'
 
 const DESENHOS: Record<NomeIcone, { primario: string[]; secundario: string[] }> = {
   busca: { primario: ["M3 10C3 13.86599 6.13401 17 10 17C13.86599 17 17 13.86599 17 10C17 6.13401 13.86599 3 10 3C6.13401 3 3 6.13401 3 10Z"], secundario: ["M15 15L21 21"] },
@@ -24,6 +24,10 @@ const DESENHOS: Record<NomeIcone, { primario: string[]; secundario: string[] }> 
   mais: { primario: ["M6 12H18M12 6V18"], secundario: [] },
   sair: { primario: ["M14 17V19C14 20.10457 13.10457 21 12 21H5C3.89543 21 3 20.10457 3 19V5C3 3.89543 3.89543 3 5 3H12C13.10457 3 14 3.89543 14 5V7"], secundario: ["M18 15L21 12M21 12L18 9M21 12H11"] },
   github: { primario: ["M9 21V18C9 17 9 16 10 15C7 15 4 13 4 9C4 7.7 4.5 6.7 5 6C4.6 5 4.6 4 5 3C5 3 6.5 3 9 4C11 3.5 13 3.5 15 4C17.5 3 19 3 19 3C19.4 4 19.4 5 19 6C19.5 6.7 20 7.7 20 9C20 13 17 15 14 15C15 16 15 17 15 18V21"], secundario: ["M9 19C5 20 5 16 3 16"] },
+  ordenar: { primario: ["M8 10L12 6L16 10ZM8 14L16 14L12 18Z"], secundario: [] },
+  olho: { primario: ["M3 12C4.51388 8.36669 8.06392 6 12 6C15.93608 6 19.48612 8.36669 21 12C19.48612 15.63331 15.93608 18 12 18C8.06392 18 4.51388 15.63331 3 12Z"], secundario: ["M10 12C10 13.10457 10.89543 14 12 14C13.10457 14 14 13.10457 14 12C14 10.89543 13.10457 10 12 10C10.89543 10 10 10.89543 10 12Z"] },
+  lapis: { primario: ["M4 20V16L15 5C15.55228 4.44772 16.44772 4.44772 17 5L19 7C19.55228 7.55228 19.55228 8.44772 19 9L8 20H4ZM12 8L16 12"], secundario: ["M8 20H20"] },
+  fechar: { primario: ["M3 12C3 16.97056 7.02944 21 12 21C16.97056 21 21 16.97056 21 12C21 7.02944 16.97056 3 12 3C7.02944 3 3 7.02944 3 12Z"], secundario: ["M9 9L15 15M15 9L9 15"] },
 }
 
 const TRACO = {

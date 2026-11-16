@@ -1,34 +1,101 @@
-/* Tabelas como lista de linhas de vidro: colunas alinhadas, cabeçalho único no topo. */
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 .75rem;
+/* Tabela de vidro: um painel só, barra de busca em cima, linhas alternadas e paginação embaixo. */
+.tabela-vidro {
+  border-radius: 36px;
+  border: 1px solid var(--vidro-borda);
+  background: var(--vidro);
+  box-shadow: var(--vidro-sombra);
+  overflow: hidden;
 }
+.tabela-barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .9rem;
+  padding: 1.35rem 1.75rem;
+  border-bottom: 1px solid var(--linha);
+}
+.tabela-barra h2 { margin: 0 auto 0 0; font-size: 1.3rem; }
+.por-pagina { flex-direction: row; align-items: center; gap: .5rem; font-size: .875rem; font-weight: 500; color: var(--suave); }
+.por-pagina select { min-height: 2.5rem; padding: 0 .6rem; }
+.campo-busca {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  width: 16rem;
+  max-width: 100%;
+  height: 2.75rem;
+  padding: 0 .9rem;
+  border: 1px solid var(--campo-borda);
+  border-radius: 12px;
+  background: var(--campo);
+}
+.campo-busca input { flex: 1; min-width: 0; min-height: 0; height: 100%; padding: 0; border: 0; background: transparent; }
+.tabela-rolagem { overflow-x: auto; }
+
+table { width: 100%; min-width: 980px; border-collapse: collapse; font-size: .95rem; }
 th {
   text-align: left;
-  padding: 0 1rem;
-  font-size: .72rem;
+  padding: 1rem 1.25rem;
+  font-size: .8rem;
   font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--apagado);
+  color: var(--suave);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--linha);
 }
-td {
-  text-align: left;
-  padding: 1.1rem 1rem;
-  font-size: .95rem;
-  background: rgba(255, 255, 255, .05);
-  border-top: 1px solid rgba(255, 255, 255, .14);
-  border-bottom: 1px solid rgba(255, 255, 255, .14);
-}
-td:first-child { border-left: 1px solid rgba(255, 255, 255, .14); border-radius: 22px 0 0 22px; padding-left: 1.4rem; }
-td:last-child { border-right: 1px solid rgba(255, 255, 255, .14); border-radius: 0 22px 22px 0; padding-right: 1.4rem; }
-.acoes { display: flex; gap: 1rem; align-items: center; white-space: nowrap; }
-.acoes a { font-weight: 600; text-decoration: none; }
+td { padding: .9rem 1.25rem; vertical-align: middle; white-space: nowrap; }
+tbody tr:nth-child(odd) { background: rgba(255, 255, 255, .035); }
+tbody tr:hover { background: rgba(255, 255, 255, .06); }
+.ordenar { display: inline-flex; align-items: center; gap: .35rem; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.ordenar .icone { color: var(--apagado); }
+th[aria-sort='ascending'] .ordenar, th[aria-sort='descending'] .ordenar { color: var(--texto); }
 
-@media (max-width: 860px) {
-  table { display: block; overflow-x: auto; }
+.acoes { display: inline-flex; gap: .5rem; align-items: center; justify-content: flex-end; }
+.botao-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  background: rgba(255, 255, 255, .05);
+  color: var(--texto);
+  cursor: pointer;
 }
+.botao-icone:hover { background: rgba(255, 255, 255, .12); color: var(--texto); }
+.btn.pequeno-btn { min-height: 2.5rem; padding: 0 1.1rem; font-size: .85rem; }
+
+.carro-celula { display: flex; align-items: center; gap: .75rem; }
+.carro-celula > span:last-child { display: flex; flex-direction: column; line-height: 1.3; }
+.carro-miniatura {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 2.6rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .28);
+}
+.carro-miniatura img { width: 3.5rem; height: 2.25rem; object-fit: contain; }
+
+.tabela-paginas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: 1rem 1.75rem;
+  border-top: 1px solid var(--linha);
+  font-size: .875rem;
+  color: var(--suave);
+}
+.tabela-paginas nav { display: flex; align-items: center; gap: .35rem; }
+.pagina, .pagina-texto { min-width: 2.5rem; min-height: 2.5rem; border-radius: 10px; border: 0; background: transparent; color: var(--texto); font: inherit; font-weight: 600; cursor: pointer; }
+.pagina { background: rgba(255, 255, 255, .06); }
+.pagina.atual { background: var(--oliva); color: #1a2027; }
+.pagina-texto { padding: 0 .6rem; color: var(--suave); }
+.pagina-texto:disabled { color: #8e968a; cursor: default; }
 
 .detalhes {
   display: grid;

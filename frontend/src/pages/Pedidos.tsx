@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom'
 import { api, paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
 import Vazio from '../components/Vazio'
+import Icone from '../components/Icone'
+import { BarraTabela, ColunaOrdenavel, PaginasTabela } from '../components/Tabela'
+import { useTabela } from '../utils/tabela'
+import { fotoRecortada } from '../utils/fotoLocal'
 import Erro from '../components/Erro'
 import StatusBadge from '../components/StatusBadge'
 import type { Pedido } from '../types'
@@ -20,7 +24,7 @@ export default function Pedidos() {
   useEffect(carregar, [carregar])
 
   async function cancelar(id: number) {
-    if (!window.confirm('Cancelar este pedido?')) return
+    if (!window.confirm('Cancelar este pedido? O pedido sai da fila e não dá pra desfazer.')) return
     setErro(null)
     try {
       await api.cancelarPedido(id)
@@ -67,52 +71,203 @@ export default function Pedidos() {
           )}
         </>
       )}
-      {pedidos && pedidos.length > 0 && (
+      {pedidos && pedidos.length > 0 && <TabelaPedidos pedidos={pedidos} ehCliente={ehCliente} aoCancelar={cancelar} />}
+    </section>
+  )
+}
+
+type CampoPedido = 'id' | 'cliente' | 'carro' | 'renda' | 'quando' | 'total' | 'situacao'
+
+const QUEM_APROVA: Record<string, string> = { EMPRESA: 'Empresa', BANCO: 'Banco', CLIENTE: 'Cliente' }
+
+function iniciais(nome: string): string {
+  return nome
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0].toUpperCase())
+    .join('')
+}
+
+function texto(p: Pedido): string {
+  return `${p.id} ${p.clienteNome} ${p.automovel.marca} ${p.automovel.modelo} ${p.automovel.placa}`
+}
+
+function valor(p: Pedido, campo: CampoPedido): string | number {
+  switch (campo) {
+    case 'id':
+      return p.id
+    case 'cliente':
+      return p.clienteNome
+    case 'carro':
+      return `${p.automovel.marca} ${p.automovel.modelo}`
+    case 'renda':
+      return p.clienteRendimentoTotal
+    case 'quando':
+      return p.dataInicio
+    case 'total':
+      return p.valorTotalEstimado
+    case 'situacao':
+      return p.status
+  }
+}
+
+/** Uma tabela só, de vidro: busca, ordenação, linhas alternadas e paginação. */
+function TabelaPedidos({
+  pedidos,
+  ehCliente,
+  aoCancelar,
+}: {
+  pedidos: Pedido[]
+  ehCliente: boolean
+  aoCancelar: (id: number) => void
+}) {
+  const t = useTabela<Pedido, CampoPedido>(pedidos, texto, valor, { campo: 'id', crescente: false })
+  const coluna = (rotulo: string, campo: CampoPedido) => (
+    <ColunaOrdenavel
+      rotulo={rotulo}
+      ativa={t.ordem.campo === campo}
+      crescente={t.ordem.crescente}
+      aoOrdenar={() => t.ordenarPor(campo)}
+    />
+  )
+
+  return (
+    <section className="tabela-vidro">
+      <BarraTabela
+        titulo={ehCliente ? 'Histórico' : 'Pedidos'}
+        busca={t.busca}
+        aoBuscar={t.buscar}
+        rotuloBusca={ehCliente ? 'Buscar por carro ou placa' : 'Buscar por cliente ou carro'}
+        porPagina={t.porPagina}
+        aoMudarPorPagina={t.mudarPorPagina}
+      >
+        {ehCliente && (
+          <Link className="btn" to="/">
+            <Icone nome="mais" tamanho={18} /> Novo pedido
+          </Link>
+        )}
+      </BarraTabela>
+      <div className="tabela-rolagem">
         <table>
           <thead>
             <tr>
-              <th>#</th>
-              {!ehCliente && <th>Cliente</th>}
-              <th>Carro</th>
-              <th>Quando</th>
-              <th>Total</th>
-              <th>Situação</th>
-              <th />
+              {coluna('Pedido', 'id')}
+              {!ehCliente && coluna('Cliente', 'cliente')}
+              {coluna('Carro', 'carro')}
+              {!ehCliente && coluna('Renda por mês', 'renda')}
+              {coluna('Quando', 'quando')}
+              {coluna('Total', 'total')}
+              {ehCliente && <th scope="col">Quem aprova</th>}
+              {coluna('Situação', 'situacao')}
+              <th scope="col" className="direita">
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody>
-            {pedidos.map((p) => {
+            {t.visiveis.map((p) => {
               const aberto = p.status === 'EM_ANALISE'
               const final = p.status === 'CANCELADO' || p.status === 'CONTRATO_EXECUTADO'
+              const foto = fotoRecortada(p.automovel.modelo)
+              const precisaAgir = !ehCliente && (p.status === 'EM_ANALISE' || p.status === 'APROVADO_FINANCEIRAMENTE')
               return (
                 <tr key={p.id}>
-                  <td>{p.id}</td>
-                  {!ehCliente && <td>{p.clienteNome}</td>}
                   <td>
-                    {p.automovel.marca} {p.automovel.modelo} ({p.automovel.placa})
+                    <strong>#{p.id}</strong>
                   </td>
+                  {!ehCliente && (
+                    <td>
+                      <span className="pessoa">
+                        <span className="iniciais" aria-hidden="true">
+                          {iniciais(p.clienteNome)}
+                        </span>
+                        <strong>{p.clienteNome}</strong>
+                      </span>
+                    </td>
+                  )}
+                  <td>
+                    <span className="carro-celula">
+                      <span className="carro-miniatura" aria-hidden="true">
+                        {foto ? <img src={foto} alt="" /> : <Icone nome="carro" tamanho={22} />}
+                      </span>
+                      <span>
+                        <strong>
+                          {p.automovel.marca} {p.automovel.modelo}
+                        </strong>
+                        <span className="suave pequeno">{p.automovel.placa}</span>
+                      </span>
+                    </span>
+                  </td>
+                  {!ehCliente && (
+                    <td>
+                      <strong>{moeda(p.clienteRendimentoTotal)}</strong>
+                    </td>
+                  )}
                   <td>
                     {dataBR(p.dataInicio)} a {dataBR(p.dataFim)}
                   </td>
-                  <td>{moeda(p.valorTotalEstimado)}</td>
+                  <td>
+                    <strong>{moeda(p.valorTotalEstimado)}</strong>
+                  </td>
+                  {ehCliente && <td>{QUEM_APROVA[p.automovel.tipoProprietario] ?? '—'}</td>}
                   <td>
                     <StatusBadge status={p.status} />
                   </td>
-                  <td className="acoes">
-                    <Link to={`/pedidos/${p.id}`}>Ver</Link>
-                    {!final && (!ehCliente || aberto) && <Link to={`/pedidos/${p.id}/editar`}>Editar</Link>}
-                    {ehCliente && !final && (
-                      <button className="link" onClick={() => cancelar(p.id)}>
-                        Cancelar
-                      </button>
-                    )}
+                  <td className="direita">
+                    <span className="acoes">
+                      {precisaAgir ? (
+                        <Link className="btn pequeno-btn" to={`/pedidos/${p.id}`}>
+                          {p.status === 'EM_ANALISE' ? 'Analisar' : 'Fechar contrato'}
+                        </Link>
+                      ) : (
+                        <Link className="botao-icone" to={`/pedidos/${p.id}`} aria-label={`Ver pedido #${p.id}`} title="Ver">
+                          <Icone nome="olho" tamanho={18} />
+                        </Link>
+                      )}
+                      {!final && (!ehCliente || aberto) && (
+                        <Link
+                          className="botao-icone"
+                          to={`/pedidos/${p.id}/editar`}
+                          aria-label={`Mudar pedido #${p.id}`}
+                          title="Mudar"
+                        >
+                          <Icone nome="lapis" tamanho={18} />
+                        </Link>
+                      )}
+                      {ehCliente && !final && (
+                        <button
+                          type="button"
+                          className="botao-icone"
+                          onClick={() => aoCancelar(p.id)}
+                          aria-label={`Cancelar pedido #${p.id}`}
+                          title="Cancelar"
+                        >
+                          <Icone nome="fechar" tamanho={18} />
+                        </button>
+                      )}
+                    </span>
                   </td>
                 </tr>
               )
             })}
+            {t.visiveis.length === 0 && (
+              <tr>
+                <td colSpan={8} className="suave">
+                  Nenhum pedido encontrado com essa busca.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
-      )}
+      </div>
+      <PaginasTabela
+        total={t.total}
+        nome={t.total === 1 ? 'pedido' : 'pedidos'}
+        pagina={t.pagina}
+        totalPaginas={t.totalPaginas}
+        irPara={t.irPara}
+      />
     </section>
   )
 }
