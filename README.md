@@ -123,8 +123,9 @@ Visual escuro com cartões de vidro, inspirado num layout de referência do Figm
 | Destaque | verde-oliva `#8FA36A` (único) |
 | Superfícies | vidro: degradê branco translúcido, borda fina e sombra |
 | Tipografia | [Inter](https://fonts.google.com/specimen/Inter) |
-| Ícones | traço branco com miolo verde-oliva translúcido (estilo duocolor), em `components/Icone.tsx` |
+| Ícones | [coolicons](https://coolicons.cool) no estilo duocolor (licença MIT): traço branco e parte secundária em verde-oliva, em `components/Icone.tsx` |
 | Fotos | recortes sem fundo em `frontend/public/carros`, com cores neutralizadas |
+| Rodapé | painel de vidro com links do perfil logado, "voltar ao topo" e marca d'água |
 | Textos | linguagem simples, sem jargão ("Contrato fechado" em vez de "Contrato executado") |
 
 ### Telas
@@ -399,6 +400,8 @@ As fotos dos carros vêm do [Wikimedia Commons](https://commons.wikimedia.org), 
 | Jeep Compass | Kevauto | CC BY-SA 4.0 |
 
 Carros fora dessa lista usam a foto do artigo da Wikipédia, buscada na hora pelo navegador.
+
+Os ícones são do [coolicons](https://coolicons.cool), de Kryston Schwarze, sob licença MIT.
 
 ## 🙏 Agradecimentos
 
