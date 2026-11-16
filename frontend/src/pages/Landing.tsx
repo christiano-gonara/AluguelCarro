@@ -169,8 +169,11 @@ export default function Landing() {
           São dois caminhos: o de quem aluga e o de quem aprova. Cada pessoa entra com o próprio login e só vê o que é
           dela.
         </p>
-        <div className="grade-cards dois">
-          <article className="vidro card-publico">
+        <div className="vidro dividido">
+          <span className="dividido-ou" aria-hidden="true">
+            OU
+          </span>
+          <article className="dividido-lado">
             <div className="card-cabecalho">
               <span className="icone-redondo">
                 <Icone nome="usuario" tamanho={26} />
@@ -186,8 +189,11 @@ export default function Landing() {
               <li>Manda o pedido e acompanha</li>
               <li>Recebe a resposta e o contrato</li>
             </ol>
+            <p className="nota">
+              <Icone nome="info" /> Começa em poucos minutos, direto pelo navegador.
+            </p>
           </article>
-          <article className="vidro card-publico">
+          <article className="dividido-lado">
             <div className="card-cabecalho">
               <span className="icone-redondo">
                 <Icone nome="empresa" tamanho={26} />

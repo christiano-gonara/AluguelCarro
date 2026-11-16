@@ -9,12 +9,21 @@
 .carro-card {
   display: flex;
   flex-direction: column;
+  transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), border-color .25s ease;
   background: var(--vidro);
   border: 1px solid var(--vidro-borda);
   border-radius: var(--raio);
   box-shadow: var(--vidro-sombra);
 }
 .carro-vitrine { padding: 0 1rem; }
+/* O cartão sobe e o carro "salta" um pouco mais quando o mouse passa por cima. */
+.carro-card:hover { transform: translateY(-8px); border-color: rgba(255, 255, 255, .3); }
+.carro-card .foto-carro img { transition: transform .45s cubic-bezier(.34, 1.56, .64, 1); }
+.carro-card:hover .foto-carro img { transform: translateY(-10px) scale(1.04); }
+@media (prefers-reduced-motion: reduce) {
+  .carro-card, .carro-card .foto-carro img { transition: none; }
+  .carro-card:hover, .carro-card:hover .foto-carro img { transform: none; }
+}
 
 .carro-recorte { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 18px rgba(0, 0, 0, .55)); }
 
@@ -33,13 +42,34 @@
 .foto-carro figcaption a:hover { text-decoration: underline; }
 
 .carro-info { display: flex; flex-direction: column; gap: .5rem; padding: 1rem 1.6rem 1.6rem; flex: 1; }
-.carro-info > .btn,
-.carro-info > .linha { margin-top: auto; }
+.carro-topo { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.chip-frota {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .16);
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--texto-claro);
+}
+.carro-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--linha);
+}
 .carro-marca { margin: 0; color: var(--apagado); font-size: .85rem; }
 .carro-modelo { font-size: 1.35rem; font-weight: 400; margin: 0; line-height: 1.15; letter-spacing: -.01em; }
 .carro-linha { display: flex; align-items: center; justify-content: space-between; gap: .75rem; color: var(--suave); }
-.carro-preco { font-size: 1.6rem; font-weight: 600; margin: .5rem 0 .75rem; letter-spacing: -.02em; }
-.carro-preco span { font-size: .9rem; font-weight: 400; color: var(--suave); margin-left: .25rem; }
+.carro-preco { display: flex; flex-direction: column; margin: 0; font-size: 1.6rem; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+.carro-preco span { font-size: .75rem; font-weight: 400; letter-spacing: 0; color: var(--apagado); }
 
 /* Novo pedido: formulário ao lado do carro escolhido. */
 .pedido-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; }

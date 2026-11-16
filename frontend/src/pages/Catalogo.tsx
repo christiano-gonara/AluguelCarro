@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { api, paraErro } from '../api'
 import CarroCard from '../components/CarroCard'
 import Vazio from '../components/Vazio'
+import Icone from '../components/Icone'
 import Erro from '../components/Erro'
 import type { Automovel } from '../types'
 
@@ -38,8 +39,8 @@ export default function Catalogo() {
         <div className="vitrine-grade">
           {carros.map((c) => (
             <CarroCard key={c.id} carro={c}>
-              <Link className="btn" to={`/pedidos/novo?automovel=${c.id}`}>
-                Alugar
+              <Link className="btn" to={`/pedidos/novo?automovel=${c.id}`} aria-label={`Alugar ${c.marca} ${c.modelo}`}>
+                Alugar <Icone nome="seta" tamanho={16} />
               </Link>
             </CarroCard>
           ))}

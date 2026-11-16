@@ -65,6 +65,33 @@
 .titulo-secao h2::after { right: 0; top: -.5rem; border-bottom: 0; border-left: 0; border-top-right-radius: 12px; }
 
 .grade-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.9rem; }
+
+/* "Para quem é": um cartão só, dividido ao meio, com um "OU" na divisa. */
+.dividido { position: relative; display: flex; flex-wrap: wrap; padding: 0; overflow: hidden; }
+.dividido-lado { flex: 1 1 340px; display: flex; flex-direction: column; gap: 1.25rem; padding: 2.75rem; }
+.dividido-lado + .dividido-lado { border-left: 1px solid var(--linha); }
+.dividido-lado h3 { font-size: 1.4rem; margin: 0 0 .2rem; }
+.dividido-lado .nota { margin-top: auto; }
+.dividido-ou {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 999px;
+  background: #2a3127;
+  border: 1px solid rgba(255, 255, 255, .2);
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--oliva-texto);
+}
+@media (max-width: 760px) {
+  .dividido-lado + .dividido-lado { border-left: 0; border-top: 1px solid var(--linha); }
+  .dividido-ou { display: none; }
+}
 .card-publico { display: flex; flex-direction: column; gap: 1.2rem; }
 .card-publico h3 { font-size: 1.4rem; margin: 0 0 .2rem; }
 .lista-numerada { margin: 0; padding: 0; list-style: none; counter-reset: passo; display: flex; flex-direction: column; gap: .75rem; }
