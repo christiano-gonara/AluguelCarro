@@ -169,7 +169,7 @@ export default function Landing() {
           São dois caminhos: o de quem aluga e o de quem aprova. Cada pessoa entra com o próprio login e só vê o que é
           dela.
         </p>
-        <div className="vidro dividido">
+        <div className="dividido">
           <span className="dividido-ou" aria-hidden="true">
             OU
           </span>

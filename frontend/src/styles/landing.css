@@ -66,16 +66,48 @@
 
 .grade-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.9rem; }
 
-/* "Para quem é": um cartão só, dividido ao meio, com um "OU" na divisa. */
-.dividido { position: relative; display: flex; flex-wrap: wrap; padding: 0; overflow: hidden; }
-.dividido-lado { flex: 1 1 340px; display: flex; flex-direction: column; gap: 1.25rem; padding: 2.75rem; }
-.dividido-lado + .dividido-lado { border-left: 1px solid var(--linha); }
-.dividido-lado h3 { font-size: 1.4rem; margin: 0 0 .2rem; }
-.dividido-lado .nota { margin-top: auto; }
-.dividido-ou {
+/* "Para quem é": um cartão só, com a curvinha de vidro no topo, dividido ao meio por uma linha com "OU". */
+.dividido {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4.75rem 0 3.5rem;
+}
+.dividido::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 280' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.10'/%3E%3Cstop offset='.55' stop-color='%23fff' stop-opacity='.045'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='.025'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,64 C0,34 16,18 44,16 C120,12 170,2 240,2 C276,2 300,24 300,56 L300,236 C300,262 280,280 252,280 L48,280 C22,280 0,262 0,236 Z' fill='url(%23g)' stroke='rgba(255,255,255,.17)' stroke-width='1' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 26px 30px rgba(0, 0, 0, .35));
+}
+.dividido::after {
+  content: '';
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 5.75rem;
+  bottom: 4rem;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .22) 18%, rgba(255, 255, 255, .22) 82%, transparent);
+}
+.dividido-lado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 0 3rem;
+  text-align: center;
+}
+.dividido-lado .card-cabecalho { flex-direction: column; gap: .9rem; }
+.dividido-lado .icone-redondo { width: 4rem; height: 4rem; }
+.dividido-lado h3 { font-size: 1.5rem; margin: 0 0 .2rem; }
+.dividido-lado .lista-numerada { text-align: left; }
+.dividido-lado .nota { margin-top: auto; max-width: 20rem; justify-content: center; text-align: left; }
+.dividido-ou {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: calc(50% + .6rem);
   transform: translate(-50%, -50%);
   display: inline-grid;
   place-items: center;
@@ -83,14 +115,16 @@
   height: 2.9rem;
   border-radius: 999px;
   background: #2a3127;
-  border: 1px solid rgba(255, 255, 255, .2);
+  border: 1px solid rgba(255, 255, 255, .22);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
   font-size: .75rem;
   font-weight: 700;
   color: var(--oliva-texto);
 }
 @media (max-width: 760px) {
-  .dividido-lado + .dividido-lado { border-left: 0; border-top: 1px solid var(--linha); }
-  .dividido-ou { display: none; }
+  .dividido { grid-template-columns: 1fr; gap: 3rem; padding: 3.5rem 0 2.5rem; }
+  .dividido::after, .dividido-ou { display: none; }
+  .dividido-lado { padding: 0 1.5rem; }
 }
 .card-publico { display: flex; flex-direction: column; gap: 1.2rem; }
 .card-publico h3 { font-size: 1.4rem; margin: 0 0 .2rem; }

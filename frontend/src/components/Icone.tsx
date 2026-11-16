@@ -1,7 +1,7 @@
 // Ícones do coolicons (estilo duocolor, de Kryston Schwarze, licença MIT): https://coolicons.cool
 // O traço principal segue a cor do texto (currentColor); o secundário fica no verde-oliva de destaque.
 
-export type NomeIcone = 'busca' | 'sacola' | 'usuario' | 'documento' | 'escudo' | 'chave' | 'cadeado' | 'email' | 'empresa' | 'banco' | 'calendario' | 'carro' | 'relogio' | 'cartao' | 'info' | 'seta' | 'setaCima' | 'mais' | 'sair' | 'github' | 'ordenar' | 'olho' | 'lapis' | 'fechar'
+export type NomeIcone = 'busca' | 'sacola' | 'usuario' | 'documento' | 'escudo' | 'chave' | 'cadeado' | 'email' | 'empresa' | 'banco' | 'calendario' | 'carro' | 'relogio' | 'cartao' | 'info' | 'seta' | 'voltar' | 'setaCima' | 'mais' | 'sair' | 'github' | 'ordenar' | 'olho' | 'lapis' | 'fechar'
 
 const DESENHOS: Record<NomeIcone, { primario: string[]; secundario: string[] }> = {
   busca: { primario: ["M3 10C3 13.86599 6.13401 17 10 17C13.86599 17 17 13.86599 17 10C17 6.13401 13.86599 3 10 3C6.13401 3 3 6.13401 3 10Z"], secundario: ["M15 15L21 21"] },
@@ -20,6 +20,7 @@ const DESENHOS: Record<NomeIcone, { primario: string[]; secundario: string[] }> 
   cartao: { primario: ["M3 7C3 5.89543 3.89543 5 5 5H19C20.10457 5 21 5.89543 21 7V17C21 18.10457 20.10457 19 19 19H5C3.89543 19 3 18.10457 3 17ZM3 9H21"], secundario: ["M7 15H11"] },
   info: { primario: ["M3 12C3 16.97056 7.02944 21 12 21C16.97056 21 21 16.97056 21 12C21 7.02944 16.97056 3 12 3C7.02944 3 3 7.02944 3 12Z"], secundario: ["M12 8H12.01M12 11V16"] },
   seta: { primario: ["M14 17L19 12L14 7M19 12H5"], secundario: [] },
+  voltar: { primario: ["M10 7L5 12L10 17M5 12H19"], secundario: [] },
   setaCima: { primario: ["M17 10L12 5L7 10M12 5V19"], secundario: [] },
   mais: { primario: ["M6 12H18M12 6V18"], secundario: [] },
   sair: { primario: ["M14 17V19C14 20.10457 13.10457 21 12 21H5C3.89543 21 3 20.10457 3 19V5C3 3.89543 3.89543 3 5 3H12C13.10457 3 14 3.89543 14 5V7"], secundario: ["M18 15L21 12M21 12L18 9M21 12H11"] },

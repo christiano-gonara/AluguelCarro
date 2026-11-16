@@ -35,10 +35,8 @@
   color: var(--texto);
   font-size: .9rem;
   text-decoration: none;
-  border-bottom: 1.5px solid transparent;
 }
-.topo nav a:hover { border-bottom-color: rgba(255, 255, 255, .35); }
-.topo nav a.active { border-bottom-color: var(--oliva); }
+/* O tracinho embaixo do link (e a animação dele) fica em animacoes.css. */
 
 .usuario { display: flex; align-items: center; gap: .75rem; }
 .usuario-chip {

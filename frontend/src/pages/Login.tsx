@@ -47,10 +47,15 @@ export default function Login() {
   return (
     <div className="login">
       <header className="login-topo">
-        <Link to="/sobre" className="marca">
-          <Icone nome="carro" tamanho={28} />
-          Aluga.
-        </Link>
+        <div className="topo-esquerda">
+          <Link to="/sobre" className="btn secundario voltar">
+            <Icone nome="voltar" tamanho={18} /> Voltar
+          </Link>
+          <Link to="/sobre" className="marca">
+            <Icone nome="carro" tamanho={28} />
+            Aluga.
+          </Link>
+        </div>
         <Link to="/registro" className="btn secundario">
           Criar conta
         </Link>

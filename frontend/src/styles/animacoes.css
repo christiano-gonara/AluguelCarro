@@ -1,0 +1,100 @@
+/* Animações da interface: tudo o que se mexe ao passar o mouse fica aqui.
+   Quem ativou "reduzir movimento" no sistema não vê nenhuma delas (fim do arquivo). */
+
+:root {
+  --curva-suave: cubic-bezier(.22, 1, .36, 1);
+  --curva-mola: cubic-bezier(.34, 1.45, .64, 1);
+}
+
+/* ---------- Botões: sobem um pouco, pra mostrar que dá pra clicar ---------- */
+.btn,
+.botao-icone,
+.demo-conta,
+.rodape-sociais a,
+.rodape-topo,
+.pagina {
+  transition: transform .3s var(--curva-mola), box-shadow .25s ease, background-color .2s ease, border-color .2s ease;
+}
+.btn:not(:disabled):hover,
+.botao-icone:hover,
+.demo-conta:not(:disabled):hover,
+.rodape-sociais a:hover,
+.rodape-topo:hover,
+.pagina:hover { transform: translateY(-3px); }
+.btn:not(:disabled):active { transform: translateY(0) scale(.98); }
+
+/* Botão principal: sombra suave e a seta numa bolinha verde-oliva que anda pro lado. */
+.btn { box-shadow: 0 8px 20px rgba(0, 0, 0, .25), inset 0 -2px 0 rgba(0, 0, 0, .08); }
+.btn:not(:disabled):hover { box-shadow: 0 14px 28px rgba(0, 0, 0, .35), 0 0 0 4px rgba(181, 201, 138, .25); }
+.btn:not(.secundario):not(.perigo):not(.fantasma) > .icone:last-child:not(:first-child) {
+  box-sizing: content-box;
+  padding: 5px;
+  margin-right: -.9rem;
+  border-radius: 999px;
+  background: var(--oliva-claro);
+  transition: transform .3s var(--curva-mola);
+}
+.btn:not(.secundario):not(.perigo):not(.fantasma):hover > .icone:last-child:not(:first-child) { transform: translateX(3px); }
+
+/* Botões de contorno viram vidro: fundo translúcido, borda clara e brilho verde. */
+.btn.secundario,
+.btn.perigo {
+  background: rgba(255, 255, 255, .06);
+  border-color: rgba(255, 255, 255, .35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.btn.secundario:hover,
+.btn.perigo:hover {
+  background: rgba(255, 255, 255, .14);
+  border-color: #fff;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, .35), 0 0 0 4px rgba(143, 163, 106, .18);
+}
+.btn.fantasma { box-shadow: none; }
+.botao-icone:hover, .rodape-sociais a:hover { background: rgba(181, 201, 138, .22); }
+
+/* Botão "Voltar": pílula com a seta sempre à esquerda, que anda pra trás no hover. */
+.btn.voltar { align-self: flex-start; border-radius: 999px; padding: 0 1.1rem 0 .85rem; min-height: 44px; }
+.btn.voltar .icone { transition: transform .35s var(--curva-suave); }
+.btn.voltar:hover .icone { transform: translateX(-3px); }
+
+/* ---------- Menu do topo: sobe de leve e ganha um tracinho que cresce do meio ---------- */
+.topo nav a {
+  position: relative;
+  border-bottom: 0;
+  transition: transform .35s var(--curva-suave), color .2s ease;
+}
+.topo nav a::after {
+  content: '';
+  position: absolute;
+  left: .9rem;
+  right: .9rem;
+  bottom: 2px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: var(--oliva-claro);
+  transform: scaleX(0);
+  transition: transform .35s var(--curva-suave);
+}
+.topo nav a:hover { transform: translateY(-2px); }
+.topo nav a:hover::after { transform: scaleX(1); }
+.topo nav a.active::after { transform: scaleX(1); background: var(--oliva); }
+.marca { transition: transform .35s var(--curva-suave); }
+.marca:hover { transform: translateY(-2px); }
+
+/* ---------- Cartões de carro: sobem devagar e o carro acompanha, sem tranco ---------- */
+.carro-card {
+  transition: transform .6s var(--curva-suave), border-color .3s ease;
+  will-change: transform;
+}
+.carro-card:hover { transform: translateY(-6px); border-color: rgba(255, 255, 255, .3); }
+.carro-card .foto-carro img { transition: transform .8s var(--curva-suave); will-change: transform; }
+.carro-card:hover .foto-carro img { transform: translateY(-6px) scale(1.02); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .botao-icone, .demo-conta, .rodape-sociais a, .rodape-topo, .pagina,
+  .btn .icone, .topo nav a, .topo nav a::after, .marca, .carro-card, .carro-card .foto-carro img { transition: none; }
+  .btn:hover, .botao-icone:hover, .demo-conta:hover, .rodape-sociais a:hover, .rodape-topo:hover, .pagina:hover,
+  .btn:hover .icone, .topo nav a:hover, .marca:hover, .carro-card:hover, .carro-card:hover .foto-carro img { transform: none; }
+}

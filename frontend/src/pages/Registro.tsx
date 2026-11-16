@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Icone from '../components/Icone'
 import { api, paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
 import ClienteForm, { clienteVazio, paraPayload } from '../components/ClienteForm'
@@ -33,6 +34,9 @@ export default function Registro() {
 
   return (
     <div className="cartao">
+      <Link to="/login" className="btn secundario voltar">
+        <Icone nome="voltar" tamanho={18} /> Voltar
+      </Link>
       <h1>Criar sua conta</h1>
       <p className="suave">Leva uns 3 minutos. Seus dados só são vistos pela empresa ou banco que for aprovar seu pedido.</p>
       <form onSubmit={enviar}>

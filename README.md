@@ -53,6 +53,8 @@ O sistema só pode ser usado após **cadastro prévio e login** (usuário e senh
 
 ## 🔀 Fluxos do Sistema
 
+Tem mais desenhos (mapa de telas, sequências entre site e API, arquitetura) em [`docs/fluxos`](docs/fluxos/README.md).
+
 São **dois caminhos**: o de quem aluga (cliente) e o de quem aprova (empresa ou banco). O banco segue o mesmo caminho da empresa, com um passo a mais: pode oferecer parcelamento (contrato de crédito).
 
 ### 🙋 Jornada do cliente
@@ -333,11 +335,12 @@ AluguelCarro/
 │       ├── auth/                 # Contexto de autenticação
 │       ├── components/           # Layout, formulários e peças comuns
 │       ├── pages/                # Telas
-│       ├── styles/               # CSS separado dos componentes
+│       ├── styles/               # CSS separado dos componentes, um arquivo por bloco (animacoes.css junta as animações)
 │       ├── utils/                # Formatadores e cliente da Tabela FIPE
 │       ├── api.ts                # Cliente HTTP tipado
 │       └── types.ts              # Tipos que espelham os DTOs da API
 └── docs/
+    ├── fluxos/                   # Fluxogramas, mapa de telas, sequências e arquitetura (Mermaid)
     ├── modelagem/                # Casos de uso, histórias, classes e pacotes
     └── banco-de-dados.sql
 ```

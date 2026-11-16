@@ -9,21 +9,12 @@
 .carro-card {
   display: flex;
   flex-direction: column;
-  transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), border-color .25s ease;
   background: var(--vidro);
   border: 1px solid var(--vidro-borda);
   border-radius: var(--raio);
   box-shadow: var(--vidro-sombra);
 }
 .carro-vitrine { padding: 0 1rem; }
-/* O cartão sobe e o carro "salta" um pouco mais quando o mouse passa por cima. */
-.carro-card:hover { transform: translateY(-8px); border-color: rgba(255, 255, 255, .3); }
-.carro-card .foto-carro img { transition: transform .45s cubic-bezier(.34, 1.56, .64, 1); }
-.carro-card:hover .foto-carro img { transform: translateY(-10px) scale(1.04); }
-@media (prefers-reduced-motion: reduce) {
-  .carro-card, .carro-card .foto-carro img { transition: none; }
-  .carro-card:hover, .carro-card:hover .foto-carro img { transform: none; }
-}
 
 .carro-recorte { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 18px rgba(0, 0, 0, .55)); }
 
