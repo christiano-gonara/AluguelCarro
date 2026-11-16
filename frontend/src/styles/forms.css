@@ -68,6 +68,95 @@ legend { font-size: 1.25rem; font-weight: 600; padding: 0 .75rem 0 0; }
 button.link { background: none; border: 0; color: var(--suave); cursor: pointer; font: inherit; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
 button.link:hover { color: var(--texto); }
 .link-claro { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 .5rem; color: var(--texto); font-weight: 600; text-decoration: none; }
+button.link-claro { border: 0; background: none; font: inherit; font-weight: 600; cursor: pointer; }
+
+/* Cadastro em 3 passos: um grupo por tela, indicação de etapa e uma ação principal grande. */
+.bloco-dica { margin: 0; font-size: .88rem; line-height: 1.5; color: var(--suave); }
+.cadastro { max-width: 720px; scroll-margin-top: 4rem; }
+.cadastro-topo { margin: 1rem 0 1.75rem; }
+.cadastro-topo h1 { margin-bottom: .4rem; }
+.cadastro-etapas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.cadastro-etapas li { display: flex; }
+.cadastro-etapas button {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  min-height: 2.6rem;
+  padding: .35rem .65rem;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--apagado);
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: default;
+}
+.cadastro-etapas .numero {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .07);
+  font-size: .68rem;
+  font-weight: 700;
+}
+.cadastro-etapas li.feita button { color: var(--texto-claro); border-color: rgba(143, 163, 106, .3); cursor: pointer; }
+.cadastro-etapas li.feita .numero { background: rgba(143, 163, 106, .25); color: #dde7c8; }
+.cadastro-etapas li.atual button { color: #fff; border-color: rgba(143, 163, 106, .7); background: rgba(143, 163, 106, .12); }
+.cadastro-etapas li.atual .numero { background: var(--oliva); color: #1a2027; }
+.cadastro-secao { display: flex; flex-direction: column; gap: .7rem; }
+.cadastro-secao h2 { margin: .35rem 0 0; font-size: 1.35rem; }
+.cadastro-form { gap: 1.5rem; }
+.cadastro .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cadastro .grade .larga { grid-column: 1 / -1; }
+.cadastro-acao { display: flex; align-items: stretch; gap: .65rem; margin-top: .25rem; }
+.cadastro-acao .btn { flex: 1; min-height: 3.2rem; }
+.cadastro-acao .btn.secundario { flex: 0 0 auto; padding: 0 1.3rem; }
+.cadastro-form > .centro-texto { margin: 0; font-size: .9rem; }
+.empregador {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  padding: .9rem 1rem 1rem;
+  border: 1px solid var(--linha);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .03);
+}
+.empregador-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+.empregador-topo .link { font-size: .78rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
+.adicionar-trabalho { align-self: flex-start; border-style: dashed; min-height: 2.7rem; font-size: .9rem; }
+.renda-total { margin: 0; font-size: .9rem; color: var(--texto-claro); }
+.renda-total strong { color: #fff; }
+
+@media (max-width: 560px) {
+  .cadastro-etapas button { gap: .35rem; padding: .3rem .4rem; font-size: .7rem; }
+  .cadastro-etapas .numero { width: 1.2rem; height: 1.2rem; font-size: .62rem; }
+  .cadastro .grade { grid-template-columns: 1fr; }
+  .cadastro-acao { flex-direction: column; }
+  .cadastro-acao .btn.secundario { width: 100%; }
+}
 
 /* Busca na tabela FIPE: destacada em verde-oliva, como atalho do cadastro. */
 .fipe {

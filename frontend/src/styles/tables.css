@@ -32,17 +32,17 @@
 .campo-busca input { flex: 1; min-width: 0; min-height: 0; height: 100%; padding: 0; border: 0; background: transparent; }
 .tabela-rolagem { overflow-x: auto; }
 
-table { width: 100%; min-width: 980px; border-collapse: collapse; font-size: .95rem; }
+table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: .95rem; }
 th {
   text-align: left;
-  padding: 1rem 1.25rem;
+  padding: 1rem .9rem;
   font-size: .8rem;
   font-weight: 600;
   color: var(--suave);
   white-space: nowrap;
   border-bottom: 1px solid var(--linha);
 }
-td { padding: .9rem 1.25rem; vertical-align: middle; white-space: nowrap; }
+td { padding: .9rem .9rem; vertical-align: middle; white-space: nowrap; }
 tbody tr:nth-child(odd) { background: rgba(255, 255, 255, .035); }
 tbody tr:hover { background: rgba(255, 255, 255, .06); }
 .ordenar { display: inline-flex; align-items: center; gap: .35rem; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
@@ -64,6 +64,35 @@ th[aria-sort='ascending'] .ordenar, th[aria-sort='descending'] .ordenar { color:
 }
 .botao-icone:hover { background: rgba(255, 255, 255, .12); color: var(--texto); }
 .btn.pequeno-btn { min-height: 2.5rem; padding: 0 1.1rem; font-size: .85rem; }
+.seta-simbolo { display: inline-block; font-size: .95rem; line-height: 1; transition: transform .25s ease; }
+.seta-linha.aberta .seta-simbolo { transform: rotate(180deg); }
+tbody tr.linha-expandida { background: rgba(0, 0, 0, .18); }
+tbody tr.linha-expandida:hover { background: rgba(0, 0, 0, .18); }
+.linha-expandida td { padding: 0 .9rem 1rem; white-space: normal; }
+.detalhe-pedido {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 2rem;
+  padding: .9rem 1rem;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, .22);
+}
+.detalhe-item { display: flex; flex-direction: column; gap: .15rem; }
+.detalhe-rotulo { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
+.detalhe-item strong { font-size: .95rem; }
+.detalhe-pedido .btn { margin-left: auto; }
+
+/* Tabela de pedidos: nomes longos truncam e o período ocupa duas linhas, pra caber sem rolagem. */
+.tabela-pedidos th, .tabela-pedidos td { padding-left: .75rem; padding-right: .75rem; }
+.tabela-pedidos .pessoa strong,
+.tabela-pedidos .carro-celula strong { display: block; max-width: 9.5rem; overflow: hidden; text-overflow: ellipsis; }
+.tabela-pedidos .iniciais { width: 2.4rem; height: 2.4rem; }
+.tabela-pedidos .carro-miniatura { width: 3.2rem; height: 2.1rem; }
+.tabela-pedidos .carro-miniatura img { width: 2.8rem; height: 1.8rem; }
+.tabela-pedidos .quando { white-space: normal; line-height: 1.35; }
+.tabela-pedidos .quando span { display: block; }
 
 .carro-celula { display: flex; align-items: center; gap: .75rem; }
 .carro-celula > span:last-child { display: flex; flex-direction: column; line-height: 1.3; }

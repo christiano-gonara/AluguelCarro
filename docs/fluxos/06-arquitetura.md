@@ -58,6 +58,6 @@ Os estilos ficam em `frontend/src/styles/`, separados dos componentes, um arquiv
 | `catalogo.css` | cartões de carro |
 | `login.css` | tela de entrar |
 | `landing.css` | página de apresentação |
-| `avisos.css` | notificações do sistema, faixa da demonstração e página 404 |
+| `avisos.css` | notificações do sistema, aviso da demo/Sistema e página 404 |
 | `animacoes.css` | tudo o que se mexe ao passar o mouse |
 | `index.css` | junta todos na ordem certa |

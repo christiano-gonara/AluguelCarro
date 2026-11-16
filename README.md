@@ -36,21 +36,24 @@ Protótipo funcional em desenvolvimento acadêmico.
 - [Testes](#-testes)
 - [Documentações utilizadas](#-documentações-utilizadas)
 - [Autores](#-autores)
+- [Contribuição](#-contribuição)
 - [Agradecimentos](#-agradecimentos)
+- [Licença](#-licença)
 
 ## 🔗 Links Úteis
 
+- Índice da documentação: [`docs`](docs/README.md)
 - Modelagem UML (Mermaid, renderizada pelo GitHub): [`docs/modelagem`](docs/modelagem)
+- Checklist dos requisitos do laboratório: [`docs/requisitos.md`](docs/requisitos.md)
+- Roteiro da apresentação (demo + modelo × código): [`docs/apresentacao.md`](docs/apresentacao.md)
 - API da Tabela FIPE: [deividfortuna.github.io/fipe](https://deividfortuna.github.io/fipe/)
 - Esquema do banco de dados: [`docs/banco-de-dados.sql`](docs/banco-de-dados.sql)
 
 ## 📝 Sobre o Projeto
 
-O objetivo é apoiar a gestão de aluguéis de automóveis, permitindo efetuar, cancelar e modificar pedidos pela Internet. Os pedidos, depois de introduzidos, passam por análise financeira dos agentes e, com parecer positivo, seguem para a execução do contrato.
+O sistema gerencia aluguel de carros pela internet. O cliente escolhe o carro, manda o pedido e acompanha o status. A empresa ou o banco confere a renda, aprova (ou recusa com um motivo) e fecha o contrato.
 
-Sobre os contratantes, o sistema guarda RG, CPF, nome, endereço, profissão e as entidades empregadoras com os respectivos rendimentos (no máximo 3). Dependendo do tipo de contrato, o automóvel é registrado como propriedade do cliente, de uma empresa ou de um banco, e o aluguel pode estar associado a um contrato de crédito concedido por um banco agente. O contexto é acadêmico.
-
-O sistema só pode ser usado após **cadastro prévio e login** (usuário e senha).
+No cadastro ficam RG, CPF, nome, endereço, profissão e até 3 empregadores com renda. O carro pode ficar no nome do cliente, da empresa ou do banco, e o banco pode oferecer parcelamento. É um projeto acadêmico, e só dá pra usar depois do login.
 
 ## 🔀 Fluxos do Sistema
 
@@ -151,15 +154,14 @@ Visual escuro com cartões de vidro, inspirado num layout de referência do Figm
 
 ## ✨ Funcionalidades Principais
 
-- **Página de apresentação**: explica o sistema para quem ainda não tem conta, com comparação de diárias e perguntas frequentes.
-- **Autenticação**: cadastro de clientes, login obrigatório com usuário e senha, sessão HTTP e logout.
-- **CRUD de cliente**: cadastro, consulta, atualização e exclusão dos próprios dados, incluindo até 3 empregadores com rendimento.
-- **Pedidos de aluguel (cliente)**: introduzir, modificar (enquanto em análise), consultar o status e cancelar.
-- **Análise e contratos (agentes)**: avaliar pedidos com parecer financeiro, modificar pedidos, executar o contrato definindo o proprietário do automóvel e, para bancos, associar contrato de crédito.
-- **Catálogo de automóveis**: tela inicial do cliente, com matrícula, ano, marca, modelo, placa (padrão Mercosul) e diária; gerido pelos agentes.
-- **Integração com a Tabela FIPE**: no cadastro de automóvel, o agente escolhe marca, modelo e ano pela [API pública da FIPE](https://deividfortuna.github.io/fipe/) e o sistema preenche os campos e sugere a diária (0,3% do valor de tabela).
-- **Contas de exemplo**: com o seed habilitado, a tela de login oferece entrada com um clique como cliente, empresa ou banco.
-- **Perfis e autorização**: cliente, agente (empresa) e agente (banco), com regras de acesso aplicadas no back-end.
+- **Apresentação**: explica o sistema para quem ainda não tem conta.
+- **Login e cadastro**: usuário e senha, sessão HTTP e logout.
+- **Dados do cliente**: ver, editar e apagar a própria conta, com até 3 empregadores.
+- **Pedidos**: o cliente cria, muda (só em análise), consulta e cancela.
+- **Análise e contrato**: o agente avalia com parecer, fecha o contrato e define o dono do carro; só o banco parcela.
+- **Carros**: cadastro, edição e exclusão pelo agente, com busca na [Tabela FIPE](https://deividfortuna.github.io/fipe/) e diária sugerida (0,3% do valor).
+- **Contas de exemplo**: com o seed ligado, dá pra entrar como cliente, empresa ou banco com um clique.
+- **Perfis**: cliente, empresa e banco, com as permissões conferidas no back-end.
 
 ## 🛠 Tecnologias Utilizadas
 
@@ -188,10 +190,10 @@ Back-end em **MVC** com camadas bem separadas, e front-end como SPA que consome 
 
 Principais decisões:
 
-- Entidades nunca são expostas diretamente: a API usa DTOs.
-- As regras de transição de status e de dono do pedido ficam no serviço, não na tela.
-- Em desenvolvimento, o Vite encaminha `/api` ao Spring (proxy), mantendo a mesma origem e dispensando CORS.
-- CSRF está desativado por simplicidade acadêmica (API com sessão e SameSite=Lax); em produção seria preciso reavaliar.
+- A API usa DTOs; nenhuma entidade é exposta direto.
+- As regras de status e de dono do pedido ficam no service, não na tela.
+- Em desenvolvimento, o Vite encaminha `/api` ao Spring: mesma origem e sem CORS.
+- CSRF está desligado por simplicidade acadêmica (sessão com SameSite=Lax). Em produção, valeria reavaliar.
 
 Diagramas (UML em Mermaid):
 
@@ -301,8 +303,9 @@ Em desenvolvimento, o Vite encaminha `/api` ao Spring Boot e `/fipe` à API da T
 
 Dá pra ver o visual funcionando sem instalar nada: **https://christiano-gonara.github.io/AluguelCarro/**
 
-- Roda **sem o back-end**: os dados de exemplo ficam só no navegador de quem acessa (`frontend/src/demo`), seguindo as mesmas regras e mensagens da API.
-- Contas de exemplo (senha `demo`): `cliente.demo`, `marina.souza`, `lucas.pereira`, `agente.empresa` e `agente.banco`. A aba verde **Cenários de uso**, no topo, troca de conta com um clique e mostra o que testar em cada tela (só do seu perfil). O botão **Recomeçar** volta os dados ao começo.
+- Roda **sem o back-end**: os dados de exemplo ficam só no navegador de quem acessa (`frontend/src/demo`), seguindo as mesmas regras e mensagens da API. É uma demonstração visual: o sistema completo (Spring Boot + Supabase) roda conforme a seção de instalação.
+- Contas de exemplo (senha `demo`): `cliente.demo`, `marina.souza`, `lucas.pereira`, `agente.empresa` e `agente.banco`. A aba verde **Cenários de uso** só aparece **depois do login**, no topo: mostra o que testar naquela tela, só do perfil de quem entrou, e troca de conta com um clique (as contas dos outros perfis ficam atrás de um link).
+- No rodapé ficam o aviso fixo de demonstração (com o botão **Recomeçar**, que volta os dados ao começo) e o botão **Sistema**, que separa em categorias a demonstração, as mensagens do sistema e as telas de exceção.
 - Publicada sozinha a cada push na `main` pelo GitHub Actions ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
 - Os cenários pra testar cada fluxo estão em [`docs/fluxos/07-cenarios.md`](docs/fluxos/07-cenarios.md).
 
@@ -327,6 +330,8 @@ java -jar target/aluguel-carro-1.0.0.jar
 
 Configure as variáveis de ambiente de produção no servidor. Como o front-end em produção ficará em outra origem, será preciso servir `dist` atrás do mesmo domínio da API (proxy reverso) ou habilitar CORS com credenciais no back-end.
 
+O GitHub Pages só publica a demonstração: ele não roda o Spring Boot nem acessa o Supabase. Pra mostrar o sistema completo é preciso hospedar a API em outro lugar ou rodar localmente na apresentação — os detalhes estão em [`docs/requisitos.md`](docs/requisitos.md).
+
 ## 📂 Estrutura de Pastas
 
 ```text
@@ -344,7 +349,7 @@ AluguelCarro/
 │       │   ├── security/         # Login, sessão e papéis
 │       │   └── service/          # Regras de negócio
 │       ├── main/resources/application.properties
-│       └── test/                 # Testes
+│       └── test/                 # Testes de modelo e de regras de negócio
 ├── frontend/                     # React + Vite + TypeScript
 │   ├── public/carros/            # Fotos recortadas dos carros (sem fundo)
 │   ├── tsconfig.json
@@ -358,13 +363,29 @@ AluguelCarro/
 │       ├── utils/                # Formatadores e cliente da Tabela FIPE
 │       ├── api.ts                # Cliente HTTP tipado
 │       └── types.ts              # Tipos que espelham os DTOs da API
-└── docs/
-    ├── fluxos/                   # Fluxogramas, mapa de telas, sequências e arquitetura (Mermaid)
-    ├── modelagem/                # Casos de uso, histórias, classes e pacotes
-    └── banco-de-dados.sql
+├── docs/
+│   ├── fluxos/                   # Fluxogramas, mapa de telas, sequências e arquitetura (Mermaid)
+│   ├── modelagem/                # Casos de uso, histórias, classes e pacotes
+│   ├── prints/                   # Capturas de tela usadas no README
+│   ├── apresentacao.md           # Roteiro da demo e comparação modelo × código
+│   ├── requisitos.md             # Checklist do laboratório
+│   └── banco-de-dados.sql
+└── LICENSE
 ```
 
 ## 🎥 Demonstração
+
+### 🖼️ Telas principais
+
+As imagens são da **versão de demonstração** (GitHub Pages), que roda sem o back-end.
+
+| Apresentação | Login |
+|---|---|
+| ![Apresentação](docs/prints/01-apresentacao.png) | ![Login](docs/prints/02-login.png) |
+| **Cadastro em 3 passos** | **Catálogo do cliente** |
+| ![Cadastro](docs/prints/03-cadastro.png) | ![Catálogo](docs/prints/04-cliente-catalogo.png) |
+| **Pedidos do cliente** | **Pedidos do parceiro** |
+| ![Pedidos do cliente](docs/prints/05-cliente-pedidos.png) | ![Pedidos do parceiro](docs/prints/06-parceiro-pedidos.png) |
 
 ### 💻 Exemplo de Saída no Terminal (API com cURL)
 
@@ -391,7 +412,7 @@ cd backend
 mvn test
 ```
 
-Os testes atuais cobrem regras do modelo (valor estimado do pedido, limite de 3 empregadores e soma de rendimentos).
+São **20 testes**: 4 do modelo (valor estimado, status inicial, limite de 3 empregadores e soma de rendimentos), 12 das regras de pedido (quem cria, modifica, cancela, avalia e executa; crédito só do banco) e 4 do cadastro de cliente (CPF duplicado, exclusão bloqueada e exclusão em cascata). O front-end ainda não tem testes automatizados.
 
 ## 🔗 Documentações utilizadas
 
@@ -425,6 +446,22 @@ Carros fora dessa lista usam a foto do artigo da Wikipédia, buscada na hora pel
 
 Os ícones são do [coolicons](https://coolicons.cool), de Kryston Schwarze, sob licença MIT.
 
+## 🤝 Contribuição
+
+Projeto acadêmico, aberto a sugestões e correções:
+
+1. Faça um `fork` do repositório.
+2. Crie uma branch: `git checkout -b feat/minha-melhoria`.
+3. Faça o commit seguindo [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/) (ex.: `feat: filtra pedidos por situação`).
+4. Envie a branch: `git push origin feat/minha-melhoria`.
+5. Abra um Pull Request descrevendo o que mudou e como testar.
+
+Antes de abrir o PR, rode `mvn test` no back-end e `npm run build` no front-end.
+
 ## 🙏 Agradecimentos
 
 À PUC Minas e ao professor João Paulo Carneiro Aramuni, pela proposta e pelo material da disciplina DIAW.
+
+## 📄 Licença
+
+Distribuído sob a licença **MIT**. Veja [`LICENSE`](LICENSE).

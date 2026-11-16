@@ -1,4 +1,5 @@
-import { Link, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import Icone from '../components/Icone'
 import type { NomeIcone } from '../components/Icone'
@@ -64,8 +65,21 @@ function TituloSecao({ children }: { children: string }) {
   )
 }
 
+/** Rola até uma seção da página. Endereços com # brigam com o HashRouter da demonstração. */
+function irParaSecao(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
 export default function Landing() {
   const { usuario } = useAuth()
+  const location = useLocation()
+
+  // O rodapé manda a seção desejada no state (ex.: "Como funciona") em vez de usar #.
+  useEffect(() => {
+    const secao = (location.state as { secao?: string } | null)?.secao
+    if (secao) requestAnimationFrame(() => irParaSecao(secao))
+  }, [location.state])
+
   if (usuario) return <Navigate to="/" replace />
 
   return (
@@ -77,11 +91,21 @@ export default function Landing() {
             Aluga.
           </Link>
           <nav aria-label="Principal">
-            <a href="#o-que-e">O que é</a>
-            <a href="#para-quem">Para quem</a>
-            <a href="#como-funciona">Como funciona</a>
-            <a href="#quanto-custa">Preços</a>
-            <a href="#duvidas">Dúvidas</a>
+            <button type="button" onClick={() => irParaSecao('o-que-e')}>
+              O que é
+            </button>
+            <button type="button" onClick={() => irParaSecao('para-quem')}>
+              Para quem
+            </button>
+            <button type="button" onClick={() => irParaSecao('como-funciona')}>
+              Como funciona
+            </button>
+            <button type="button" onClick={() => irParaSecao('quanto-custa')}>
+              Preços
+            </button>
+            <button type="button" onClick={() => irParaSecao('duvidas')}>
+              Dúvidas
+            </button>
           </nav>
           <div className="usuario">
             <Link to="/login" className="link-claro">
@@ -108,9 +132,9 @@ export default function Landing() {
               <Link to="/registro" className="btn">
                 Criar minha conta <Icone nome="seta" tamanho={18} />
               </Link>
-              <a href="#como-funciona" className="link-claro">
+              <button type="button" className="link-claro" onClick={() => irParaSecao('como-funciona')}>
                 Ver como funciona
-              </a>
+              </button>
             </div>
           </div>
           <article className="vidro landing-hero-card">

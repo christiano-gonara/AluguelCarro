@@ -16,7 +16,12 @@ Todos podem ser testados na versão de demonstração (GitHub Pages), que já ve
 | `agente.empresa` | empresa parceira | carros Argo, Onix e HB20 |
 | `agente.banco` | banco parceiro | carros Corolla, T-Cross e Compass |
 
-No topo de cada tela da demonstração tem a aba verde **Cenários de uso**. Ela abre uma janelinha com duas abas: **Contas de exemplo** (um cartão por conta, com os números dela; um clique troca de conta e a atual fica marcada com “Você está aqui”) e **O que testar nesta tela** (os cenários daquela tela, só do perfil de quem entrou: cliente, empresa ou banco). O botão **Recomeçar**, na faixa da demonstração, volta tudo ao começo.
+A aba verde **Cenários de uso** só aparece **depois do login**, no topo da tela. Quem ainda não entrou (apresentação, login e cadastro) não vê a aba: cenário de uso é pra quem está testando um perfil. Ela abre uma janelinha com duas abas:
+
+- **Contas de exemplo**: lista primeiro as contas do seu perfil, cada uma num momento diferente, com os números dela. Um clique troca de conta e a atual fica marcada com “Você está aqui”. As contas dos outros perfis ficam atrás do link **Ver contas de empresa e banco** (ou **Ver contas de clientes**), porque trocar de perfil é só um atalho pra testar o outro lado.
+- **O que testar nesta tela**: os cenários daquela tela, só do perfil de quem entrou (cliente, empresa ou banco), com a marca de principal, alternativo ou de erro.
+
+No rodapé, o aviso fixo de demonstração traz o botão **Recomeçar** (volta tudo ao começo) e o botão **Sistema**, que abre três categorias: **Demonstração**, **Mensagens** (as notificações do sistema, com um botão pra ver cada uma) e **Telas de exceção** (404, pedido inexistente, tela de outro perfil).
 
 ---
 

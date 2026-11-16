@@ -1,6 +1,6 @@
 # Fluxos e diagramas
 
-Todos os desenhos estão em [Mermaid](https://mermaid.js.org/), então aparecem como imagem direto no GitHub. Os diagramas UML (casos de uso, classes e pacotes) ficam em [`../modelagem`](../modelagem).
+Todos os desenhos estão em [Mermaid](https://mermaid.js.org/), então aparecem como imagem direto no GitHub. Os diagramas UML (casos de uso, classes e pacotes) ficam em [`../modelagem`](../modelagem). O checklist dos requisitos do laboratório, com o que já está pronto, fica em [`../requisitos.md`](../requisitos.md).
 
 | Arquivo | O que mostra |
 |---|---|

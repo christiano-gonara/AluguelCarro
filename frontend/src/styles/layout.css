@@ -30,10 +30,15 @@
   color: #dde7c8;
 }
 .topo nav { display: flex; gap: .5rem; flex: 1; justify-content: center; flex-wrap: wrap; }
-.topo nav a {
+.topo nav a,
+.topo nav button {
   padding: .6rem .9rem;
   color: var(--texto);
+  font: inherit;
   font-size: .9rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
   text-decoration: none;
 }
 /* O tracinho embaixo do link (e a animação dele) fica em animacoes.css. */
@@ -52,7 +57,7 @@
 .usuario-nome { font-size: .85rem; font-weight: 600; }
 .usuario-perfil { color: var(--suave); font-size: .72rem; }
 
-.conteudo { flex: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: 1.5rem 3rem 4rem; }
+.conteudo { flex: 1; width: 100%; max-width: 1280px; margin: 0 auto; padding: 1.5rem 3rem 4rem; }
 .pagina-topo { margin-bottom: 2.5rem; }
 .pagina-topo p { margin: 0; font-size: 1.1rem; color: var(--texto-claro); max-width: 620px; }
 
@@ -109,8 +114,8 @@
 .rodape-marca-dagua {
   position: absolute;
   left: 50%;
-  bottom: -2.75rem;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   font-size: clamp(7.5rem, 22vw, 20rem);
   font-weight: 700;
   letter-spacing: -.05em;

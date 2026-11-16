@@ -60,12 +60,14 @@
 .btn.voltar:hover .icone { transform: translateX(-3px); }
 
 /* ---------- Menu do topo: sobe de leve e ganha um tracinho que cresce do meio ---------- */
-.topo nav a {
+.topo nav a,
+.topo nav button {
   position: relative;
   border-bottom: 0;
   transition: transform .35s var(--curva-suave), color .2s ease;
 }
-.topo nav a::after {
+.topo nav a::after,
+.topo nav button::after {
   content: '';
   position: absolute;
   left: .9rem;
@@ -77,8 +79,10 @@
   transform: scaleX(0);
   transition: transform .35s var(--curva-suave);
 }
-.topo nav a:hover { transform: translateY(-2px); }
-.topo nav a:hover::after { transform: scaleX(1); }
+.topo nav a:hover,
+.topo nav button:hover { transform: translateY(-2px); }
+.topo nav a:hover::after,
+.topo nav button:hover::after { transform: scaleX(1); }
 .topo nav a.active::after { transform: scaleX(1); background: var(--oliva); }
 .marca { transition: transform .35s var(--curva-suave); }
 .marca:hover { transform: translateY(-2px); }

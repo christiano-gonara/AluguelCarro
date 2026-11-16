@@ -1,5 +1,6 @@
 // Cenários de uso de cada tela, mostrados na "notch" do topo da versão de demonstração.
-// Cada perfil só vê os cenários dele: cliente, empresa ou banco. Mesmo conteúdo de docs/fluxos/07-cenarios.md.
+// A notch só aparece depois do login e cada perfil vê apenas os cenários dele: cliente, empresa ou banco.
+// Mesmo conteúdo de docs/fluxos/07-cenarios.md.
 
 import type { Perfil } from '../types'
 
@@ -24,71 +25,44 @@ export const ROTULO_PERFIL: Record<Perfil, string> = {
   AGENTE_BANCO: 'Banco',
 }
 
-// ---------- Quem ainda não entrou ----------
-
-const APRESENTACAO: TelaCenarios = {
-  titulo: 'Apresentação',
-  cenarios: [
-    c('principal', 'Clica em Criar conta', 'Abre o cadastro de cliente'),
-    c('principal', 'Clica em Entrar', 'Abre o login, com as contas de exemplo'),
-    c('alternativo', 'Usa o menu (O que é, Preços, Dúvidas…)', 'A página desce até a parte escolhida'),
-  ],
-}
-
-const ENTRAR: TelaCenarios = {
-  titulo: 'Entrar',
-  cenarios: [
-    c('principal', 'Entra com usuário e senha (senha demo)', 'Aparece “Que bom te ver” e abre a tela inicial do perfil'),
-    c('alternativo', 'Clica numa conta de exemplo', 'Entra direto, sem digitar nada'),
-    c('alternativo', 'Clica em Voltar', 'Volta pra apresentação'),
-    c('erro', 'Erra a senha', '“Usuário ou senha não conferem. Confere se o Caps Lock está ligado.”'),
-  ],
-}
-
-const CADASTRO: TelaCenarios = {
-  titulo: 'Criar conta',
-  cenarios: [
-    c('principal', 'Preenche tudo e cria a conta', 'Aparece “Conta criada” e já entra no catálogo'),
-    c('alternativo', 'Clica em Voltar', 'Volta pro login'),
-    c('erro', 'Usa o usuário cliente.demo', '“Esse nome de usuário já está em uso. Tente outro.”'),
-    c('erro', 'Usa o CPF 12345678909', '“Já tem uma conta com esse CPF. Que tal entrar?”'),
-    c('erro', 'Põe um CPF com menos de 11 números', '“Alguns campos precisam de ajuste”, com o campo indicado'),
-  ],
-}
-
 // ---------- Cliente ----------
 
 const CLIENTE = {
   carros: {
-    titulo: 'Carros',
+    titulo: 'Carros disponíveis',
     cenarios: [
-      c('principal', 'Escolhe um carro e clica em Alugar', 'Abre o pedido com o carro já escolhido'),
+      c('principal', 'Escolhe um carro e clica em Alugar', 'Abre o pedido com o carro já escolhido e a diária na tela'),
       c('alternativo', 'Passa o mouse num carro', 'O cartão sobe de leve pra mostrar que dá pra clicar'),
+      c('alternativo', 'Confere o dono de cada carro', 'O rodapé do cartão diz se é de uma empresa ou de um banco'),
     ],
   },
   novoPedido: {
     titulo: 'Novo pedido',
     cenarios: [
-      c('principal', 'Escolhe as datas e envia', 'Aparece “Pedido enviado” e o pedido fica Em análise'),
-      c('alternativo', 'Muda as datas de um pedido em análise', 'Aparece “Pedido alterado” e o total é recalculado'),
-      c('erro', 'Põe a devolução antes da retirada', 'Aviso no próprio campo de data'),
-      c('erro', 'Põe a retirada numa data que já passou', '“Alguns campos precisam de ajuste”'),
+      c('principal', 'Escolhe as datas e envia', '“Pedido enviado”; ele nasce Em análise'),
+      c('alternativo', 'Troca o carro antes de enviar', 'O total do lado direito é recalculado na hora'),
+      c('alternativo', 'Abre um pedido em análise e muda as datas', '“Pedido alterado”; o total é recalculado'),
+      c('erro', 'Põe a devolução antes da retirada', 'O próprio campo avisa: “A devolução tem que ser depois da retirada.”'),
+      c('erro', 'Tenta enviar sem escolher o carro', '“Alguns campos precisam de ajuste”, com o campo indicado'),
     ],
   },
   meusPedidos: {
     titulo: 'Meus pedidos',
     cenarios: [
-      c('principal', 'Busca, ordena e abre um pedido', 'Vai pro detalhe do pedido'),
-      c('alternativo', 'Cancela um pedido pela tabela', 'Aparece “Pedido nº … cancelado”'),
-      c('alternativo', 'Entra como Lucas Pereira (Primeira vez), em Contas de exemplo', 'Tela vazia com “Escolher um carro”'),
+      c('principal', 'Busca, ordena e abre um pedido', 'Vai pro detalhe, com a linha do tempo do pedido'),
+      c('alternativo', 'Abre a setinha de um pedido', 'Vê total, placa e quem aprova sem sair da lista'),
+      c('alternativo', 'Cancela um pedido pela tabela', 'Pede confirmação e mostra “Pedido nº … cancelado”'),
+      c('alternativo', 'Muda quantos pedidos aparecem por página', 'A tabela pagina em 10, 25 ou 50 linhas'),
+      c('alternativo', 'Troca pra conta do Lucas Pereira (Primeira vez)', 'Tela vazia com o botão “Escolher um carro”'),
     ],
   },
   detalhe: {
     titulo: 'Detalhe do pedido',
     cenarios: [
-      c('principal', 'Abre o pedido nº 1 (em análise)', 'Vê a linha do tempo e pode mudar ou cancelar'),
-      c('alternativo', 'Cancela o pedido nº 2 (aprovado)', 'Aparece “Pedido cancelado”'),
+      c('principal', 'Abre o pedido nº 1 (em análise)', 'Vê a linha do tempo e pode mudar as datas ou cancelar'),
+      c('principal', 'Abre o pedido nº 3 (contrato fechado)', 'Vê o parcelamento do banco e em nome de quem o carro ficou'),
       c('alternativo', 'Abre o pedido nº 4 (recusado)', 'Vê o motivo que o parceiro escreveu'),
+      c('alternativo', 'Abre o pedido nº 5 (cancelado)', 'Vê o atalho “Pedir este carro de novo”'),
       c('erro', 'Tenta mudar as datas do pedido nº 2', '“Só dá pra mudar o pedido enquanto ele está em análise.”'),
       c('erro', 'Abre #/pedidos/6 (é da Marina)', '“Você não tem permissão pra fazer isso com esta conta.”'),
       c('erro', 'Abre #/pedidos/999', '“Esse pedido não existe ou foi apagado.”'),
@@ -98,7 +72,8 @@ const CLIENTE = {
     titulo: 'Meus dados',
     cenarios: [
       c('principal', 'Muda o endereço ou a renda e salva', 'Aparece “Dados salvos”'),
-      c('alternativo', 'Adiciona até 3 lugares onde trabalha', 'A renda total é somada'),
+      c('alternativo', 'Adiciona até 3 empregadores', 'A renda total é somada e passa a valer na análise'),
+      c('alternativo', 'Remove um dos empregadores', 'A renda total diminui na hora'),
       c('erro', 'Troca o CPF para 98765432100 e salva', '“Já tem uma conta com esse CPF…”'),
       c('erro', 'Tenta apagar a conta (tem o contrato nº 3)', '“Você tem um contrato fechado, então a conta não pode ser apagada agora.”'),
     ],
@@ -110,43 +85,59 @@ const CLIENTE = {
 function parceiro(banco: boolean) {
   return {
     pedidos: {
-      titulo: 'Pedidos pra analisar',
+      titulo: 'Fila de pedidos',
       cenarios: [
-        c('principal', 'Filtra por situação e abre um pedido', 'Vai pra análise do pedido'),
-        c('alternativo', 'Busca pelo nome do cliente', 'A tabela filtra na hora'),
+        c('principal', 'Abre a fila de pedidos', 'Vê cliente, renda por mês, carro, período e situação'),
+        c('alternativo', 'Busca pelo nome do cliente', 'A tabela filtra enquanto digita'),
+        c('alternativo', 'Abre a setinha de um pedido', 'Vê renda, total e placa ali mesmo, sem abrir o pedido'),
+        c('alternativo', 'Ordena por renda ou por total', 'Dá pra ver quem tem mais folga financeira primeiro'),
+        c('alternativo', 'Muda quantos pedidos aparecem por página', 'A tabela pagina em 10, 25 ou 50 linhas'),
+        c('alternativo', 'Abre um pedido em análise', 'O botão vira “Analisar”, levando pro detalhe'),
       ],
     },
     analisar: {
-      titulo: banco ? 'Analisar e fechar contrato (com parcelamento)' : 'Analisar e fechar contrato',
+      titulo: banco ? 'Análise, contrato e crédito' : 'Análise e contrato',
       cenarios: [
-        c('principal', 'Abre o pedido nº 1, confere a renda e aprova', 'Aparece “Pedido aprovado”'),
-        c('alternativo', 'Recusa escrevendo o motivo', 'Aparece “Pedido recusado”; o cliente vê o motivo'),
-        c('principal', 'Abre o pedido nº 2 (aprovado) e fecha o contrato', 'Aparece “Contrato fechado”'),
+        c('principal', 'Aprova o pedido nº 1 escrevendo o parecer', '“Pedido aprovado”; o cliente vê o motivo'),
+        c('alternativo', 'Recusa o pedido nº 6 escrevendo o motivo', '“Pedido recusado”; o cliente vê o motivo'),
+        c('principal', 'Fecha o contrato do pedido nº 2', 'Escolhe em nome de quem o carro fica e vê “Contrato fechado”'),
         ...(banco
           ? [
-              c('principal', 'Fecha com parcelamento: valor, juros e parcelas', 'Aparece “Contrato fechado · com o parcelamento do banco”'),
+              c('principal', 'Marca “Oferecer parcelamento do banco”', 'Preenche valor, juros e parcelas; o contrato fica com o crédito'),
+              c('alternativo', 'Abre o pedido nº 3 (já fechado)', 'Vê o parcelamento que o banco concedeu'),
               c('erro', 'Põe 0 parcelas ou mais de 120', '“Alguns campos precisam de ajuste”'),
             ]
-          : [c('erro', 'Procura a opção de parcelar', 'Ela não aparece: parcelamento é só do banco')]),
-        c('erro', 'Deixa o parecer em branco', '“Alguns campos precisam de ajuste”'),
+          : [
+              c('alternativo', 'Procura a opção de parcelar', 'Ela não aparece: parcelamento é só do banco'),
+            ]),
+        c('erro', 'Deixa o parecer em branco', 'Aprovar e Recusar ficam desligados até escrever algo'),
         c('erro', 'Tenta avaliar um pedido já respondido', '“Esse pedido já foi respondido.”'),
       ],
     },
     carros: {
-      titulo: 'Seus carros',
+      titulo: banco ? 'Carros do banco' : 'Carros da empresa',
       cenarios: [
-        c('principal', 'Busca na FIPE e cadastra', 'Diária sugerida de 0,3% e aviso “Carro cadastrado”'),
-        c('alternativo', 'A FIPE não respondeu', 'Preenche marca, modelo e ano à mão'),
-        c('alternativo', 'Edita a diária de um carro', 'Aparece “Carro atualizado”'),
-        c('erro', 'Cadastra com a placa ABC1D23', '“Já tem um carro cadastrado com essa placa.”'),
-        c('erro', banco ? 'Tenta apagar o Toyota Corolla (está em pedidos)' : 'Tenta apagar o Fiat Argo (está em pedidos)', '“Esse carro já aparece em pedidos, então não dá pra apagar.”'),
+        c('principal', 'Busca marca, modelo e ano na FIPE', 'O resto é preenchido e a diária sugerida é 0,3% do valor FIPE'),
+        c('alternativo', 'Edita a diária de um carro', '“Carro atualizado”; o catálogo do cliente muda junto'),
+        c('alternativo', 'Cadastra um carro novo e depois apaga', '“Carro apagado”; ele some do catálogo'),
+        c('alternativo', 'A FIPE não respondeu', 'Dá pra preencher marca, modelo e ano à mão'),
+        c('erro', 'Usa a placa ABC1D23', '“Já tem um carro cadastrado com essa placa.”'),
+        c(
+          'erro',
+          banco ? 'Tenta apagar o Toyota Corolla (tem pedidos)' : 'Tenta apagar o Fiat Argo (tem pedidos)',
+          '“Esse carro já aparece em pedidos, então não dá pra apagar.”',
+        ),
+        c('erro', 'Cadastra com a diária zerada', '“Alguns campos precisam de ajuste”'),
       ],
     },
     clientes: {
       titulo: 'Clientes',
       cenarios: [
-        c('principal', 'Busca um cliente e confere a renda', 'Vê onde trabalha e quanto ganha por mês'),
-        c('alternativo', 'Muda quantos aparecem por página', 'A tabela pagina em 10, 25 ou 50'),
+        c('principal', 'Busca um cliente pelo nome', 'Vê profissão, empregadores e renda total por mês'),
+        c('alternativo', 'Ordena por renda', 'Do maior pro menor'),
+        c('alternativo', 'Confere o CPF na tabela', 'Aparece mascarado (***.456.789-**) pra proteger a pessoa'),
+        c('alternativo', 'Muda quantos clientes aparecem por página', 'A tabela pagina em 10, 25 ou 50 linhas'),
+        c('erro', 'Busca por um nome que não existe', '“Nenhum cliente encontrado com essa busca.”'),
       ],
     },
   } satisfies Record<string, TelaCenarios>
@@ -157,16 +148,15 @@ export const QUALQUER_TELA: TelaCenarios = {
   titulo: 'Em qualquer tela',
   cenarios: [
     c('erro', 'Abre um endereço que não existe (ex.: #/xyz)', 'Página “Essa página saiu pra dar uma volta”, com Voltar'),
-    c('alternativo', 'Clica em Sair', 'Aparece “Você saiu da conta”'),
-    c('alternativo', 'Troca de conta na aba Contas de exemplo, aqui na notch', 'Entra com outra conta de exemplo'),
+    c('erro', 'Abre uma tela do outro perfil (ex.: #/clientes como cliente)', 'O sistema volta pra tela inicial do seu perfil'),
+    c('alternativo', 'Troca de conta na aba Contas de exemplo, aqui na notch', 'Entra com outra conta de exemplo, sem sair'),
+    c('alternativo', 'Clica em Sistema, no rodapé', 'Vê as mensagens do sistema e as telas de exceção, cada uma na sua categoria'),
+    c('alternativo', 'Clica em Sair', 'Aparece “Você saiu da conta” e volta pra apresentação'),
   ],
 }
 
 /** Descobre os cenários da tela atual, só do perfil de quem entrou. */
 export function cenariosDaTela(caminho: string, perfil: Perfil | null): TelaCenarios | null {
-  if (caminho === '/sobre') return APRESENTACAO
-  if (caminho === '/login') return ENTRAR
-  if (caminho === '/registro') return CADASTRO
   if (!perfil) return null
   if (perfil === 'CLIENTE') {
     if (caminho === '/') return CLIENTE.carros

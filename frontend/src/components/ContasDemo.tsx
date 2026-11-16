@@ -15,6 +15,11 @@ interface Cenario {
   etiquetas: string[]
 }
 
+const ROTULO_GRUPO: Record<Cenario['grupo'], string> = {
+  cliente: 'Quem aluga',
+  parceiro: 'Empresa e banco parceiros',
+}
+
 function plural(n: number, um: string, varios: string): string {
   return `${n} ${n === 1 ? um : varios}`
 }
@@ -70,12 +75,14 @@ function cenarios(): Cenario[] {
 
 /**
  * Contas de exemplo da demonstração, cada uma num momento diferente. Fica dentro da notch do topo.
- * As do perfil de quem entrou aparecem primeiro; um clique troca de conta e a atual fica com "Você está aqui".
+ * Mostra primeiro as contas do perfil de quem entrou; as dos outros perfis ficam atrás de um link,
+ * porque trocar de perfil é só um atalho pra testar o outro lado.
  */
 export default function ContasDemo({ aoTrocar }: { aoTrocar?: () => void }) {
   const { usuario, login } = useAuth()
   const navigate = useNavigate()
   const [trocando, setTrocando] = useState<string | null>(null)
+  const [mostrarOutros, setMostrarOutros] = useState(false)
 
   if (!MODO_DEMO) return null
 
@@ -92,52 +99,65 @@ export default function ContasDemo({ aoTrocar }: { aoTrocar?: () => void }) {
     }
   }
 
-  const meuGrupo = usuario?.perfil === 'AGENTE_EMPRESA' || usuario?.perfil === 'AGENTE_BANCO' ? 'parceiro' : 'cliente'
+  const meuGrupo: Cenario['grupo'] =
+    usuario?.perfil === 'AGENTE_EMPRESA' || usuario?.perfil === 'AGENTE_BANCO' ? 'parceiro' : 'cliente'
   const lista = cenarios()
-  const grupos = (meuGrupo === 'cliente' ? (['cliente', 'parceiro'] as const) : (['parceiro', 'cliente'] as const)).map((g) => ({
-    g,
-    titulo: g === 'cliente' ? 'Quem aluga' : 'Empresa e banco parceiros',
-    contas: lista.filter((c) => c.grupo === g),
-  }))
+  const meus = lista.filter((c) => c.grupo === meuGrupo)
+  const outros = lista.filter((c) => c.grupo !== meuGrupo)
+
+  const linha = (c: Cenario) => {
+    const atual = c.username === usuario?.username
+    return (
+      <button
+        type="button"
+        key={c.username}
+        className={`conta-demo${atual ? ' atual' : ''}`}
+        onClick={() => void entrarComo(c.username)}
+        disabled={trocando !== null}
+        aria-current={atual ? 'true' : undefined}
+      >
+        <span className="iniciais conta-demo-avatar" aria-hidden="true">
+          {c.iniciais}
+        </span>
+        <span className="conta-demo-info">
+          <span className="conta-demo-topo">
+            <strong>{trocando === c.username ? 'Entrando…' : c.titulo}</strong>
+            {atual && <span className="conta-demo-selo">Você está aqui</span>}
+          </span>
+          <span className="conta-demo-pessoa">{c.pessoa}</span>
+          <span className="etiquetas">
+            {c.etiquetas.map((e) => (
+              <span key={e}>{e}</span>
+            ))}
+          </span>
+        </span>
+        <span className="conta-demo-seta" aria-hidden="true">
+          {atual ? 'atual' : <Icone nome="seta" tamanho={16} />}
+        </span>
+      </button>
+    )
+  }
 
   return (
     <div className="contas-demo">
-      {grupos.map(({ g, titulo, contas }) => (
-        <section key={g} className="contas-demo-grupo">
-          <h3>{titulo}</h3>
-          <div className="cenarios-demo-grade">
-            {contas.map((c) => {
-              const atual = c.username === usuario?.username
-              return (
-                <button
-                  type="button"
-                  key={c.username}
-                  className={`cenario-demo${atual ? ' atual' : ''}`}
-                  onClick={() => void entrarComo(c.username)}
-                  disabled={trocando !== null}
-                  aria-current={atual ? 'true' : undefined}
-                >
-                  <span className="iniciais">{c.iniciais}</span>
-                  <span className="cenario-demo-textos">
-                    <strong>{trocando === c.username ? 'Entrando…' : c.titulo}</strong>
-                    <span className="cenario-demo-pessoa">{c.pessoa}</span>
-                    <span className="etiquetas">
-                      {c.etiquetas.map((e) => (
-                        <span key={e}>{e}</span>
-                      ))}
-                    </span>
-                    {atual && (
-                      <span className="cenario-demo-aqui">
-                        <Icone nome="escudo" tamanho={16} /> Você está aqui
-                      </span>
-                    )}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
+      <section className="contas-demo-grupo">
+        <h3>{ROTULO_GRUPO[meuGrupo]}</h3>
+        <div className="contas-demo-lista">{meus.map(linha)}</div>
+      </section>
+
+      {mostrarOutros ? (
+        <section className="contas-demo-grupo">
+          <h3>{ROTULO_GRUPO[meuGrupo === 'cliente' ? 'parceiro' : 'cliente']}</h3>
+          <div className="contas-demo-lista">{outros.map(linha)}</div>
         </section>
-      ))}
+      ) : (
+        outros.length > 0 && (
+          <button type="button" className="conta-demo-ver" onClick={() => setMostrarOutros(true)}>
+            Ver contas de {meuGrupo === 'cliente' ? 'empresa e banco' : 'clientes'}
+            <Icone nome="seta" tamanho={15} />
+          </button>
+        )
+      )}
     </div>
   )
 }

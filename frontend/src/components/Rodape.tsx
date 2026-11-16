@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import Icone from './Icone'
+import Sistema, { AvisoDemo } from './Sistema'
 
 const REPOSITORIO = 'https://github.com/christiano-gonara/AluguelCarro'
 
@@ -59,17 +60,29 @@ export default function Rodape() {
           )}
           <nav aria-label="Ajuda" className="rodape-links">
             <span className="rodape-titulo">Ajuda</span>
-            <a href="/sobre#como-funciona">Como funciona</a>
-            <a href="/sobre#quanto-custa">Preços</a>
-            <a href="/sobre#duvidas">Perguntas frequentes</a>
+            <Link to="/sobre" state={{ secao: 'como-funciona' }}>
+              Como funciona
+            </Link>
+            <Link to="/sobre" state={{ secao: 'quanto-custa' }}>
+              Preços
+            </Link>
+            <Link to="/sobre" state={{ secao: 'duvidas' }}>
+              Perguntas frequentes
+            </Link>
           </nav>
         </div>
 
-        <div className="rodape-base">
-          <span>© 2026 Aluga. · Laboratório 02 de DIAW · Engenharia de Software · PUC Minas</span>
-          <button type="button" className="rodape-topo" onClick={voltarAoTopo}>
-            Voltar ao topo <Icone nome="setaCima" tamanho={18} />
-          </button>
+        <div className="rodape-fim">
+          <div className="rodape-base">
+            <span>© 2026 Aluga. · Laboratório 02 de DIAW · Engenharia de Software · PUC Minas</span>
+            <div className="rodape-base-acoes">
+              <Sistema />
+              <button type="button" className="rodape-topo" onClick={voltarAoTopo}>
+                Voltar ao topo <Icone nome="setaCima" tamanho={18} />
+              </button>
+            </div>
+          </div>
+          <AvisoDemo />
         </div>
       </div>
 

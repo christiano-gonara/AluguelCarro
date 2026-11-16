@@ -4,7 +4,6 @@ import { BrowserRouter, HashRouter } from 'react-router-dom'
 import App from './App'
 import { AuthProvider } from './auth/AuthContext'
 import { AvisosProvider } from './components/Avisos'
-import FaixaDemo from './components/FaixaDemo'
 import NotchCenarios from './components/NotchCenarios'
 import { MODO_DEMO } from './config'
 import './styles/index.css'
@@ -25,7 +24,6 @@ createRoot(raiz).render(
         <AuthProvider>
           <App />
           {MODO_DEMO && <NotchCenarios />}
-          {MODO_DEMO && <FaixaDemo />}
         </AuthProvider>
       </AvisosProvider>
     </Roteador>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
@@ -126,6 +126,8 @@ function TabelaPedidos({
   aoCancelar: (id: number) => void
 }) {
   const t = useTabela<Pedido, CampoPedido>(pedidos, texto, valor, { campo: 'id', crescente: false })
+  const [abertos, setAbertos] = useState<Set<number>>(new Set())
+  const colunas = ehCliente ? 5 : 6
   const coluna = (rotulo: string, campo: CampoPedido) => (
     <ColunaOrdenavel
       rotulo={rotulo}
@@ -134,6 +136,15 @@ function TabelaPedidos({
       aoOrdenar={() => t.ordenarPor(campo)}
     />
   )
+
+  function alternar(id: number) {
+    setAbertos((lista) => {
+      const novo = new Set(lista)
+      if (novo.has(id)) novo.delete(id)
+      else novo.add(id)
+      return novo
+    })
+  }
 
   return (
     <section className="tabela-vidro">
@@ -152,16 +163,13 @@ function TabelaPedidos({
         )}
       </BarraTabela>
       <div className="tabela-rolagem">
-        <table>
+        <table className="tabela-pedidos">
           <thead>
             <tr>
               {coluna('Pedido', 'id')}
               {!ehCliente && coluna('Cliente', 'cliente')}
               {coluna('Carro', 'carro')}
-              {!ehCliente && coluna('Renda por mês', 'renda')}
               {coluna('Quando', 'quando')}
-              {coluna('Total', 'total')}
-              {ehCliente && <th scope="col">Quem aprova</th>}
               {coluna('Situação', 'situacao')}
               <th scope="col" className="direita">
                 Ações
@@ -174,89 +182,130 @@ function TabelaPedidos({
               const final = p.status === 'CANCELADO' || p.status === 'CONTRATO_EXECUTADO'
               const foto = fotoRecortada(p.automovel.modelo)
               const precisaAgir = !ehCliente && (p.status === 'EM_ANALISE' || p.status === 'APROVADO_FINANCEIRAMENTE')
+              const expandida = abertos.has(p.id)
               return (
-                <tr key={p.id}>
-                  <td>
-                    <strong>#{p.id}</strong>
-                  </td>
-                  {!ehCliente && (
+                <Fragment key={p.id}>
+                  <tr>
                     <td>
-                      <span className="pessoa">
-                        <span className="iniciais" aria-hidden="true">
-                          {iniciais(p.clienteNome)}
+                      <strong>#{p.id}</strong>
+                    </td>
+                    {!ehCliente && (
+                      <td>
+                        <span className="pessoa">
+                          <span className="iniciais" aria-hidden="true">
+                            {iniciais(p.clienteNome)}
+                          </span>
+                          <strong title={p.clienteNome}>{p.clienteNome}</strong>
                         </span>
-                        <strong>{p.clienteNome}</strong>
-                      </span>
-                    </td>
-                  )}
-                  <td>
-                    <span className="carro-celula">
-                      <span className="carro-miniatura" aria-hidden="true">
-                        {foto ? <img src={foto} alt="" /> : <Icone nome="carro" tamanho={22} />}
-                      </span>
-                      <span>
-                        <strong>
-                          {p.automovel.marca} {p.automovel.modelo}
-                        </strong>
-                        <span className="suave pequeno">{p.automovel.placa}</span>
-                      </span>
-                    </span>
-                  </td>
-                  {!ehCliente && (
+                      </td>
+                    )}
                     <td>
-                      <strong>{moeda(p.clienteRendimentoTotal)}</strong>
+                      <span className="carro-celula">
+                        <span className="carro-miniatura" aria-hidden="true">
+                          {foto ? <img src={foto} alt="" /> : <Icone nome="carro" tamanho={22} />}
+                        </span>
+                        <span>
+                          <strong title={`${p.automovel.marca} ${p.automovel.modelo}`}>
+                            {p.automovel.marca} {p.automovel.modelo}
+                          </strong>
+                          <span className="suave pequeno">{p.automovel.placa}</span>
+                        </span>
+                      </span>
                     </td>
-                  )}
-                  <td>
-                    {dataBR(p.dataInicio)} a {dataBR(p.dataFim)}
-                  </td>
-                  <td>
-                    <strong>{moeda(p.valorTotalEstimado)}</strong>
-                  </td>
-                  {ehCliente && <td>{QUEM_APROVA[p.automovel.tipoProprietario] ?? '—'}</td>}
-                  <td>
-                    <StatusBadge status={p.status} />
-                  </td>
-                  <td className="direita">
-                    <span className="acoes">
-                      {precisaAgir ? (
-                        <Link className="btn pequeno-btn" to={`/pedidos/${p.id}`}>
-                          {p.status === 'EM_ANALISE' ? 'Analisar' : 'Fechar contrato'}
-                        </Link>
-                      ) : (
-                        <Link className="botao-icone" to={`/pedidos/${p.id}`} aria-label={`Ver pedido #${p.id}`} title="Ver">
-                          <Icone nome="olho" tamanho={18} />
-                        </Link>
-                      )}
-                      {!final && (!ehCliente || aberto) && (
-                        <Link
-                          className="botao-icone"
-                          to={`/pedidos/${p.id}/editar`}
-                          aria-label={`Mudar pedido #${p.id}`}
-                          title="Mudar"
-                        >
-                          <Icone nome="lapis" tamanho={18} />
-                        </Link>
-                      )}
-                      {ehCliente && !final && (
+                    <td className="quando">
+                      <span>{dataBR(p.dataInicio)}</span>
+                      <span className="suave pequeno">a {dataBR(p.dataFim)}</span>
+                    </td>
+                    <td>
+                      <StatusBadge status={p.status} />
+                    </td>
+                    <td className="direita">
+                      <span className="acoes">
+                        {precisaAgir ? (
+                          <Link className="btn pequeno-btn" to={`/pedidos/${p.id}`}>
+                            {p.status === 'EM_ANALISE' ? 'Analisar' : 'Fechar contrato'}
+                          </Link>
+                        ) : (
+                          <Link className="botao-icone" to={`/pedidos/${p.id}`} aria-label={`Ver pedido #${p.id}`} title="Ver">
+                            <Icone nome="olho" tamanho={18} />
+                          </Link>
+                        )}
+                        {!final && (!ehCliente || aberto) && (
+                          <Link
+                            className="botao-icone"
+                            to={`/pedidos/${p.id}/editar`}
+                            aria-label={`Mudar pedido #${p.id}`}
+                            title="Mudar"
+                          >
+                            <Icone nome="lapis" tamanho={18} />
+                          </Link>
+                        )}
+                        {ehCliente && !final && (
+                          <button
+                            type="button"
+                            className="botao-icone"
+                            onClick={() => aoCancelar(p.id)}
+                            aria-label={`Cancelar pedido #${p.id}`}
+                            title="Cancelar"
+                          >
+                            <Icone nome="fechar" tamanho={18} />
+                          </button>
+                        )}
                         <button
                           type="button"
-                          className="botao-icone"
-                          onClick={() => aoCancelar(p.id)}
-                          aria-label={`Cancelar pedido #${p.id}`}
-                          title="Cancelar"
+                          className={`botao-icone seta-linha${expandida ? ' aberta' : ''}`}
+                          aria-expanded={expandida}
+                          aria-controls={`detalhe-${p.id}`}
+                          title={expandida ? 'Fechar detalhes' : 'Ver detalhes'}
+                          onClick={() => alternar(p.id)}
                         >
-                          <Icone nome="fechar" tamanho={18} />
+                          <span className="seta-simbolo" aria-hidden="true">
+                            ▾
+                          </span>
+                          <span className="sr-only">
+                            {expandida ? 'Fechar' : 'Ver'} detalhes do pedido #{p.id}
+                          </span>
                         </button>
-                      )}
-                    </span>
-                  </td>
-                </tr>
+                      </span>
+                    </td>
+                  </tr>
+                  {expandida && (
+                    <tr className="linha-expandida" id={`detalhe-${p.id}`}>
+                      <td colSpan={colunas}>
+                        <div className="detalhe-pedido">
+                          {!ehCliente && (
+                            <span className="detalhe-item">
+                              <span className="detalhe-rotulo">Renda por mês</span>
+                              <strong>{moeda(p.clienteRendimentoTotal)}</strong>
+                            </span>
+                          )}
+                          <span className="detalhe-item">
+                            <span className="detalhe-rotulo">Total do aluguel</span>
+                            <strong>{moeda(p.valorTotalEstimado)}</strong>
+                          </span>
+                          <span className="detalhe-item">
+                            <span className="detalhe-rotulo">Placa</span>
+                            <strong>{p.automovel.placa}</strong>
+                          </span>
+                          {ehCliente && (
+                            <span className="detalhe-item">
+                              <span className="detalhe-rotulo">Quem aprova</span>
+                              <strong>{QUEM_APROVA[p.automovel.tipoProprietario] ?? '—'}</strong>
+                            </span>
+                          )}
+                          <Link className="btn secundario pequeno-btn" to={`/pedidos/${p.id}`}>
+                            Ver pedido completo
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               )
             })}
             {t.visiveis.length === 0 && (
               <tr>
-                <td colSpan={8} className="suave">
+                <td colSpan={colunas} className="suave">
                   Nenhum pedido encontrado com essa busca.
                 </td>
               </tr>
