@@ -80,7 +80,7 @@ const CLIENTE = {
     cenarios: [
       c('principal', 'Busca, ordena e abre um pedido', 'Vai pro detalhe do pedido'),
       c('alternativo', 'Cancela um pedido pela tabela', 'Aparece “Pedido nº … cancelado”'),
-      c('alternativo', 'Entra como Lucas Pereira (Primeira vez)', 'Tela vazia com “Escolher um carro”'),
+      c('alternativo', 'Entra como Lucas Pereira (Primeira vez), em Contas de exemplo', 'Tela vazia com “Escolher um carro”'),
     ],
   },
   detalhe: {
@@ -158,7 +158,7 @@ export const QUALQUER_TELA: TelaCenarios = {
   cenarios: [
     c('erro', 'Abre um endereço que não existe (ex.: #/xyz)', 'Página “Essa página saiu pra dar uma volta”, com Voltar'),
     c('alternativo', 'Clica em Sair', 'Aparece “Você saiu da conta”'),
-    c('alternativo', 'Troca de conta em Cenários de uso, no fim da página', 'Entra com outra conta de exemplo'),
+    c('alternativo', 'Troca de conta na aba Contas de exemplo, aqui na notch', 'Entra com outra conta de exemplo'),
   ],
 }
 

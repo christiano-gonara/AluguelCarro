@@ -302,7 +302,7 @@ Em desenvolvimento, o Vite encaminha `/api` ao Spring Boot e `/fipe` à API da T
 Dá pra ver o visual funcionando sem instalar nada: **https://christiano-gonara.github.io/AluguelCarro/**
 
 - Roda **sem o back-end**: os dados de exemplo ficam só no navegador de quem acessa (`frontend/src/demo`), seguindo as mesmas regras e mensagens da API.
-- Contas de exemplo (senha `demo`): `cliente.demo`, `marina.souza`, `lucas.pereira`, `agente.empresa` e `agente.banco`. A aba **Cenários desta tela**, no topo, mostra o que testar naquela tela (só do seu perfil), e o bloco **Cenários de uso**, no fim, troca de conta com um clique. O botão **Recomeçar** volta os dados ao começo.
+- Contas de exemplo (senha `demo`): `cliente.demo`, `marina.souza`, `lucas.pereira`, `agente.empresa` e `agente.banco`. A aba verde **Cenários de uso**, no topo, troca de conta com um clique e mostra o que testar em cada tela (só do seu perfil). O botão **Recomeçar** volta os dados ao começo.
 - Publicada sozinha a cada push na `main` pelo GitHub Actions ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
 - Os cenários pra testar cada fluxo estão em [`docs/fluxos/07-cenarios.md`](docs/fluxos/07-cenarios.md).
 

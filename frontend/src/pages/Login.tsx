@@ -5,7 +5,6 @@ import { paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
 import Erro from '../components/Erro'
 import Icone from '../components/Icone'
-import CenariosDemo from '../components/CenariosDemo'
 import { MODO_DEMO, publico } from '../config'
 import { SENHA_DEMO as SENHA_CONTAS_DEMO } from '../demo/dados'
 
@@ -145,9 +144,6 @@ export default function Login() {
             </div>
           )}
         </main>
-      </div>
-      <div className="login-cenarios">
-        <CenariosDemo />
       </div>
     </div>
   )

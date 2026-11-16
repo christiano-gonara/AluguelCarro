@@ -24,7 +24,7 @@ export default function FaixaDemo() {
     <aside className="faixa-demo" aria-label="Versão de demonstração">
       <Icone nome="info" tamanho={18} />
       <p>
-        <strong>Demonstração.</strong> Nada aqui é de verdade: os dados ficam só neste navegador. Troque de conta em <strong>Cenários de uso</strong>, no fim da página.
+        <strong>Demonstração.</strong> Nada aqui é de verdade: os dados ficam só neste navegador. Troque de conta em <strong>Cenários de uso</strong>, na aba verde do topo.
       </p>
       <button type="button" className="faixa-demo-acao" onClick={recomecar}>
         Recomeçar
