@@ -1,5 +1,7 @@
 # 🚗 Aluga. · Aluguel de Carros 👨‍💻
 
+[![Ver demonstração](https://img.shields.io/badge/Ver_demonstra%C3%A7%C3%A3o-online-8FA36A?style=for-the-badge&logo=githubpages&logoColor=white)](https://christiano-gonara.github.io/AluguelCarro/)
+
 Sistema web para gestão de aluguéis de automóveis: clientes fazem, modificam, consultam e cancelam pedidos pela Internet, e agentes (empresas e bancos) avaliam financeiramente os pedidos e executam os contratos.
 
 > [!TIP]
@@ -336,7 +338,7 @@ O GitHub Pages só publica a demonstração: ele não roda o Spring Boot nem ace
 
 ```text
 AluguelCarro/
-├── backend/                      # Spring Boot (Maven)
+├── backend/                      # Spring Boot (Maven) — veja backend/README.md
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/br/com/aluguelcarro/
@@ -350,7 +352,7 @@ AluguelCarro/
 │       │   └── service/          # Regras de negócio
 │       ├── main/resources/application.properties
 │       └── test/                 # Testes de modelo e de regras de negócio
-├── frontend/                     # React + Vite + TypeScript
+├── frontend/                     # React + Vite + TypeScript — veja frontend/README.md
 │   ├── public/carros/            # Fotos recortadas dos carros (sem fundo)
 │   ├── tsconfig.json
 │   ├── vite.config.ts
