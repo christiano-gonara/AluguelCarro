@@ -3,6 +3,7 @@ import { useAuth } from '../auth/AuthContext'
 import type { Perfil } from '../types'
 import Icone from './Icone'
 import Rodape from './Rodape'
+import CenariosDemo from './CenariosDemo'
 
 const ROTULO_PERFIL: Record<Perfil, string> = {
   CLIENTE: 'Cliente',
@@ -59,6 +60,7 @@ export default function Layout() {
       </header>
       <main className="conteudo">
         <Outlet />
+        <CenariosDemo />
       </main>
       <Rodape />
     </div>

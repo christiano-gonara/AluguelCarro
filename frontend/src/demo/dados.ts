@@ -72,13 +72,14 @@ export function bancoInicial(): BancoDemo {
   })
 
   return {
-    versao: 1,
+    versao: 2,
     proximoId: 100,
     usuarios: [
       { username: 'cliente.demo', senha: SENHA_DEMO, perfil: 'CLIENTE', clienteId: 1 },
       { username: 'agente.empresa', senha: SENHA_DEMO, perfil: 'AGENTE_EMPRESA', clienteId: null },
       { username: 'agente.banco', senha: SENHA_DEMO, perfil: 'AGENTE_BANCO', clienteId: null },
       { username: 'marina.souza', senha: SENHA_DEMO, perfil: 'CLIENTE', clienteId: 2 },
+      { username: 'lucas.pereira', senha: SENHA_DEMO, perfil: 'CLIENTE', clienteId: 3 },
     ],
     clientes: [
       {
@@ -101,6 +102,15 @@ export function bancoInicial(): BancoDemo {
           { entidade: 'Estúdio Linha Ltda.', rendimento: 4200 },
           { entidade: 'Freelas', rendimento: 1300 },
         ],
+      },
+      {
+        id: 3,
+        rg: 'MG-11.222.333',
+        cpf: '11122233344',
+        nome: 'Lucas Pereira',
+        endereco: 'Rua Tupis, 300 · Belo Horizonte, MG',
+        profissao: 'Estudante',
+        empregadores: [{ entidade: 'Estágio na Prefeitura', rendimento: 1800 }],
       },
     ],
     automoveis: [

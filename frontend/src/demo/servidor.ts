@@ -70,6 +70,18 @@ export function recomecarDemo(): void {
   definirSessao(null)
 }
 
+/** Números de cada conta de exemplo, pros cartões de "Cenários de uso". Lê direto, sem esperar. */
+export function resumoDemo() {
+  const doCliente = (id: number | null) => banco.pedidos.filter((p) => p.clienteId === id)
+  const conta = (username: string) => banco.usuarios.find((u) => u.username === username)
+  return {
+    pedidosDe: (username: string) => doCliente(conta(username)?.clienteId ?? null),
+    carrosDe: (tipo: 'EMPRESA' | 'BANCO') => banco.automoveis.filter((a) => a.tipoProprietario === tipo).length,
+    esperando: banco.pedidos.filter((p) => p.status === 'EM_ANALISE').length,
+    existe: (username: string) => conta(username) !== undefined,
+  }
+}
+
 // ---------- erros no mesmo formato do ApiExceptionHandler ----------
 
 const regra = (mensagem: string) => new ApiError(400, mensagem)
@@ -393,6 +405,14 @@ export const apiDemo = {
       if (p.status !== 'APROVADO_FINANCEIRAMENTE')
         throw regra('O contrato só pode ser executado após parecer financeiro positivo')
       if (dados.credito) {
+        const c = dados.credito
+        validacao(
+          [
+            !(c.valor >= 0.01) ? 'credito.valor: deve ser maior ou igual a 0.01' : '',
+            !(c.taxaJurosMensal >= 0) ? 'credito.taxaJurosMensal: deve ser maior ou igual a 0.00' : '',
+            !(Number.isInteger(c.parcelas) && c.parcelas >= 1 && c.parcelas <= 120) ? 'credito.parcelas: deve ser entre 1 e 120' : '',
+          ].filter(Boolean),
+        )
         if (agente.perfil !== 'AGENTE_BANCO') throw acessoNegado()
         p.credito = { banco: agente.username, ...dados.credito }
       }

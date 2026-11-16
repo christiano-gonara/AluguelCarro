@@ -12,10 +12,11 @@ Todos podem ser testados na versão de demonstração (GitHub Pages), que já ve
 |---|---|---|
 | `cliente.demo` | cliente | um pedido em cada situação (nº 1 a 5) |
 | `marina.souza` | outra cliente | um pedido em análise (nº 6) |
+| `lucas.pereira` | cliente que acabou de chegar | nenhum pedido ainda (telas vazias) |
 | `agente.empresa` | empresa parceira | carros Argo, Onix e HB20 |
 | `agente.banco` | banco parceiro | carros Corolla, T-Cross e Compass |
 
-O botão **Recomeçar**, na faixa da demonstração, volta tudo ao começo.
+No fim de cada tela da demonstração tem o bloco **Cenários de uso**: um cartão por conta de exemplo, com os números dela. Um clique troca de conta, e a atual fica marcada com “Você está aqui”. O botão **Recomeçar**, na faixa da demonstração, volta tudo ao começo.
 
 ---
 
@@ -40,7 +41,7 @@ O botão **Recomeçar**, na faixa da demonstração, volta tudo ao começo.
 | 2.1 | ✅ | o cliente está no catálogo | escolhe um carro, as datas e envia | vê "Pedido enviado" e o pedido aparece **Em análise** |
 | 2.2 | 🔀 | o pedido está em análise (nº 1) | muda as datas | vê "Pedido alterado" e o valor total é recalculado |
 | 2.3 | 🔀 | o pedido está em análise, aprovado ou recusado (nº 1, 2 ou 4) | cancela e confirma | vê "Pedido cancelado" e o selo muda pra **Cancelado** |
-| 2.4 | 🔀 | o cliente ainda não fez nenhum pedido | abre "Meus pedidos" | vê a tela vazia com o botão pra escolher um carro |
+| 2.4 | 🔀 | o cliente ainda não fez nenhum pedido (`lucas.pereira`) | abre "Meus pedidos" | vê a tela vazia com o botão pra escolher um carro |
 | 2.5 | ⚠️ | a devolução está antes da retirada | tenta enviar | vê "A devolução está antes da retirada…" no próprio formulário |
 | 2.6 | ⚠️ | a data de retirada já passou | tenta enviar | vê "Alguns campos precisam de ajuste" |
 | 2.7 | ⚠️ | o pedido já foi aprovado (nº 2) | tenta mudar as datas | vê "Só dá pra mudar o pedido enquanto ele está em análise." |
