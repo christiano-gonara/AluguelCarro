@@ -16,7 +16,7 @@ Todos podem ser testados na versão de demonstração (GitHub Pages), que já ve
 | `agente.empresa` | empresa parceira | carros Argo, Onix e HB20 |
 | `agente.banco` | banco parceiro | carros Corolla, T-Cross e Compass |
 
-No fim de cada tela da demonstração tem o bloco **Cenários de uso**: um cartão por conta de exemplo, com os números dela. Um clique troca de conta, e a atual fica marcada com “Você está aqui”. O botão **Recomeçar**, na faixa da demonstração, volta tudo ao começo.
+No topo de cada tela da demonstração tem a aba verde **Cenários desta tela**: ela abre uma janelinha com os cenários daquela tela, só do perfil de quem entrou (cliente, empresa ou banco). No fim de cada tela tem o bloco **Cenários de uso**: um cartão por conta de exemplo, com os números dela. Um clique troca de conta, e a atual fica marcada com “Você está aqui”. O botão **Recomeçar**, na faixa da demonstração, volta tudo ao começo.
 
 ---
 
