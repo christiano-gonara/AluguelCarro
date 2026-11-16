@@ -5,10 +5,13 @@ import { paraErro } from '../api'
 import { useAuth } from '../auth/AuthContext'
 import Erro from '../components/Erro'
 import Icone from '../components/Icone'
+import { MODO_DEMO, publico } from '../config'
+import { SENHA_DEMO as SENHA_CONTAS_DEMO } from '../demo/dados'
 
 // Contas de exemplo: só aparecem se VITE_DEMO_PASSWORD estiver definida (frontend/.env.local).
 // É a mesma senha de SEED_AGENT_PASSWORD no back-end; ela não fica no código-fonte.
-const SENHA_DEMO = import.meta.env.VITE_DEMO_PASSWORD as string | undefined
+// Na versão de demonstração (GitHub Pages) as contas de exemplo sempre aparecem, com a senha "demo".
+const SENHA_DEMO = MODO_DEMO ? SENHA_CONTAS_DEMO : (import.meta.env.VITE_DEMO_PASSWORD as string | undefined)
 
 const CONTAS_DEMO = [
   { rotulo: 'Cliente', detalhe: 'aluga carros', icone: 'usuario', username: 'cliente.demo' },
@@ -76,7 +79,7 @@ export default function Login() {
               <Icone nome="chave" /> Sem papelada
             </span>
           </div>
-          <img src="/carros/tcross.png" alt="" className="carro-recorte" />
+          <img src={publico('carros/tcross.png')} alt="" className="carro-recorte" />
         </aside>
 
         <main className="login-form vidro">

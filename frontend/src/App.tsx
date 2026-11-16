@@ -12,6 +12,7 @@ import MeusDados from './pages/MeusDados'
 import Automoveis from './pages/Automoveis'
 import Clientes from './pages/Clientes'
 import Landing from './pages/Landing'
+import NaoEncontrada from './pages/NaoEncontrada'
 
 interface ProtegidaProps {
   children: ReactElement
@@ -84,7 +85,7 @@ export default function App() {
           }
         />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NaoEncontrada />} />
     </Routes>
   )
 }

@@ -3,6 +3,7 @@ import { useAuth } from '../auth/AuthContext'
 import Icone from '../components/Icone'
 import type { NomeIcone } from '../components/Icone'
 import Rodape from '../components/Rodape'
+import { publico } from '../config'
 
 // Página pública: explica o sistema para quem ainda não tem conta.
 
@@ -113,7 +114,7 @@ export default function Landing() {
             </div>
           </div>
           <article className="vidro landing-hero-card">
-            <img src="/carros/tcross.png" alt="Volkswagen T-Cross" className="carro-recorte" />
+            <img src={publico('carros/tcross.png')} alt="Volkswagen T-Cross" className="carro-recorte" />
             <span className="suave pequeno">Acompanhe seu pedido</span>
             <h2>Volkswagen T-Cross</h2>
             <ol className="etapas compactas">
@@ -292,7 +293,7 @@ export default function Landing() {
 
       <section className="secao">
         <article className="vidro chamada-final">
-          <img src="/carros/hb20.png" alt="Hyundai HB20" className="carro-recorte" />
+          <img src={publico('carros/hb20.png')} alt="Hyundai HB20" className="carro-recorte" />
           <div>
             <h2 className="titulo-grande">Pronto pra escolher seu carro?</h2>
             <p className="texto-grande">Crie sua conta em poucos minutos e faça seu primeiro pedido hoje.</p>

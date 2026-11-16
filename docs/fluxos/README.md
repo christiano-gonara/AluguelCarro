@@ -10,3 +10,4 @@ Todos os desenhos estão em [Mermaid](https://mermaid.js.org/), então aparecem 
 | [04-mapa-de-telas.md](04-mapa-de-telas.md) | Quais telas existem e como uma leva à outra |
 | [05-sequencias.md](05-sequencias.md) | O que acontece entre a tela, a API e o banco de dados em cada ação |
 | [06-arquitetura.md](06-arquitetura.md) | Como o site (`frontend`) e a API (`backend`) estão separados |
+| [07-cenarios.md](07-cenarios.md) | Os cenários de cada fluxo: o principal, os alternativos e os de erro, com o que a tela mostra |

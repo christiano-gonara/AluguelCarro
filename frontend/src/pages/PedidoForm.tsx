@@ -6,6 +6,7 @@ import CarroCard from '../components/CarroCard'
 import Erro from '../components/Erro'
 import type { Automovel } from '../types'
 import { moeda } from '../utils/format'
+import { useAvisos } from '../components/Avisos'
 
 interface PedidoFormState {
   automovelId: string
@@ -17,6 +18,7 @@ const hoje = () => new Date().toISOString().slice(0, 10)
 
 /** Serve para criar (cliente) e para modificar (cliente ou agente) um pedido. */
 export default function PedidoForm() {
+  const avisar = useAvisos()
   const { id } = useParams()
   const [busca] = useSearchParams()
   const editando = id !== undefined
@@ -55,6 +57,9 @@ export default function PedidoForm() {
     const corpo = { ...form, automovelId: Number(form.automovelId) }
     try {
       const pedido = id !== undefined ? await api.modificarPedido(id, corpo) : await api.criarPedido(corpo)
+      avisar(id !== undefined ? 'Pedido alterado' : 'Pedido enviado', {
+        texto: id !== undefined ? 'As novas datas já estão valendo.' : 'Agora é com a empresa ou o banco. Você acompanha por aqui.',
+      })
       navigate(`/pedidos/${pedido.id}`)
     } catch (err) {
       setErro(paraErro(err))

@@ -7,8 +7,10 @@ import { useAuth } from '../auth/AuthContext'
 import ClienteForm, { clienteVazio, paraPayload } from '../components/ClienteForm'
 import Erro from '../components/Erro'
 import type { ClienteForm as ClienteFormState } from '../types'
+import { useAvisos } from '../components/Avisos'
 
 export default function Registro() {
+  const avisar = useAvisos()
   const { login } = useAuth()
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
@@ -24,6 +26,7 @@ export default function Registro() {
     try {
       await api.registrar({ username, senha, cliente: paraPayload(cliente) })
       await login(username, senha)
+      avisar('Conta criada', { texto: 'Agora é só escolher o carro.' })
       navigate('/')
     } catch (err) {
       setErro(paraErro(err))

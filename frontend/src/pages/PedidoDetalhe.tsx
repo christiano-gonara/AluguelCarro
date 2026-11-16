@@ -9,6 +9,7 @@ import type { Pedido, StatusPedido, TipoProprietario } from '../types'
 import { dataBR, moeda } from '../utils/format'
 import FotoCarro from '../components/FotoCarro'
 import Placa from '../components/Placa'
+import { useAvisos } from '../components/Avisos'
 
 // O pedido percorre três etapas em sequência; reprovação e cancelamento interrompem o caminho.
 const ETAPAS = ['Pedido enviado', 'Aprovação', 'Contrato fechado']
@@ -200,11 +201,15 @@ interface AcaoProps {
 
 function Avaliacao({ pedidoId, aoConcluir, aoErro }: AcaoProps) {
   const [parecer, setParecer] = useState('')
+  const avisar = useAvisos()
 
   async function avaliar(aprovado: boolean) {
     aoErro(null)
     try {
       await api.avaliarPedido(pedidoId, { aprovado, parecer })
+      avisar(aprovado ? 'Pedido aprovado' : 'Pedido recusado', {
+        texto: aprovado ? 'Agora é só fechar o contrato.' : 'O cliente vai ver o motivo que você escreveu.',
+      })
       aoConcluir()
     } catch (err) {
       aoErro(paraErro(err))
@@ -242,6 +247,7 @@ interface CreditoForm {
 }
 
 function Execucao({ pedidoId, ehBanco, aoConcluir, aoErro }: AcaoProps & { ehBanco: boolean }) {
+  const avisar = useAvisos()
   const [propriedade, setPropriedade] = useState<TipoProprietario>('EMPRESA')
   const [comCredito, setComCredito] = useState(false)
   const [credito, setCredito] = useState<CreditoForm>({ valor: '', taxaJurosMensal: '', parcelas: '' })
@@ -260,6 +266,7 @@ function Execucao({ pedidoId, ehBanco, aoConcluir, aoErro }: AcaoProps & { ehBan
             }
           : null,
       })
+      avisar('Contrato fechado', { texto: comCredito ? 'Com o parcelamento do banco.' : 'O cliente já pode ver o contrato.' })
       aoConcluir()
     } catch (err) {
       aoErro(paraErro(err))
@@ -334,6 +341,7 @@ function Execucao({ pedidoId, ehBanco, aoConcluir, aoErro }: AcaoProps & { ehBan
 
 /** Cliente: mudar (só em análise) ou cancelar (até o contrato ser fechado), com confirmação. */
 function MudouDeIdeia({ pedidoId, podeMudar, aoConcluir, aoErro }: AcaoProps & { podeMudar: boolean }) {
+  const avisar = useAvisos()
   const [confirmando, setConfirmando] = useState(false)
   const [cancelando, setCancelando] = useState(false)
 
@@ -342,6 +350,7 @@ function MudouDeIdeia({ pedidoId, podeMudar, aoConcluir, aoErro }: AcaoProps & {
     setCancelando(true)
     try {
       await api.cancelarPedido(pedidoId)
+      avisar('Pedido cancelado', { texto: 'Se mudar de ideia, é só fazer um novo pedido.' })
       setConfirmando(false)
       aoConcluir()
     } catch (err) {

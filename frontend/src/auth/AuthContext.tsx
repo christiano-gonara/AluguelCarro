@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from 'react'
 import { api, definirAoPerderSessao } from '../api'
 import type { Usuario } from '../types'
+import { useAvisos } from '../components/Avisos'
 
 interface AuthValor {
   usuario: Usuario | null
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthValor | null>(null)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<Usuario | null>(null)
   const [carregando, setCarregando] = useState(true)
+  const avisar = useAvisos()
 
   // Restaura a sessão ao abrir a aplicação
   useEffect(() => {
@@ -29,22 +31,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    definirAoPerderSessao(() => setUsuario(null))
-  }, [])
+    definirAoPerderSessao(() => {
+      setUsuario(null)
+      avisar('Sua sessão acabou', { texto: 'Por segurança, entre de novo pra continuar.', tipo: 'cuidado' })
+    })
+  }, [avisar])
 
   const login = useCallback(async (username: string, senha: string) => {
     const u = await api.login(username, senha)
     setUsuario(u)
+    avisar(`Que bom te ver, ${u.username}`, { tipo: 'info' })
     return u
-  }, [])
+  }, [avisar])
 
   const logout = useCallback(async () => {
     try {
       await api.logout()
     } finally {
       setUsuario(null)
+      avisar('Você saiu da conta', { texto: 'Até a próxima!', tipo: 'info' })
     }
-  }, [])
+  }, [avisar])
 
   const valor = useMemo<AuthValor>(
     () => ({

@@ -32,6 +32,18 @@ flowchart LR
     W -. "busca preço" .-> FIPE[(Tabela FIPE<br/>API pública)]
 ```
 
+## Versão de demonstração (GitHub Pages)
+
+O GitHub Pages só hospeda arquivos estáticos, então lá o site roda **sem a API**. Quando o build é feito com `VITE_MODO_DEMO=true`, as chamadas que iriam pro Spring Boot são atendidas por `frontend/src/demo/servidor.ts`, que roda no navegador, segue as mesmas regras e mensagens da API e guarda os dados no `localStorage`.
+
+```mermaid
+flowchart LR
+    P[pages] --> AP[api.ts]
+    AP -- "versão completa" --> SB[Spring Boot<br/>backend/]
+    AP -- "demonstração<br/>VITE_MODO_DEMO=true" --> DM[demo/servidor.ts<br/>no navegador]
+    DM --> LS[(localStorage)]
+```
+
 ## Como o CSS está dividido
 
 Os estilos ficam em `frontend/src/styles/`, separados dos componentes, um arquivo por bloco da interface:
@@ -46,5 +58,6 @@ Os estilos ficam em `frontend/src/styles/`, separados dos componentes, um arquiv
 | `catalogo.css` | cartões de carro |
 | `login.css` | tela de entrar |
 | `landing.css` | página de apresentação |
+| `avisos.css` | notificações do sistema, faixa da demonstração e página 404 |
 | `animacoes.css` | tudo o que se mexe ao passar o mouse |
 | `index.css` | junta todos na ordem certa |

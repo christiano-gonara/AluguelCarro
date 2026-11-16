@@ -7,6 +7,7 @@ import type { Automovel, TipoProprietario } from '../types'
 import { anoReal, diariaSugerida, fipe, valorFipeEmNumero } from '../utils/fipe'
 import type { FipeItem, FipeValor } from '../utils/fipe'
 import { moeda } from '../utils/format'
+import { useAvisos } from '../components/Avisos'
 
 interface AutomovelForm {
   matricula: string
@@ -30,6 +31,7 @@ const vazio: AutomovelForm = {
 
 /** Agentes cadastram, alteram e removem automóveis. Marca, modelo e ano podem vir da Tabela FIPE. */
 export default function Automoveis() {
+  const avisar = useAvisos()
   const [lista, setLista] = useState<Automovel[] | null>(null)
   const [form, setForm] = useState<AutomovelForm>(vazio)
   const [editandoId, setEditandoId] = useState<number | null>(null)
@@ -69,6 +71,9 @@ export default function Automoveis() {
     try {
       if (editandoId !== null) await api.atualizarAutomovel(editandoId, corpo)
       else await api.criarAutomovel(corpo)
+      avisar(editandoId !== null ? 'Carro atualizado' : 'Carro cadastrado', {
+        texto: `${corpo.marca} ${corpo.modelo} já aparece pros clientes.`,
+      })
       setForm(vazio)
       setEditandoId(null)
       carregar()
@@ -96,6 +101,7 @@ export default function Automoveis() {
     setErro(null)
     try {
       await api.excluirAutomovel(id)
+      avisar('Carro apagado', { texto: 'Ele não aparece mais no catálogo.' })
       carregar()
     } catch (err) {
       setErro(paraErro(err))

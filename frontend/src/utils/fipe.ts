@@ -1,6 +1,8 @@
 // Cliente da API pública da Tabela FIPE (https://deividfortuna.github.io/fipe/).
 // Em desenvolvimento as chamadas passam pelo proxy /fipe do Vite (vite.config.ts).
 
+import { MODO_DEMO } from '../config'
+
 export interface FipeItem {
   codigo: string
   nome: string
@@ -16,7 +18,8 @@ export interface FipeValor {
   MesReferencia: string
 }
 
-const BASE = '/fipe/carros'
+// Sem back-end (GitHub Pages) não há proxy: a chamada vai direto pra API pública.
+const BASE = MODO_DEMO ? 'https://parallelum.com.br/fipe/api/v1/carros' : '/fipe/carros'
 
 async function get<T>(caminho: string): Promise<T> {
   const resp = await fetch(BASE + caminho)

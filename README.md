@@ -29,6 +29,7 @@ Protótipo funcional em desenvolvimento acadêmico.
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Arquitetura](#-arquitetura)
 - [Instalação e Execução](#-instalação-e-execução)
+- [Versão de demonstração](#-versão-de-demonstração-github-pages)
 - [Deploy](#-deploy)
 - [Estrutura de Pastas](#-estrutura-de-pastas)
 - [Demonstração](#-demonstração)
@@ -296,6 +297,23 @@ Acesse `http://localhost:5174`. Com o seed habilitado, as contas `agente.empresa
 
 Em desenvolvimento, o Vite encaminha `/api` ao Spring Boot e `/fipe` à API da Tabela FIPE (veja `frontend/vite.config.ts`).
 
+## 🌐 Versão de demonstração (GitHub Pages)
+
+Dá pra ver o visual funcionando sem instalar nada: **https://christiano-gonara.github.io/AluguelCarro/**
+
+- Roda **sem o back-end**: os dados de exemplo ficam só no navegador de quem acessa (`frontend/src/demo`), seguindo as mesmas regras e mensagens da API.
+- Contas de exemplo (senha `demo`): `cliente.demo`, `marina.souza`, `agente.empresa` e `agente.banco`. O botão **Recomeçar** volta os dados ao começo.
+- Publicada sozinha a cada push na `main` pelo GitHub Actions ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
+- Os cenários pra testar cada fluxo estão em [`docs/fluxos/07-cenarios.md`](docs/fluxos/07-cenarios.md).
+
+Pra gerar a demonstração localmente:
+
+```bash
+cd frontend
+VITE_MODO_DEMO=true VITE_BASE=/AluguelCarro/ npm run build
+npx vite preview --base /AluguelCarro/
+```
+
 ## 🚀 Deploy
 
 ```bash
@@ -333,6 +351,7 @@ AluguelCarro/
 │   ├── vite.config.ts
 │   └── src/
 │       ├── auth/                 # Contexto de autenticação
+│       ├── demo/                 # "Servidor" e dados da versão de demonstração (GitHub Pages)
 │       ├── components/           # Layout, formulários e peças comuns
 │       ├── pages/                # Telas
 │       ├── styles/               # CSS separado dos componentes, um arquivo por bloco (animacoes.css junta as animações)

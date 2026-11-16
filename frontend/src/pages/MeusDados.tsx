@@ -6,9 +6,11 @@ import { useAuth } from '../auth/AuthContext'
 import ClienteForm, { paraPayload } from '../components/ClienteForm'
 import Erro from '../components/Erro'
 import type { ClienteForm as ClienteFormState } from '../types'
+import { useAvisos } from '../components/Avisos'
 
 /** Consulta, atualização e exclusão do cadastro do próprio cliente (Read, Update, Delete do CRUD). */
 export default function MeusDados() {
+  const avisar = useAvisos()
   const { logout } = useAuth()
   const navigate = useNavigate()
   const [cliente, setCliente] = useState<ClienteFormState | null>(null)
@@ -40,6 +42,7 @@ export default function MeusDados() {
     try {
       await api.atualizarCadastro(paraPayload(cliente))
       setSalvo(true)
+      avisar('Dados salvos', { texto: 'Quem aprovar seu próximo pedido já vê tudo atualizado.' })
     } catch (err) {
       setErro(paraErro(err))
     }
@@ -50,6 +53,7 @@ export default function MeusDados() {
     try {
       await api.excluirCadastro()
       await logout()
+      avisar('Conta apagada', { texto: 'Seus dados e pedidos foram removidos.', tipo: 'info' })
       navigate('/sobre')
     } catch (err) {
       setErro(paraErro(err))

@@ -11,8 +11,10 @@ import Erro from '../components/Erro'
 import StatusBadge from '../components/StatusBadge'
 import type { Pedido } from '../types'
 import { dataBR, moeda } from '../utils/format'
+import { useAvisos } from '../components/Avisos'
 
 export default function Pedidos() {
+  const avisar = useAvisos()
   const { ehCliente } = useAuth()
   const [pedidos, setPedidos] = useState<Pedido[] | null>(null)
   const [erro, setErro] = useState<Error | null>(null)
@@ -28,6 +30,7 @@ export default function Pedidos() {
     setErro(null)
     try {
       await api.cancelarPedido(id)
+      avisar(`Pedido nº ${id} cancelado`, { texto: 'Ele continua na lista, marcado como cancelado.' })
       carregar()
     } catch (err) {
       setErro(paraErro(err))

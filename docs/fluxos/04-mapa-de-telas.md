@@ -42,6 +42,8 @@ flowchart LR
     APED --> AVAL
     APED --> CARROS
     APED --> CLI
+
+    X[Página não encontrada<br/>404] -- Ir pro começo --> SOBRE
 ```
 
 ## Estados que toda tela trata

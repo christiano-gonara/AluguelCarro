@@ -2,6 +2,8 @@
 // Vêm do Wikimedia Commons, com fundo removido e cores neutralizadas; os créditos estão no rodapé.
 // Para os outros modelos, o FotoCarro continua buscando a foto na Wikipédia.
 
+import { publico } from '../config'
+
 const RECORTES: { trecho: string; arquivo: string }[] = [
   { trecho: 'corolla', arquivo: 'corolla.png' },
   { trecho: 'argo', arquivo: 'argo.png' },
@@ -16,5 +18,5 @@ const RECORTES: { trecho: string; arquivo: string }[] = [
 export function fotoRecortada(modelo: string): string | null {
   const nome = modelo.toLowerCase()
   const achado = RECORTES.find((r) => nome.includes(r.trecho))
-  return achado ? `/carros/${achado.arquivo}` : null
+  return achado ? publico(`carros/${achado.arquivo}`) : null
 }

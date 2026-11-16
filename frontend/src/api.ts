@@ -1,4 +1,5 @@
 // Cliente HTTP da API. A sessão é mantida pelo cookie JSESSIONID (credentials: 'include').
+// Na versão de demonstração (VITE_MODO_DEMO=true) as mesmas funções são atendidas por src/demo/servidor.ts.
 
 import type {
   Automovel,
@@ -12,18 +13,11 @@ import type {
   RegistroRequest,
   Usuario,
 } from './types'
+import { ApiError } from './apiErro'
+import { MODO_DEMO } from './config'
+import { apiDemo } from './demo/servidor'
 
-export class ApiError extends Error {
-  readonly status: number
-  readonly detalhes: string[]
-
-  constructor(status: number, mensagem: string, detalhes: string[] = []) {
-    super(mensagem)
-    this.name = 'ApiError'
-    this.status = status
-    this.detalhes = detalhes
-  }
-}
+export { ApiError }
 
 /** Garante um Error em blocos catch, onde o valor capturado é unknown. */
 export function paraErro(e: unknown): Error {
@@ -70,7 +64,7 @@ async function request<T>(method: string, url: string, body?: unknown): Promise<
   return dados as T
 }
 
-export const api = {
+const apiReal = {
   login: (username: string, senha: string) => request<Usuario>('POST', '/api/auth/login', { username, senha }),
   logout: () => request<void>('POST', '/api/auth/logout'),
   me: () => request<Usuario>('GET', '/api/auth/me'),
@@ -98,3 +92,6 @@ export const api = {
   executarPedido: (id: number, dados: ExecucaoRequest) =>
     request<Pedido>('POST', `/api/pedidos/${id}/executar`, dados),
 }
+
+/** Na versão de demonstração as chamadas vão pro "servidor" que roda no navegador; na completa, pro Spring Boot. */
+export const api: typeof apiReal = MODO_DEMO ? apiDemo : apiReal
