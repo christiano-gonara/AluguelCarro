@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Aluga.">
+  <rect width="32" height="32" rx="7" fill="#1E241B" />
+  <g transform="translate(4 4)" fill="none" stroke="#C7D6A6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 18C3.89543 18 3 17.10457 3 16V12L7 8C7.64029 7.35971 8.35971 7 9 7H12C12.64029 7 13.35971 7.35971 14 8L18 12H19C20.10457 12 21 12.89543 21 14V16C21 17.10457 20.10457 18 19 18M9 18H15M3 12H18M10 7V12" />
+    <circle cx="7" cy="18" r="2" />
+    <circle cx="17" cy="18" r="2" />
+  </g>
+</svg>
