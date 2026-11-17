@@ -7,7 +7,7 @@ Sequência curta para mostrar o protótipo, comparar com os modelos e fechar os 
 Duas opções, escolha uma:
 
 - **Demonstração online** (sem back-end): https://christiano-gonara.github.io/AluguelCarro/ — contas de exemplo com a senha `demo`.
-- **Sistema completo**: Supabase configurado, `cd backend && mvn spring-boot:run` e `cd frontend && npm run dev` (passo a passo no [README](../README.md#-instalação-e-execução)).
+- **Sistema completo**: Supabase configurado, `cd backend && mvn spring-boot:run` e `cd frontend && npm run dev` (passo a passo em [instalacao.md](instalacao.md)).
 
 Deixe aberto também o repositório no GitHub, na pasta `docs/`, para mostrar os diagramas em Mermaid.
 

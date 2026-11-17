@@ -24,7 +24,7 @@ export DB_PASSWORD='sua-senha'
 mvn spring-boot:run
 ```
 
-As variáveis e o passo a passo do Supabase estão no [README da raiz](../README.md#-instalação-e-execução).
+As variáveis e o passo a passo do Supabase estão em [`docs/instalacao.md`](../docs/instalacao.md).
 
 ## Testes
 

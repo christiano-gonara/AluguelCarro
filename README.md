@@ -235,79 +235,19 @@ Diagramas (UML em Mermaid):
 
 ## 🔧 Instalação e Execução
 
-### Pré-requisitos
-
-- JDK 25
-- Maven 3.9+
-- Node.js 20+ e npm
-- Um projeto no [Supabase](https://supabase.com) (banco PostgreSQL)
-
-### 🔑 Variáveis de Ambiente
-
-#### 1. Back-end (Spring Boot)
-
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `DB_URL` | URL JDBC do Supabase | `jdbc:postgresql://db.SEU_PROJETO.supabase.co:5432/postgres?sslmode=require` |
-| `DB_USER` | Usuário do banco | `postgres` |
-| `DB_PASSWORD` | Senha do banco | definida no Supabase |
-| `PORT` | Porta do servidor (opcional) | `8080` |
-| `SEED_ENABLED` | Cria contas e carros de exemplo (opcional) | `true` |
-| `SEED_AGENT_PASSWORD` | Senha das contas de exemplo (`agente.empresa`, `agente.banco` e `cliente.demo`) | escolha uma senha |
-
-Há um modelo em [`backend/.env.example`](backend/.env.example). O Spring não lê `.env` sozinho: exporte as variáveis no terminal. **Nunca faça commit de senhas.**
-
-#### 2. Front-end (React, Vite)
-
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `VITE_API_PROXY_TARGET` | Back-end para o proxy do Vite (opcional) | `http://localhost:8080` |
-| `VITE_DEMO_PASSWORD` | Mostra os botões de contas de exemplo no login (opcional, só demonstração); use o mesmo valor de `SEED_AGENT_PASSWORD`. Coloque em `frontend/.env.local` | `uma-senha-de-dev` |
-
-### 📦 Instalação de Dependências
+Precisa de **JDK 25**, **Maven 3.9+**, **Node.js 20+** e um projeto no [Supabase](https://supabase.com).
 
 ```bash
 git clone https://github.com/christiano-gonara/AluguelCarro.git
 cd AluguelCarro
 
-# Front-end
-cd frontend && npm install && cd ..
-
-# Back-end (baixa as dependências ao compilar)
-cd backend && mvn clean package -DskipTests && cd ..
+cd frontend && npm install && cd ..          # site
+cd backend && mvn clean package -DskipTests  # API
 ```
 
-### 💾 Inicialização do Banco de Dados (Supabase)
+Depois exporte `DB_URL`, `DB_USER` e `DB_PASSWORD`, rode `mvn spring-boot:run` dentro de `backend/` e `npm run dev` dentro de `frontend/`. O site abre em `http://localhost:5174`.
 
-1. No Supabase, copie os dados de conexão do banco em *Project Settings > Database*.
-2. Defina `DB_URL`, `DB_USER` e `DB_PASSWORD`.
-3. As tabelas são criadas automaticamente pelo Hibernate na primeira execução (`ddl-auto=update`). Para criá-las manualmente, use [`docs/banco-de-dados.sql`](docs/banco-de-dados.sql) no SQL Editor.
-
-### ⚡ Como Executar a Aplicação
-
-**Terminal 1: Back-end (porta 8080)**
-
-```bash
-cd backend
-export DB_URL='jdbc:postgresql://db.SEU_PROJETO.supabase.co:5432/postgres?sslmode=require'
-export DB_USER=postgres
-export DB_PASSWORD='sua-senha'
-# opcional: agentes e carros de exemplo
-export SEED_ENABLED=true
-export SEED_AGENT_PASSWORD='uma-senha-de-desenvolvimento'
-mvn spring-boot:run
-```
-
-**Terminal 2: Front-end (porta 5174)**
-
-```bash
-cd frontend
-npm run dev
-```
-
-Acesse `http://localhost:5174`. Com o seed habilitado, as contas `agente.empresa`, `agente.banco` e `cliente.demo` usam a senha definida em `SEED_AGENT_PASSWORD`. Outros clientes se cadastram pela própria tela.
-
-Em desenvolvimento, o Vite encaminha `/api` ao Spring Boot e `/fipe` à API da Tabela FIPE (veja `frontend/vite.config.ts`).
+As tabelas de variáveis, o passo a passo do banco e as contas de exemplo estão em [`docs/instalacao.md`](docs/instalacao.md).
 
 ## 🌐 Versão de demonstração (GitHub Pages)
 
@@ -329,59 +269,19 @@ npm run demo        # abre em http://localhost:5174
 
 ## 🚀 Deploy
 
-```bash
-# Front-end: gera frontend/dist
-cd frontend && npm run build
+`cd frontend && npm run build` gera o site em `frontend/dist`; `cd backend && mvn clean package` gera o `.jar`. Em produção, o `dist` precisa ser servido atrás do mesmo domínio da API (ou habilitar CORS com credenciais no back-end).
 
-# Back-end: gera backend/target/aluguel-carro-1.0.0.jar
-cd backend && mvn clean package
-java -jar target/aluguel-carro-1.0.0.jar
-```
-
-Configure as variáveis de ambiente de produção no servidor. Como o front-end em produção ficará em outra origem, será preciso servir `dist` atrás do mesmo domínio da API (proxy reverso) ou habilitar CORS com credenciais no back-end.
-
-O GitHub Pages só publica a demonstração: ele não roda o Spring Boot nem acessa o Supabase. Pra mostrar o sistema completo é preciso hospedar a API em outro lugar ou rodar localmente na apresentação — os detalhes estão em [`docs/requisitos.md`](docs/requisitos.md).
+O GitHub Pages só publica a demonstração: ele não roda o Spring Boot nem acessa o Supabase. Os comandos e as ressalvas estão em [`docs/instalacao.md`](docs/instalacao.md#deploy).
 
 ## 📂 Estrutura de Pastas
 
-```text
-AluguelCarro/
-├── backend/                      # Spring Boot (Maven) — veja backend/README.md
-│   ├── pom.xml
-│   └── src/
-│       ├── main/java/br/com/aluguelcarro/
-│       │   ├── config/           # DataSeeder
-│       │   ├── controller/       # Endpoints REST
-│       │   ├── dto/              # Entrada e saída da API
-│       │   ├── exception/        # Erros de negócio e tratamento
-│       │   ├── model/            # Entidades e enums
-│       │   ├── repository/       # Spring Data JPA
-│       │   ├── security/         # Login, sessão e papéis
-│       │   └── service/          # Regras de negócio
-│       ├── main/resources/application.properties
-│       └── test/                 # Testes de modelo e de regras de negócio
-├── frontend/                     # React + Vite + TypeScript — veja frontend/README.md
-│   ├── public/carros/            # Fotos recortadas dos carros (sem fundo)
-│   ├── tsconfig.json
-│   ├── vite.config.ts
-│   └── src/
-│       ├── auth/                 # Contexto de autenticação
-│       ├── demo/                 # "Servidor" e dados da versão de demonstração (GitHub Pages)
-│       ├── components/           # Layout, formulários e peças comuns
-│       ├── pages/                # Telas
-│       ├── styles/               # CSS separado dos componentes, um arquivo por bloco (animacoes.css junta as animações)
-│       ├── utils/                # Formatadores e cliente da Tabela FIPE
-│       ├── api.ts                # Cliente HTTP tipado
-│       └── types.ts              # Tipos que espelham os DTOs da API
-├── docs/
-│   ├── fluxos/                   # Fluxogramas, mapa de telas, sequências e arquitetura (Mermaid)
-│   ├── modelagem/                # Casos de uso, histórias, classes e pacotes
-│   ├── prints/                   # Capturas de tela usadas no README
-│   ├── apresentacao.md           # Roteiro da demo e comparação modelo × código
-│   ├── requisitos.md             # Checklist do laboratório
-│   └── banco-de-dados.sql
-└── LICENSE
-```
+Duas partes independentes, mais a documentação:
+
+- `backend/` — Spring Boot em camadas: `controller`, `service`, `repository`, `model`, `dto`, `security`, `exception` e `config`.
+- `frontend/` — React: `pages` (telas), `components`, `auth`, `demo` (versão sem API), `styles`, `utils`, `api.ts` e `types.ts`.
+- `docs/` — `modelagem`, `fluxos`, `prints`, `requisitos.md`, `apresentacao.md`, `instalacao.md` e o esquema do banco.
+
+A árvore comentada, arquivo por arquivo, está em [`docs/estrutura.md`](docs/estrutura.md).
 
 ## 🎥 Demonstração
 
@@ -399,6 +299,9 @@ As imagens são da **versão de demonstração** (GitHub Pages), que roda sem o 
 
 ### 💻 Exemplo de Saída no Terminal (API com cURL)
 
+<details>
+<summary>Ver o login e a listagem por cURL</summary>
+
 ```bash
 # Login (guarda o cookie de sessão)
 curl -i -c cookies.txt -H 'Content-Type: application/json' \
@@ -414,6 +317,8 @@ curl -i -c cookies.txt -H 'Content-Type: application/json' \
 # Listar pedidos usando a sessão
 curl -b cookies.txt http://localhost:8080/api/pedidos
 ```
+
+</details>
 
 ## 🧪 Testes
 

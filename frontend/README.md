@@ -24,4 +24,4 @@ npm run demo     # sem back-end: dados de exemplo no navegador
 npm run build    # typecheck + build de produção
 ```
 
-Instruções completas no [README da raiz](../README.md#-instalação-e-execução).
+Instruções completas em [`docs/instalacao.md`](../docs/instalacao.md).
