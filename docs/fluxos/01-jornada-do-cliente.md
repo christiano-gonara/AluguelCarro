@@ -21,6 +21,11 @@ flowchart TD
     J -- desistiu --> X
     K -- tira da lista --> X
     J -- parceiro fecha o contrato --> L([Contrato fechado])
+
+    classDef acao fill:#eef2e2,stroke:#8fa36a,color:#2c3418
+    classDef fim fill:#ebeeea,stroke:#7b8574,color:#232a1c
+    class I acao
+    class K,L,X fim
 ```
 
 ## O que o cliente pode fazer em cada momento

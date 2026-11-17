@@ -22,6 +22,9 @@ flowchart TD
     I -- sim --> K{Vai parcelar?}
     K -- não --> J
     K -- sim --> L[Valor, juros por mês<br/>e número de parcelas] --> J
+
+    classDef fim fill:#ebeeea,stroke:#7b8574,color:#232a1c
+    class F1,J fim
 ```
 
 ## Regras que a API confere

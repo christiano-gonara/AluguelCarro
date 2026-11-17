@@ -77,6 +77,11 @@ flowchart LR
     F -- empresa ou banco aprova --> G{{Aprovado}}
     F -- empresa ou banco recusa --> H{{Recusado}}
     G --> I([Contrato fechado])
+
+    classDef acao fill:#eef2e2,stroke:#8fa36a,color:#2c3418
+    classDef fim fill:#ebeeea,stroke:#7b8574,color:#232a1c
+    class F acao
+    class H,I fim
 ```
 
 ### 🏢 Fluxo do parceiro (empresa ou banco)
@@ -95,6 +100,9 @@ flowchart LR
     H -- sim --> I[Pode associar parcelamento:<br/>valor, juros e parcelas]
     H -- não --> J([Contrato fechado])
     I --> J
+
+    classDef fim fill:#ebeeea,stroke:#7b8574,color:#232a1c
+    class F,J fim
 ```
 
 ### 🚦 Situações do pedido
