@@ -4,6 +4,8 @@ label.check { flex-direction: row; align-items: center; gap: .6rem; font-size: .
 label.check input { width: 1.2rem; height: 1.2rem; accent-color: var(--oliva); }
 
 input, select, textarea {
+  min-width: 0;
+  max-width: 100%;
   min-height: 3.1rem;
   padding: .7rem .9rem;
   border: 1px solid var(--campo-borda);
@@ -36,6 +38,10 @@ legend { font-size: 1.25rem; font-weight: 600; padding: 0 .75rem 0 0; }
 .grade .larga { grid-column: 1 / -1; }
 .linha { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
 .linha input { flex: 1; min-width: 150px; }
+/* Sem isso, o texto longo de uma opção do select empurra a coluna e o formulário vaza da tela. */
+.grade > *,
+.linha > *,
+label { min-width: 0; }
 
 /* Botões: branco para a ação principal, contorno para as outras. */
 .btn {

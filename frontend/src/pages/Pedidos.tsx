@@ -128,12 +128,13 @@ function TabelaPedidos({
   const t = useTabela<Pedido, CampoPedido>(pedidos, texto, valor, { campo: 'id', crescente: false })
   const [abertos, setAbertos] = useState<Set<number>>(new Set())
   const colunas = ehCliente ? 5 : 6
-  const coluna = (rotulo: string, campo: CampoPedido) => (
+  const coluna = (rotulo: string, campo: CampoPedido, className?: string) => (
     <ColunaOrdenavel
       rotulo={rotulo}
       ativa={t.ordem.campo === campo}
       crescente={t.ordem.crescente}
       aoOrdenar={() => t.ordenarPor(campo)}
+      className={className}
     />
   )
 
@@ -167,9 +168,9 @@ function TabelaPedidos({
           <thead>
             <tr>
               {coluna('Pedido', 'id')}
-              {!ehCliente && coluna('Cliente', 'cliente')}
+              {!ehCliente && coluna('Cliente', 'cliente', 'col-cliente')}
               {coluna('Carro', 'carro')}
-              {coluna('Quando', 'quando')}
+              {coluna('Quando', 'quando', 'col-quando')}
               {coluna('Situação', 'situacao')}
               <th scope="col" className="direita">
                 Ações
@@ -190,7 +191,7 @@ function TabelaPedidos({
                       <strong>#{p.id}</strong>
                     </td>
                     {!ehCliente && (
-                      <td>
+                      <td className="col-cliente">
                         <span className="pessoa">
                           <span className="iniciais" aria-hidden="true">
                             {iniciais(p.clienteNome)}
@@ -275,6 +276,12 @@ function TabelaPedidos({
                         <div className="detalhe-pedido">
                           {!ehCliente && (
                             <span className="detalhe-item">
+                              <span className="detalhe-rotulo">Cliente</span>
+                              <strong>{p.clienteNome}</strong>
+                            </span>
+                          )}
+                          {!ehCliente && (
+                            <span className="detalhe-item">
                               <span className="detalhe-rotulo">Renda por mês</span>
                               <strong>{moeda(p.clienteRendimentoTotal)}</strong>
                             </span>
@@ -282,6 +289,12 @@ function TabelaPedidos({
                           <span className="detalhe-item">
                             <span className="detalhe-rotulo">Total do aluguel</span>
                             <strong>{moeda(p.valorTotalEstimado)}</strong>
+                          </span>
+                          <span className="detalhe-item">
+                            <span className="detalhe-rotulo">Período</span>
+                            <strong>
+                              {dataBR(p.dataInicio)} a {dataBR(p.dataFim)}
+                            </strong>
                           </span>
                           <span className="detalhe-item">
                             <span className="detalhe-rotulo">Placa</span>

@@ -48,14 +48,16 @@ export function ColunaOrdenavel({
   ativa,
   crescente,
   aoOrdenar,
+  className,
 }: {
   rotulo: string
   ativa: boolean
   crescente: boolean
   aoOrdenar: () => void
+  className?: string
 }) {
   return (
-    <th scope="col" aria-sort={ativa ? (crescente ? 'ascending' : 'descending') : 'none'}>
+    <th scope="col" className={className} aria-sort={ativa ? (crescente ? 'ascending' : 'descending') : 'none'}>
       <button type="button" className="ordenar" onClick={aoOrdenar}>
         {rotulo}
         <Icone nome="ordenar" tamanho={14} />

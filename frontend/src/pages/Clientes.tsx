@@ -79,8 +79,8 @@ function TabelaClientes({ clientes }: { clientes: Cliente[] }) {
                 aoOrdenar={() => t.ordenarPor('nome')}
               />
               <th scope="col">CPF</th>
-              <th scope="col">RG</th>
-              <th scope="col">Onde trabalha</th>
+              <th scope="col" className="col-rg">RG</th>
+              <th scope="col" className="col-trabalho">Onde trabalha</th>
               <ColunaOrdenavel
                 rotulo="Renda por mês"
                 ativa={t.ordem.campo === 'renda'}
@@ -104,8 +104,8 @@ function TabelaClientes({ clientes }: { clientes: Cliente[] }) {
                   </span>
                 </td>
                 <td className="numero">{cpfParcial(c.cpf)}</td>
-                <td className="numero">{c.rg}</td>
-                <td>
+                <td className="numero col-rg">{c.rg}</td>
+                <td className="col-trabalho">
                   {c.empregadores.length > 0 ? (
                     <span className="etiquetas">
                       {c.empregadores.map((e) => (

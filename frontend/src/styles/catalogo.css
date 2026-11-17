@@ -63,7 +63,7 @@
 .carro-preco span { font-size: .75rem; font-weight: 400; letter-spacing: 0; color: var(--apagado); }
 
 /* Novo pedido: formulário ao lado do carro escolhido. */
-.pedido-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; }
+.pedido-layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 2rem; align-items: start; }
 .pedido-layout .painel { margin: 0; }
 .pedido-layout .carro-card { margin-top: 4.5rem; }
 .total {
@@ -93,6 +93,6 @@
 .pedido-carro .carro-modelo { margin-bottom: .5rem; }
 
 @media (max-width: 760px) {
-  .pedido-layout { grid-template-columns: 1fr; }
+  .pedido-layout { grid-template-columns: minmax(0, 1fr); }
   .pedido-carro { grid-template-columns: 1fr; }
 }

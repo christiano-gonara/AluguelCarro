@@ -71,5 +71,7 @@
   .login-form { padding: 1.75rem; }
 }
 @media (max-width: 380px) {
+  .login-topo { flex-wrap: wrap; }
+  .login-form { min-width: 0; padding: 1.5rem; }
   .demo-contas { grid-template-columns: 1fr; }
 }

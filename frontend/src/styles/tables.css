@@ -143,3 +143,37 @@ tbody tr.linha-expandida:hover { background: rgba(0, 0, 0, .18); }
   .detalhes { grid-template-columns: 1fr; }
   .detalhes dt { border-bottom: 0; padding-bottom: 0; }
 }
+
+/* Celular: a tabela tem que caber na tela. Se passar, o navegador encolhe a página inteira
+   para caber e o texto fica minúsculo. Ficam só as colunas essenciais; o que sai daqui
+   aparece na linha que abre pela seta. */
+@media (max-width: 700px) {
+  table { min-width: 0; }
+  th, td { padding: .7rem .55rem; white-space: normal; }
+
+  .tabela-pedidos { font-size: .875rem; }
+  .tabela-pedidos th,
+  .tabela-pedidos td { padding: .6rem .45rem; }
+  .tabela-pedidos .ordenar .icone { display: none; }
+
+  .col-quando,
+  .quando,
+  .col-cliente,
+  .col-rg,
+  .col-trabalho { display: none; }
+
+  .tabela-pedidos .pessoa .iniciais,
+  .tabela-pedidos .carro-miniatura,
+  .tabela-pedidos .carro-celula .pequeno { display: none; }
+  .tabela-pedidos .pessoa strong,
+  .tabela-pedidos .carro-celula strong { max-width: none; }
+  .tabela-pedidos .badge { padding: .35rem .6rem; font-size: .8rem; white-space: normal; }
+  .tabela-pedidos .acoes { gap: .3rem; flex-wrap: wrap; justify-content: flex-end; }
+  .tabela-pedidos .botao-icone { width: 2.2rem; height: 2.2rem; }
+  .tabela-pedidos .btn.pequeno-btn { min-height: 2.2rem; padding: 0 .7rem; font-size: .8rem; }
+
+  .tabela-vidro { border-radius: 24px; }
+  .tabela-barra,
+  .tabela-paginas { padding: 1rem 1.1rem; }
+  .campo-busca { width: 100%; }
+}
